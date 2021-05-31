@@ -10,15 +10,16 @@ type TaskType = {
 type PropsType = {
     title: string,
     tasks: Array<TaskType>,
-    removeTask: (id: string) => void,
-    setFilter: (value: FilterValuesType) => void,
-    addTask: (taskDesc: string) => void,
-    changeTaskStatus: (id: string, isDone: boolean) => void;
     filter: string,
+    id: string,
+    removeTask: (id: string) => void,
+    setFilter: (value: FilterValuesType, id: string) => void,
+    addTask: (taskDesc: string) => void,
+    changeTaskStatus: (id: string, isDone: boolean) => void,
 };
 
 export function ToDoList(props: PropsType) {
-    const {title, tasks, filter, removeTask, setFilter, addTask, changeTaskStatus} = props;
+    const {title, tasks, filter, id, removeTask, setFilter, addTask, changeTaskStatus} = props;
 
     let [newTaskDesc, setTitle] = useState('');
     let [error, setError] = useState<string | null>(null);
@@ -83,13 +84,13 @@ export function ToDoList(props: PropsType) {
             <div>
                 <button 
                     className={filter === 'all' ? 'active-filter' : ''}
-                    onClick={() => setFilter('all')}>All</button>
+                    onClick={() => setFilter('all', id)}>All</button>
                 <button 
                     className={filter === 'active' ? 'active-filter' : ''}
-                    onClick={() => setFilter('active')}>Active</button>
+                    onClick={() => setFilter('active', id)}>Active</button>
                 <button 
                     className={filter === 'completed' ? 'active-filter' : ''}
-                    onClick={() => setFilter('completed')}>Completed</button>
+                    onClick={() => setFilter('completed', id)}>Completed</button>
             </div>
         </div>
     );
