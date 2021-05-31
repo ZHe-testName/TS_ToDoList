@@ -12,14 +12,15 @@ type PropsType = {
     tasks: Array<TaskType>,
     filter: string,
     id: string,
-    removeTask: (id: string) => void,
+    removeTask: (id: string, listId: string) => void,
     setFilter: (value: FilterValuesType, id: string) => void,
-    addTask: (taskDesc: string) => void,
-    changeTaskStatus: (id: string, isDone: boolean) => void,
+    addTask: (taskDesc: string, listId: string) => void,
+    changeTaskStatus: (id: string, isDone: boolean, listId: string) => void,
+    removeList: (listId: string) => void,
 };
 
 export function ToDoList(props: PropsType) {
-    const {title, tasks, filter, id, removeTask, setFilter, addTask, changeTaskStatus} = props;
+    const {title, tasks, filter, id, removeTask, removeList, setFilter, addTask, changeTaskStatus} = props;
 
     let [newTaskDesc, setTitle] = useState('');
     let [error, setError] = useState<string | null>(null);
@@ -36,7 +37,7 @@ export function ToDoList(props: PropsType) {
 
     const newTaskHandler = () => {
         if (newTaskDesc.trim() !== ''){
-            addTask(newTaskDesc);
+            addTask(newTaskDesc, id);
 
             setTitle("");
             return;
@@ -45,9 +46,14 @@ export function ToDoList(props: PropsType) {
         setError('Tittle is required!');
     };
 
+    const removeListHandler = () => {
+        removeList(id)
+    };
+
     return (
         <div>
             <h3>{title}</h3>
+            <button onClick={removeListHandler}>x</button>
             <div>
                 <input  className={error ? 'error': ''}
                         value={newTaskDesc}
@@ -63,7 +69,7 @@ export function ToDoList(props: PropsType) {
                         const taskStatusChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             const newStatus = e.currentTarget.checked;
 
-                            changeTaskStatus(task.id, newStatus);
+                            changeTaskStatus(task.id, newStatus, id);
                         };
 
                         return (
@@ -75,7 +81,7 @@ export function ToDoList(props: PropsType) {
                                             defaultChecked={task.isDone} 
                                             onChange={e => taskStatusChangeHandler(e)}/>
                                         <span>{task.title}</span>
-                                        <button onClick={() => removeTask(task.id)}>X</button>
+                                        <button onClick={() => removeTask(task.id, id)}>X</button>
                                 </li>
                             );
                     })

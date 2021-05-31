@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import { ToDoList } from './ToDoList';
 import {v1} from 'uuid';
+import { delimiter } from 'node:path';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -18,36 +19,54 @@ type TasksType = {
 };
 
 function App() {
-    const [tasks, setTasks] = useState<Array<TasksType>>([
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: false},
-        {id: v1(), title: 'React', isDone: true},
-        {id: v1(), title: 'Hello world', isDone: false},
-        {id: v1(), title: 'I am happy', isDone: true},
-    ]);
+    const firstListId = v1(),
+        secondListId = v1();
+
+    const [tasksObj, setTasks] = useState({
+        [firstListId]: [
+            {id: v1(), title: 'HTML&CSS', isDone: true},
+            {id: v1(), title: 'JS', isDone: false},
+            {id: v1(), title: 'React', isDone: true},
+            {id: v1(), title: 'Hello world', isDone: false},
+            {id: v1(), title: 'I am happy', isDone: true},
+        ],
+        [secondListId]: [
+            {id: v1(), title: 'Suzuki GSX-R', isDone: true},
+            {id: v1(), title: 'New notebook', isDone: false},
+            {id: v1(), title: 'Something to eat', isDone: true},
+        ],
+    });
 
     const [toDoListArr, setLists] = useState<Array<ListsType>>([
-        {id: v1(), title: 'What to do', filter: 'active'},
-        {id: v1(), title: 'What to buy', filter: 'all'},
+        {id: firstListId, title: 'What to do', filter: 'active'},
+        {id: secondListId, title: 'What to buy', filter: 'all'},
     ]);
     
-    function removeTask(id: string) {
-        setTasks(tasks.filter(t => t.id !== id));
+    function removeTask(id: string, listId: string) {
+        const taskArr = tasksObj[listId];
+        const filteredTasks = taskArr.filter(t => t.id !== id);
+
+        tasksObj[listId] = filteredTasks;
+
+        setTasks({...tasksObj});
     };
 
-    function addTask(taskdesc: string){
-        const task = {id: v1(), title: taskdesc, isDone: false};
-        const tasksArr = [task, ...tasks];
-        setTasks(tasksArr);
+    function addTask(taskdesc: string, listId: string){
+        const taskArr = tasksObj[listId];
+        const newTask = {id: v1(), title: taskdesc, isDone: false};
+        
+        tasksObj[listId] = [newTask, ...taskArr];
+
+        setTasks({...tasksObj});
     }
 
-    function changeStatus(id: string, isDone: boolean) {
-        const targetTask = tasks.find(task => task.id === id);
+    function changeStatus(id: string, isDone: boolean, listId: string) {
+        const targetTask = tasksObj[listId].find(task => task.id === id);
 
         if (targetTask) {
             targetTask.isDone = isDone;
 
-            setTasks([...tasks]);
+            setTasks({...tasksObj});
         };
     };
 
@@ -60,17 +79,26 @@ function App() {
         };
     };
 
+    function removeList(listId: string) {
+        const list = toDoListArr.filter(list => list.id !== listId);
+
+        setLists(list);
+
+        delete tasksObj[listId];
+        console.log(tasksObj);
+    };
+
     return (
         <div className="App">
             {toDoListArr.map(list => {
-                                        let filtredTasksArr = tasks;
+                                        let filtredTasksArr = tasksObj[list.id];
 
                                         if (list.filter === 'active'){
-                                            filtredTasksArr = tasks.filter(t => !t.isDone); 
+                                            filtredTasksArr = filtredTasksArr.filter(t => !t.isDone); 
                                         };
                                     
                                         if (list.filter === 'completed'){
-                                            filtredTasksArr = tasks.filter(t => t.isDone);
+                                            filtredTasksArr = filtredTasksArr.filter(t => t.isDone);
                                         };
 
                                         return(
@@ -78,12 +106,13 @@ function App() {
                                                     key={list.id}
                                                     id={list.id}  
                                                     title={list.title} 
+                                                    filter={list.filter}
                                                     tasks={filtredTasksArr}
                                                     removeTask={removeTask}
                                                     setFilter={filterTasks}
                                                     addTask={addTask}
                                                     changeTaskStatus={changeStatus}
-                                                    filter={list.filter}/>
+                                                    removeList={removeList}/>
                                         );    
             })}
         </div>
