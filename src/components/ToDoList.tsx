@@ -1,5 +1,18 @@
-import React, { ChangeEvent, useState, KeyboardEvent } from 'react';
-import { FilterValuesType } from './App';
+import React, { ChangeEvent } from 'react';
+import styled from 'styled-components';
+
+import { FilterValuesType } from '../App';
+import AdditemInput from './AddItemInput';
+
+const ToDoListWrap = styled.div`
+    .active-filter{
+        background-color: aquamarine;
+    }
+    
+    .done-task{
+        opacity: 0.5;
+    }
+`;
 
 type TaskType = {
     id: string,
@@ -22,47 +35,17 @@ type PropsType = {
 export function ToDoList(props: PropsType) {
     const {title, tasks, filter, id, removeTask, removeList, setFilter, addTask, changeTaskStatus} = props;
 
-    let [newTaskDesc, setTitle] = useState('');
-    let [error, setError] = useState<string | null>(null);
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value);
-    
-    const onKeyPresHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
-
-        if (e.key === 'Enter') {
-            newTaskHandler()
-        };
-    };
-
-    const newTaskHandler = () => {
-        if (newTaskDesc.trim() !== ''){
-            addTask(newTaskDesc, id);
-
-            setTitle("");
-            return;
-        };
-
-        setError('Tittle is required!');
-    };
-
     const removeListHandler = () => {
         removeList(id)
     };
 
     return (
-        <div>
+        <ToDoListWrap>
             <h3>{title}</h3>
             <button onClick={removeListHandler}>x</button>
-            <div>
-                <input  className={error ? 'error': ''}
-                        value={newTaskDesc}
-                        onChange={e => onChangeHandler(e)}
-                        onKeyPress={e => onKeyPresHandler(e)}/>
-                <button onClick={newTaskHandler}>+</button>
 
-                {error && <div className='error-message'>{error}</div>}
-            </div>
+            <AdditemInput id={id} addTask={addTask}/>
+
             <ul>
                 {
                     tasks.map(task => {
@@ -98,6 +81,6 @@ export function ToDoList(props: PropsType) {
                     className={filter === 'completed' ? 'active-filter' : ''}
                     onClick={() => setFilter('completed', id)}>Completed</button>
             </div>
-        </div>
+        </ToDoListWrap>
     );
 }
