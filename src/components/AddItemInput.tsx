@@ -17,19 +17,18 @@ const FormWrap = styled.div`
 `;
 
 type PropsType = {
-    addTask: (id: string, toDoListId: string) => void,
-    id: string,
+    addItem: (toDoListId: string) => void,
 };
 
 function AddItemInput(props: PropsType) {
-    const {id, addTask} = props;
+    const {addItem} = props;
 
     let [title, setTitle] = useState('');
     let [error, setError] = useState<string | null>(null);
 
     const newTaskHandler = () => {
         if (title.trim() !== ''){
-            addTask(title, id);
+            addItem(title);
 
             setTitle("");
             return;

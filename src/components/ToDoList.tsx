@@ -33,10 +33,14 @@ type PropsType = {
 };
 
 export function ToDoList(props: PropsType) {
-    const {title, tasks, filter, id, removeTask, removeList, setFilter, addTask, changeTaskStatus} = props;
+    const {title, tasks, filter, id, removeTask, removeList, setFilter, changeTaskStatus} = props;
 
     const removeListHandler = () => {
-        removeList(id)
+        removeList(id);
+    };
+
+    const addTask = (title: string) => {
+        props.addTask(title, id);
     };
 
     return (
@@ -44,7 +48,7 @@ export function ToDoList(props: PropsType) {
             <h3>{title}</h3>
             <button onClick={removeListHandler}>x</button>
 
-            <AdditemInput id={id} addTask={addTask}/>
+            <AdditemInput addItem={addTask}/>
 
             <ul>
                 {

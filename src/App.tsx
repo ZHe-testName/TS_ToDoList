@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
-import './App.css';
+
 import { ToDoList } from './components/ToDoList';
 import AdditemInput from './components/AddItemInput';
+import './App.css';
+
 import {v1} from 'uuid';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
@@ -54,11 +56,10 @@ function App() {
     function addTask(taskdesc: string, listId: string){
         const taskArr = tasksObj[listId];
         const newTask = {id: v1(), title: taskdesc, isDone: false};
-        
+
         tasksObj[listId] = [newTask, ...taskArr];
 
         setTasks({...tasksObj});
-        console.log('yes');
     }
 
     function changeStatus(id: string, isDone: boolean, listId: string) {
@@ -86,12 +87,17 @@ function App() {
         setLists(list);
 
         delete tasksObj[listId];
-        console.log(tasksObj);
+    };
+
+    function addToDoList(title: string) {
+        const newToDoTaskObj = [
+
+        ];
     };
 
     return (
         <div className="App">
-            <AdditemInput id='wwe' addTask={() => {}}/>
+            <AdditemInput addItem={() => {}}/>
             {toDoListArr.map(list => {
                                         let filtredTasksArr = tasksObj[list.id];
 
