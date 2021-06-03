@@ -90,14 +90,23 @@ function App() {
     };
 
     function addToDoList(title: string) {
-        const newToDoTaskObj = [
+        const newToDoList: ListsType = {
+            id: v1(),
+            title: title,
+            filter: 'all',
+        };
 
-        ];
+        setLists([newToDoList, ...toDoListArr]);
+
+        setTasks({
+            ...tasksObj,
+            [newToDoList.id]: [],
+        });
     };
 
     return (
         <div className="App">
-            <AdditemInput addItem={() => {}}/>
+            <AdditemInput addItem={addToDoList}/>
             {toDoListArr.map(list => {
                                         let filtredTasksArr = tasksObj[list.id];
 
