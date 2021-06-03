@@ -67,7 +67,7 @@ export function ToDoList(props: PropsType) {
                                             type="checkbox" 
                                             defaultChecked={task.isDone} 
                                             onChange={e => taskStatusChangeHandler(e)}/>
-                                        <span>{task.title}</span>
+                                            <EditableSpan title={task.title}/>
                                         <button onClick={() => removeTask(task.id, id)}>X</button>
                                 </li>
                             );
@@ -88,3 +88,17 @@ export function ToDoList(props: PropsType) {
         </ToDoListWrap>
     );
 }
+
+type EditableSpanPropsType = {
+    title: string,
+};
+
+function EditableSpan(props: EditableSpanPropsType){
+    const {title} = props;
+
+    return (
+        <span>
+            {title}
+        </span>
+    );
+};

@@ -20,11 +20,15 @@ type TasksType = {
     isDone: boolean,
 };
 
+type TasksObjPropsType = {
+    [key: string]: Array<TasksType>,
+};
+
 function App() {
     const firstListId = v1(),
         secondListId = v1();
 
-    const [tasksObj, setTasks] = useState({
+    const [tasksObj, setTasks] = useState<TasksObjPropsType>({
         [firstListId]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: false},
