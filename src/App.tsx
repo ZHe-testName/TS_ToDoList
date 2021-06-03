@@ -117,7 +117,18 @@ function App() {
             targetTask.title = newValue;
             
             setTasks({...tasksObj});
-        }
+        };
+    };
+
+    function addNewListHeader(newValue: string, listId: string) {
+        const targetList = toDoListArr.find(list => list.id === listId);
+
+        if (targetList){
+            targetList.title = newValue;
+
+            setLists([...toDoListArr]);
+        };
+
     };
 
     return (
@@ -146,7 +157,8 @@ function App() {
                                                     addTask={addTask}
                                                     changeTaskStatus={changeStatus}
                                                     removeList={removeList}
-                                                    setNewTitle={setNewTitle}/>
+                                                    setNewTitle={setNewTitle}
+                                                    addNewListHeader={addNewListHeader}/>
                                         );    
             })}
         </div>

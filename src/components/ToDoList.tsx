@@ -32,6 +32,7 @@ type PropsType = {
     changeTaskStatus: (id: string, isDone: boolean, listId: string) => void,
     removeList: (listId: string) => void,
     setNewTitle: (newValue: string, taskId: string, listId: string) => void,
+    addNewListHeader: (newValue: string, listId: string) => void,
 };
 
 export function ToDoList(props: PropsType) {
@@ -45,10 +46,17 @@ export function ToDoList(props: PropsType) {
         props.addTask(title, id);
     };
 
+    const addNewListHeader = (newValue: string) => {
+        props.addNewListHeader(newValue, id);
+    };
+
 
     return (
         <ToDoListWrap>
-            <h3>{title}</h3>
+            <h3><EditableSpan 
+                            title={title}
+                            newValue={addNewListHeader}/></h3>
+
             <button onClick={removeListHandler}>x</button>
 
             <AdditemInput addItem={addTask}/>
