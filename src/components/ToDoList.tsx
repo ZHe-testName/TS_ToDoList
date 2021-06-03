@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { FilterValuesType } from '../App';
 import AdditemInput from './AddItemInput';
+import EditableSpan from './EditableSpan';
 
 const ToDoListWrap = styled.div`
     .active-filter{
@@ -30,6 +31,7 @@ type PropsType = {
     addTask: (taskDesc: string, listId: string) => void,
     changeTaskStatus: (id: string, isDone: boolean, listId: string) => void,
     removeList: (listId: string) => void,
+    setNewTitle: (newValue: string, taskId: string, listId: string) => void,
 };
 
 export function ToDoList(props: PropsType) {
@@ -42,6 +44,7 @@ export function ToDoList(props: PropsType) {
     const addTask = (title: string) => {
         props.addTask(title, id);
     };
+
 
     return (
         <ToDoListWrap>
@@ -59,6 +62,10 @@ export function ToDoList(props: PropsType) {
                             changeTaskStatus(task.id, newStatus, id);
                         };
 
+                        const onChangeTitleHandler = (newValue: string) => {
+                            props.setNewTitle(newValue, task.id, id);
+                        };
+                        
                         return (
                                 <li 
                                     key={`${task.id}`}
@@ -67,7 +74,11 @@ export function ToDoList(props: PropsType) {
                                             type="checkbox" 
                                             defaultChecked={task.isDone} 
                                             onChange={e => taskStatusChangeHandler(e)}/>
-                                            <EditableSpan title={task.title}/>
+
+                                            <EditableSpan 
+                                                        title={task.title}
+                                                        newValue={onChangeTitleHandler}/>
+
                                         <button onClick={() => removeTask(task.id, id)}>X</button>
                                 </li>
                             );
@@ -89,16 +100,4 @@ export function ToDoList(props: PropsType) {
     );
 }
 
-type EditableSpanPropsType = {
-    title: string,
-};
 
-function EditableSpan(props: EditableSpanPropsType){
-    const {title} = props;
-
-    return (
-        <span>
-            {title}
-        </span>
-    );
-};

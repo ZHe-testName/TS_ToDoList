@@ -108,6 +108,18 @@ function App() {
         });
     };
 
+    function setNewTitle(newValue: string, taskId: string, listId: string){
+        const targetTaskArray = tasksObj[listId];
+
+        const targetTask = targetTaskArray.find(task => task.id === taskId);
+
+        if (targetTask){
+            targetTask.title = newValue;
+            
+            setTasks({...tasksObj});
+        }
+    };
+
     return (
         <div className="App">
             <AdditemInput addItem={addToDoList}/>
@@ -133,7 +145,8 @@ function App() {
                                                     setFilter={filterTasks}
                                                     addTask={addTask}
                                                     changeTaskStatus={changeStatus}
-                                                    removeList={removeList}/>
+                                                    removeList={removeList}
+                                                    setNewTitle={setNewTitle}/>
                                         );    
             })}
         </div>
