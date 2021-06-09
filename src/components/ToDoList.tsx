@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 
 import { FilterValuesType } from '../App';
 import AdditemInput from './AddItemInput';
@@ -79,9 +80,9 @@ export function ToDoList(props: PropsType) {
                                 <li 
                                     key={`${task.id}`}
                                     className={task.isDone ? 'done-task' : ''}>
-                                        <input 
-                                            type="checkbox" 
-                                            defaultChecked={task.isDone} 
+                                        <Checkbox  
+                                            indeterminate
+                                            checked={task.isDone} 
                                             onChange={e => taskStatusChangeHandler(e)}/>
 
                                             <EditableSpan 
