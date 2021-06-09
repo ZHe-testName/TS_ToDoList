@@ -1,20 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import styled from 'styled-components';
-
-const FormWrap = styled.div`
-    .error{
-        border: 1px solid red;
-    }
-    
-        .error:focus{
-        border: 1px solid red;
-        outline: none;
-        }
-    
-    .error_message{
-        color: red;
-    }
-`;
+import {Button} from '@material-ui/core';
 
 type PropsType = {
     addItem: (toDoListId: string) => void,
@@ -48,15 +33,17 @@ function AddItemInput(props: PropsType) {
     }
 
     return (
-        <FormWrap>
+        <div>
             <input  className={error ? 'error': ''}
                     value={title}
                     onChange={e => onChangeHandler(e)}
                     onKeyPress={e => onKeyPresHandler(e)}/>
-            <button onClick={newTaskHandler}>+</button>
+            <Button onClick={newTaskHandler}
+                    variant='contained'
+                    color='primary'>+</Button>
 
             {error && <div className='error_message'>{error}</div>}
-        </FormWrap>
+        </div>
     );
 };
 
