@@ -1,19 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import styled from 'styled-components';
 
 import { FilterValuesType } from '../App';
 import AdditemInput from './AddItemInput';
 import EditableSpan from './EditableSpan';
-
-const ToDoListWrap = styled.div`
-    .active-filter{
-        background-color: aquamarine;
-    }
-    
-    .done-task{
-        opacity: 0.5;
-    }
-`;
 
 type TaskType = {
     id: string,
@@ -52,7 +41,7 @@ export function ToDoList(props: PropsType) {
 
 
     return (
-        <ToDoListWrap>
+        <div>
             <h3><EditableSpan 
                             title={title}
                             newValue={addNewListHeader}/></h3>
@@ -104,7 +93,7 @@ export function ToDoList(props: PropsType) {
                     className={filter === 'completed' ? 'active-filter' : ''}
                     onClick={() => setFilter('completed', id)}>Completed</button>
             </div>
-        </ToDoListWrap>
+        </div>
     );
 }
 
