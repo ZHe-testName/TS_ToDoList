@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Grid from '@material-ui/core/Grid';
 
 import { ToDoList } from './components/ToDoList';
 import AdditemInput from './components/AddItemInput';
@@ -133,34 +134,56 @@ function App() {
 
     return (
         <div className="App">
-            <AdditemInput addItem={addToDoList}/>
-            {toDoListArr.map(list => {
-                                        let filtredTasksArr = tasksObj[list.id];
+            <Grid 
+                container 
+                spacing={3}>
+                <Grid 
+                    item
+                    xs={12}>
+                        
+                        <AdditemInput addItem={addToDoList}/>
+                    
+                </Grid>
 
-                                        if (list.filter === 'active'){
-                                            filtredTasksArr = filtredTasksArr.filter(t => !t.isDone); 
-                                        };
-                                    
-                                        if (list.filter === 'completed'){
-                                            filtredTasksArr = filtredTasksArr.filter(t => t.isDone);
-                                        };
+                <Grid 
+                    item
+                    xs={12}>
+                        <Grid
+                                container
+                                spacing={3}>                       
+                                {toDoListArr.map(list => {
+                                    let filtredTasksArr = tasksObj[list.id];
+        
+                                    if (list.filter === 'active'){
+                                        filtredTasksArr = filtredTasksArr.filter(t => !t.isDone); 
+                                    };
+                                
+                                    if (list.filter === 'completed'){
+                                        filtredTasksArr = filtredTasksArr.filter(t => t.isDone);
+                                    };
+        
+                                    return(
+                                        <Grid
+                                            item
+                                            xs={6}><ToDoList 
+                                                            key={list.id}
+                                                            id={list.id}  
+                                                            title={list.title} 
+                                                            filter={list.filter}
+                                                            tasks={filtredTasksArr}
+                                                            removeTask={removeTask}
+                                                            setFilter={filterTasks}
+                                                            addTask={addTask}
+                                                            changeTaskStatus={changeStatus}
+                                                            removeList={removeList}
+                                                            setNewTitle={setNewTitle}
+                                                            addNewListHeader={addNewListHeader}/>
+                                            </Grid>);    
+                                })}
+                            </Grid>
+                        </Grid>
 
-                                        return(
-                                            <ToDoList 
-                                                    key={list.id}
-                                                    id={list.id}  
-                                                    title={list.title} 
-                                                    filter={list.filter}
-                                                    tasks={filtredTasksArr}
-                                                    removeTask={removeTask}
-                                                    setFilter={filterTasks}
-                                                    addTask={addTask}
-                                                    changeTaskStatus={changeStatus}
-                                                    removeList={removeList}
-                                                    setNewTitle={setNewTitle}
-                                                    addNewListHeader={addNewListHeader}/>
-                                        );    
-            })}
+            </Grid>
         </div>
     );
 };

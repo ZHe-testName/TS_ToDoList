@@ -1,4 +1,7 @@
 import React, { ChangeEvent } from 'react';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import { FilterValuesType } from '../App';
 import AdditemInput from './AddItemInput';
@@ -42,13 +45,22 @@ export function ToDoList(props: PropsType) {
 
     return (
         <div>
-            <h3><EditableSpan 
-                            title={title}
-                            newValue={addNewListHeader}/></h3>
+            <div>
+                <h3>
+                    <EditableSpan 
+                                title={title}
+                                newValue={addNewListHeader}/>
+                </h3>
 
-            <button onClick={removeListHandler}>x</button>
+                <Button 
+                        variant='contained'  
+                        color='secondary'
+                        size='small'
+                        startIcon={<DeleteIcon />}  
+                        onClick={removeListHandler}>Delete</Button>
 
-            <AdditemInput addItem={addTask}/>
+                <AdditemInput addItem={addTask}/>
+            </div>
 
             <ul>
                 {
@@ -76,22 +88,30 @@ export function ToDoList(props: PropsType) {
                                                         title={task.title}
                                                         newValue={onChangeTitleHandler}/>
 
-                                        <button onClick={() => removeTask(task.id, id)}>X</button>
+                                            <IconButton
+                                                        onClick={() => removeTask(task.id, id)}
+                                                        area-label='delete'>
+                                                <DeleteIcon 
+                                                            fontSize='small'/>
+                                            </IconButton>
                                 </li>
                             );
                     })
                 }
             </ul>
             <div>
-                <button 
-                    className={filter === 'all' ? 'active-filter' : ''}
-                    onClick={() => setFilter('all', id)}>All</button>
-                <button 
-                    className={filter === 'active' ? 'active-filter' : ''}
-                    onClick={() => setFilter('active', id)}>Active</button>
-                <button 
-                    className={filter === 'completed' ? 'active-filter' : ''}
-                    onClick={() => setFilter('completed', id)}>Completed</button>
+                <Button 
+                    color='default'
+                    variant={filter === 'all' ? 'contained' : 'text'}
+                    onClick={() => setFilter('all', id)}>All</Button>
+                <Button 
+                    color='primary'
+                    variant={filter === 'active' ? 'contained' : 'text'}
+                    onClick={() => setFilter('active', id)}>Active</Button>
+                <Button 
+                    color='secondary'
+                    variant={filter === 'completed' ? 'contained' : 'text'}
+                    onClick={() => setFilter('completed', id)}>Completed</Button>
             </div>
         </div>
     );

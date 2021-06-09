@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button} from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 type PropsType = {
     addItem: (toDoListId: string) => void,
@@ -22,9 +23,9 @@ function AddItemInput(props: PropsType) {
         setError('Tittle is required!');
     };
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value);
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setTitle(e.currentTarget.value);
     
-    const onKeyPresHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPresHandler = (e: KeyboardEvent<HTMLDivElement>) => {
         setError(null);
 
         if (e.key === 'Enter'){
@@ -34,13 +35,17 @@ function AddItemInput(props: PropsType) {
 
     return (
         <div>
-            <input  className={error ? 'error': ''}
-                    value={title}
-                    onChange={e => onChangeHandler(e)}
-                    onKeyPress={e => onKeyPresHandler(e)}/>
+            <TextField 
+                label='Type there' 
+                error={!!error}
+                value={title}
+                onChange={e => onChangeHandler(e)}
+                onKeyPress={e => onKeyPresHandler(e)}/>
+
             <Button onClick={newTaskHandler}
                     variant='contained'
-                    color='primary'>+</Button>
+                    color='primary'
+                    size='small'>+</Button>
 
             {error && <div className='error_message'>{error}</div>}
         </div>

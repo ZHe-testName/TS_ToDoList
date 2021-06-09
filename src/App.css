@@ -1,8 +1,11 @@
-.App {
-  padding: 30px;
-  display: flex;
+h1-h6{
+  display: block;
 }
 
-.App > div {
-  margin-right: 50px;
+.App {
+  border-radius: 10px;
+  border: 2px solid rgb(77, 77, 231);
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 12px;
 }
