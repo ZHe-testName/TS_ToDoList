@@ -6,6 +6,8 @@ import AdditemInput from './components/AddItemInput';
 import './App.css';
 
 import {v1} from 'uuid';
+import MenuIcon from '@material-ui/icons/Menu';
+import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -133,39 +135,61 @@ function App() {
     };
 
     return (
-        <div className="App">
-            <Grid 
-                container 
-                spacing={3}>
-                <Grid 
-                    item
-                    xs={12}>
-                        
-                        <AdditemInput addItem={addToDoList}/>
-                    
-                </Grid>
+        <div>
+            <AppBar 
+                position="static">
+                    <Toolbar>
+                        <IconButton 
+                                edge="start" 
+                                color="inherit" 
+                                aria-label="menu"><MenuIcon />
+                        </IconButton>
 
-                <Grid 
-                    item
-                    xs={12}>
-                        <Grid
-                                container
-                                spacing={3}>                       
-                                {toDoListArr.map(list => {
-                                    let filtredTasksArr = tasksObj[list.id];
-        
-                                    if (list.filter === 'active'){
-                                        filtredTasksArr = filtredTasksArr.filter(t => !t.isDone); 
-                                    };
-                                
-                                    if (list.filter === 'completed'){
-                                        filtredTasksArr = filtredTasksArr.filter(t => t.isDone);
-                                    };
-        
-                                    return(
-                                        <Grid
-                                            item
-                                            xs={6}><ToDoList 
+                        <Typography 
+                                    variant="h6">News</Typography>
+
+                        <Button 
+                                color="inherit">Login</Button>
+                    </Toolbar>
+            </AppBar>
+
+            <Container 
+                    fixed>
+                    <Grid 
+                        container
+                        item
+                        xs={12}
+                        style={{marginTop: '15px'}}>
+                            
+                            <AdditemInput addItem={addToDoList}/>
+                        
+                    </Grid>
+
+                    <Grid 
+                        container
+                        item
+                        xs={12}
+                        spacing={8}
+                        style={{marginTop: '15px'}}>                    
+                            {toDoListArr.map(list => {
+                                let filtredTasksArr = tasksObj[list.id];
+
+                                if (list.filter === 'active'){
+                                    filtredTasksArr = filtredTasksArr.filter(t => !t.isDone); 
+                                };
+                            
+                                if (list.filter === 'completed'){
+                                    filtredTasksArr = filtredTasksArr.filter(t => t.isDone);
+                                };
+
+                                return(
+                                    <Grid
+                                        item
+                                        xs={4}>
+                                            <Paper
+                                                style={{padding: '15px'}}
+                                                elevation={2}>
+                                                    <ToDoList 
                                                             key={list.id}
                                                             id={list.id}  
                                                             title={list.title} 
@@ -178,94 +202,14 @@ function App() {
                                                             removeList={removeList}
                                                             setNewTitle={setNewTitle}
                                                             addNewListHeader={addNewListHeader}/>
-                                            </Grid>);    
-                                })}
-                            </Grid>
+                                            </Paper>
+                                </Grid>);    
+                            })}
                         </Grid>
 
-            </Grid>
+            </Container>
         </div>
     );
 };
 
 export default App;
-
-// const task2 = [
-//     {id: 1, title: 'Hello world', isDone: false},
-//     {id: 2, title: 'I am happy', isDone: true},
-//     {id: 3, title: 'Yo', isDone: false},
-// ];
-
-// class App extends React.Component{
-//     constructor(props: Object){
-//         super(props);
-//     };
-
-//     state = {
-//         tasks: [
-//             {id: v1(), title: 'HTML&CSS', isDone: true},
-//             {id: v1(), title: 'JS', isDone: false},
-//             {id: v1(), title: 'React', isDone: true},
-//             {id: v1(), title: 'Hello world', isDone: false},
-//             {id: v1(), title: 'I am happy', isDone: true},
-//         ],
-
-//         showingTasksArr: [],
-//     };
-
-//     removeTask(id: string) {
-//         this.setState(state => {
-//             return {
-//                 tasks: this.state.tasks.filter(t => t.id !== id),
-//             };
-//         });
-//     };
-
-//     addTask(taskdesc: string){
-//         const task = {id: v1(), title: taskdesc, isDone: false};
-//         const tasksArr = [task, ...this.state.tasks];
-
-//         this.setState(state => {
-//             return {
-//                 tasks: tasksArr,
-//             };
-//         });
-//     }
-
-//     changeStatus(id: string, isDone: boolean) {
-//         const targetTask = this.state.tasks.find(task => task.id === id);
-
-//         if (targetTask) {
-//             targetTask.isDone = isDone;
-
-//             this.setState(state => {
-//                 return {
-//                     tasks: [...this.state.tasks],
-//                 };
-//             });
-//         };
-//     };
-
-//     // filterTasks(value: FilterValuesType) {
-//     //     setFilter(value);
-//     // };
-
-//     render(){
-//         return (
-//             <div className="App">
-//                 <ToDoList   title="I want to learn" 
-//                             tasks={this.state.tasks}
-//                             removeTask={this.removeTask}
-//                             // setFilter={filterTasks}
-//                             // addTask={addTask}
-//                             // changeTaskStatus={changeStatus}
-//                             // filter={filter}
-//                             />
-//                 {/* <ToDoList title="Songs" tasks={task2}/> */}
-//             </div>
-//         );
-//     };
-// };
-
-
-

@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button} from '@material-ui/core';
+import {Button, Grid} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import PlusOneIcon from '@material-ui/icons/PlusOne';
 
@@ -35,21 +35,26 @@ function AddItemInput(props: PropsType) {
     }
 
     return (
-        <div>
-            <TextField 
-                label='Type there' 
-                error={!!error}
-                value={title}
-                helperText={error}
-                onChange={e => onChangeHandler(e)}
-                onKeyPress={e => onKeyPresHandler(e)}/>
+            <Grid
+                container>
+                    <TextField 
+                            id='outlined-basic'
+                            variant='outlined'
+                            label='Typing there'
+                            style={{marginRight: '20px'}} 
+                            error={!!error}
+                            value={title}
+                            helperText={error}
+                            onChange={e => onChangeHandler(e)}
+                            onKeyPress={e => onKeyPresHandler(e)}/>
 
-            <Button onClick={newTaskHandler}
-                    variant='contained'
-                    startIcon={<PlusOneIcon/>}
-                    color='primary'
-                    size='small'></Button>
-        </div>
+                            <Button 
+                                onClick={newTaskHandler}
+                                variant='contained'
+                                startIcon={<PlusOneIcon/>}
+                                color='primary'
+                                size='small'></Button>
+            </Grid>
     );
 };
 

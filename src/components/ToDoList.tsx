@@ -2,11 +2,12 @@ import React, { ChangeEvent } from 'react';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import { FilterValuesType } from '../App';
 import AdditemInput from './AddItemInput';
 import EditableSpan from './EditableSpan';
+import { Grid } from '@material-ui/core';
 
 type TaskType = {
     id: string,
@@ -46,22 +47,25 @@ export function ToDoList(props: PropsType) {
 
     return (
         <div>
-            <div>
-                <h3>
-                    <EditableSpan 
-                                title={title}
-                                newValue={addNewListHeader}/>
-                </h3>
+            <Grid
+                container
+                direction='row'
+                justify='space-between'
+                style={{marginBottom: '15px'}}>
+                    <h3>
+                        <EditableSpan 
+                                    title={title}
+                                    newValue={addNewListHeader}/>
+                    </h3>
 
-                <Button 
-                        variant='contained'  
+                    <Button  
                         color='secondary'
                         size='small'
                         startIcon={<DeleteIcon />}  
                         onClick={removeListHandler}>Delete</Button>
+            </Grid>
 
-                <AdditemInput addItem={addTask}/>
-            </div>
+            <AdditemInput addItem={addTask}/>
 
             <ul>
                 {
@@ -100,20 +104,23 @@ export function ToDoList(props: PropsType) {
                     })
                 }
             </ul>
-            <div>
-                <Button 
-                    color='default'
-                    variant={filter === 'all' ? 'contained' : 'text'}
-                    onClick={() => setFilter('all', id)}>All</Button>
-                <Button 
-                    color='primary'
-                    variant={filter === 'active' ? 'contained' : 'text'}
-                    onClick={() => setFilter('active', id)}>Active</Button>
-                <Button 
-                    color='secondary'
-                    variant={filter === 'completed' ? 'contained' : 'text'}
-                    onClick={() => setFilter('completed', id)}>Completed</Button>
-            </div>
+            <Grid
+                container
+                direction='row'
+                justify='space-around'>
+                    <Button 
+                        color='default'
+                        variant={filter === 'all' ? 'contained' : 'text'}
+                        onClick={() => setFilter('all', id)}>All</Button>
+                    <Button 
+                        color='primary'
+                        variant={filter === 'active' ? 'contained' : 'text'}
+                        onClick={() => setFilter('active', id)}>Active</Button>
+                    <Button 
+                        color='secondary'
+                        variant={filter === 'completed' ? 'contained' : 'text'}
+                        onClick={() => setFilter('completed', id)}>Completed</Button>
+            </Grid>
         </div>
     );
 }
