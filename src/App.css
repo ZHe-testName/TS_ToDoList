@@ -1,11 +1,24 @@
-h1-h6{
-  display: block;
+@keyframes list_hover_animation {
+  0%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(1.026);
+  }
 }
 
-.App {
-  border-radius: 10px;
-  border: 2px solid rgb(77, 77, 231);
-  max-width: 1220px;
-  margin: 0 auto;
-  padding: 12px;
+.list:hover{
+  animation-name: list_hover_animation;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+
+.done-task:hover{
+  cursor: pointer;
+}
+
+.uncomplete-task:hover{
+  cursor: pointer;
+  background-color: rgb(232, 238, 255);
 }

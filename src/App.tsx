@@ -137,19 +137,20 @@ function App() {
     return (
         <div>
             <AppBar 
-                position="static">
+                position='static'>
                     <Toolbar>
                         <IconButton 
-                                edge="start" 
-                                color="inherit" 
-                                aria-label="menu"><MenuIcon />
+                                edge='start' 
+                                color='inherit' 
+                                aria-label='menu'><MenuIcon />
                         </IconButton>
 
                         <Typography 
-                                    variant="h6">News</Typography>
+                                variant='h6'>News</Typography>
 
                         <Button 
-                                color="inherit">Login</Button>
+                            style={{marginLeft: 'auto'}}
+                            color='inherit'>Login</Button>
                     </Toolbar>
             </AppBar>
 
@@ -185,12 +186,15 @@ function App() {
                                 return(
                                     <Grid
                                         item
-                                        xs={4}>
+                                        xs={12}
+                                        md={6}
+                                        lg={4}
+                                        key={list.id}>
                                             <Paper
+                                                className='list'
                                                 style={{padding: '15px'}}
                                                 elevation={2}>
                                                     <ToDoList 
-                                                            key={list.id}
                                                             id={list.id}  
                                                             title={list.title} 
                                                             filter={list.filter}

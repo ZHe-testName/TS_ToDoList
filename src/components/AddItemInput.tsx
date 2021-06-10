@@ -38,7 +38,6 @@ function AddItemInput(props: PropsType) {
             <Grid
                 container>
                     <TextField 
-                            id='outlined-basic'
                             variant='outlined'
                             label='Typing there'
                             style={{marginRight: '20px'}} 

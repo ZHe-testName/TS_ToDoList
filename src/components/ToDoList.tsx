@@ -7,7 +7,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FilterValuesType } from '../App';
 import AdditemInput from './AddItemInput';
 import EditableSpan from './EditableSpan';
-import { Grid } from '@material-ui/core';
+import { Grid, List, ListItem } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 type TaskType = {
     id: string,
@@ -52,11 +53,12 @@ export function ToDoList(props: PropsType) {
                 direction='row'
                 justify='space-between'
                 style={{marginBottom: '15px'}}>
-                    <h3>
+                    <Typography
+                            variant='h4'>
                         <EditableSpan 
                                     title={title}
                                     newValue={addNewListHeader}/>
-                    </h3>
+                    </Typography>
 
                     <Button  
                         color='secondary'
@@ -67,43 +69,47 @@ export function ToDoList(props: PropsType) {
 
             <AdditemInput addItem={addTask}/>
 
-            <ul>
-                {
-                    tasks.map(task => {
-                        const taskStatusChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            const newStatus = e.currentTarget.checked;
+            <List
+                component='nav'
+                area-label='todo list'>
+                    {
+                        tasks.map(task => {
+                            const taskStatusChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                                const newStatus = e.currentTarget.checked;
 
-                            changeTaskStatus(task.id, newStatus, id);
-                        };
+                                changeTaskStatus(task.id, newStatus, id);
+                            };
 
-                        const onChangeTitleHandler = (newValue: string) => {
-                            props.setNewTitle(newValue, task.id, id);
-                        };
-                        
-                        return (
-                                <li 
-                                    key={`${task.id}`}
-                                    className={task.isDone ? 'done-task' : ''}>
-                                        <Checkbox  
-                                            indeterminate
-                                            checked={task.isDone} 
-                                            onChange={e => taskStatusChangeHandler(e)}/>
+                            const onChangeTitleHandler = (newValue: string) => {
+                                props.setNewTitle(newValue, task.id, id);
+                            };
+                            
+                            return (
+                                    <ListItem
+                                        area-label='todo list item'
+                                        key={`${task.id}`}
+                                        className={task.isDone ? 'done-task' : 'uncomplete-task'}>
+                                            <Checkbox  
+                                                indeterminate
+                                                checked={task.isDone} 
+                                                onChange={e => taskStatusChangeHandler(e)}/>
 
-                                            <EditableSpan 
-                                                        title={task.title}
-                                                        newValue={onChangeTitleHandler}/>
+                                                <EditableSpan 
+                                                            title={task.title}
+                                                            newValue={onChangeTitleHandler}/>
 
-                                            <IconButton
+                                                <IconButton
+                                                        style={{marginLeft: 'auto'}}
                                                         onClick={() => removeTask(task.id, id)}
                                                         area-label='delete'>
-                                                <DeleteIcon 
-                                                            fontSize='small'/>
-                                            </IconButton>
-                                </li>
-                            );
-                    })
-                }
-            </ul>
+                                                            <DeleteIcon 
+                                                                        fontSize='small'/>
+                                                </IconButton>
+                                    </ListItem>
+                                );
+                        })
+                    }
+            </List>
             <Grid
                 container
                 direction='row'
