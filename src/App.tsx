@@ -11,7 +11,7 @@ import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } fro
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
-type ListsType = {
+export type ListsType = {
     id: string,
     title: string,
     filter: string,

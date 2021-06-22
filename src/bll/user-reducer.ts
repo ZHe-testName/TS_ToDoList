@@ -1,5 +1,6 @@
 export const INCREMENT_AGE = 'INCREMENT_AGE',
-ICRMENT_CHILDREN_COUNT = 'ICRMENT_CHILDREN_COUNT';
+            ICRMENT_CHILDREN_COUNT = 'ICRMENT_CHILDREN_COUNT',
+            CHANGE_USER_NAME = 'CHANGE_USER_NAME';
 
 type StateType = {
     age: number,
@@ -12,7 +13,7 @@ type ActionType = {
     [key: string]: any,
 };
 
-export const userReducer = (state: StateType, action: ActionType) => {
+export const userReducer = (state: StateType, action: ActionType): StateType => {
     switch (action.type){
         case INCREMENT_AGE:
             return {
@@ -23,7 +24,12 @@ export const userReducer = (state: StateType, action: ActionType) => {
             return {
                 ...state,
                 childrensCount: state.childrensCount + 1,
-            }
+            };
+            case CHANGE_USER_NAME:
+                return {
+                    ...state,
+                    name: action.newName,
+                };
         default:
             throw new Error('I dont understand this action type.');
     };

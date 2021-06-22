@@ -1,5 +1,5 @@
 import {userReducer} from './user-reducer';
-import {INCREMENT_AGE, ICRMENT_CHILDREN_COUNT} from './user-reducer';
+import {INCREMENT_AGE, ICRMENT_CHILDREN_COUNT, CHANGE_USER_NAME} from './user-reducer';
 
 test ('use reducer should icrement age only', () => {
     const startStage = {age: 31, childrensCount: 2, name: 'Zhekan'};
@@ -17,4 +17,13 @@ test('use reduser should icrement childrens count only', () => {
 
     expect(finalStage.childrensCount).toBe(3);
     expect(finalStage.age).toBe(31);    
+});
+
+test('user reducer shold change name of user', () => {
+    const startStage = {age: 31, childrensCount: 2, name: 'Zhekan'};
+    const newName = 'Zhekanchik';
+    
+    const finalStage = userReducer(startStage, {type: CHANGE_USER_NAME, newName: newName});
+
+    expect(finalStage.name).toBe(newName);
 });
