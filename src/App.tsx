@@ -17,7 +17,7 @@ export type ListsType = {
     filter: string,
 };
 
-type TasksType = {
+export type TasksType = {
     id: string,
     title: string,
     isDone: boolean,

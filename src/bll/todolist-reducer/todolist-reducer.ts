@@ -1,6 +1,6 @@
-import { FilterValuesType } from './../App';
+import { FilterValuesType } from '../../App';
 import { v1 } from 'uuid';
-import { ListsType } from "../App";
+import { ListsType } from "../../App";
 
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
