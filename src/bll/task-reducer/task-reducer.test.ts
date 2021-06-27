@@ -1,5 +1,5 @@
 import { v1 } from 'uuid';
-import { ADD_TASK, REMOVE_TASK, taskReducer } from './task-reducer';
+import { ADD_TASK, CHANGE_STATUS, FILTER_TASKS, REMOVE_TASK, taskReducer } from './task-reducer';
 import { TasksType } from '../../App';
 
 test ('should add new task to target todolist', () => {
@@ -32,4 +32,18 @@ test ('should remove task from target todolist', () => {
 
     expect(endStage.length).toBe(1);
     expect(endStage[0].id).toBe(taskId2); 
+});
+
+test ('should change task status in corect todo list', () => {
+    const taskId1 = v1(),
+        taskId2 = v1();
+
+    const startStage: Array<TasksType> = [
+        {id: taskId1, title: 'Learn React', isDone: false},
+        {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
+    ];
+
+    const endStage = taskReducer(startStage, {type: CHANGE_STATUS, id: taskId1});
+
+    expect(endStage[0].isDone).toBe(true); 
 });
