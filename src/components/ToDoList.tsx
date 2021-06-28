@@ -26,7 +26,7 @@ type PropsType = {
     addTask: (taskDesc: string, listId: string) => void,
     changeTaskStatus: (id: string, isDone: boolean, listId: string) => void,
     removeList: (listId: string) => void,
-    setNewTitle: (newValue: string, taskId: string, listId: string) => void,
+    setNewTaskTitle: (newValue: string, taskId: string, listId: string) => void,
     addNewListHeader: (newValue: string, listId: string) => void,
 };
 
@@ -81,7 +81,7 @@ export function ToDoList(props: PropsType) {
                             };
 
                             const onChangeTitleHandler = (newValue: string) => {
-                                props.setNewTitle(newValue, task.id, id);
+                                props.setNewTaskTitle(newValue, task.id, id);
                             };
                             
                             return (

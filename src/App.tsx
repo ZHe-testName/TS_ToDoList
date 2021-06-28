@@ -111,7 +111,7 @@ function App() {
         });
     };
 
-    function setNewTitle(newValue: string, taskId: string, listId: string){
+    function setNewTaskTitle(newValue: string, taskId: string, listId: string){
         const targetTaskArray = tasksObj[listId];
 
         const targetTask = targetTaskArray.find(task => task.id === taskId);
@@ -204,7 +204,7 @@ function App() {
                                                             addTask={addTask}
                                                             changeTaskStatus={changeStatus}
                                                             removeList={removeList}
-                                                            setNewTitle={setNewTitle}
+                                                            setNewTaskTitle={setNewTaskTitle}
                                                             addNewListHeader={addNewListHeader}/>
                                             </Paper>
                                 </Grid>);    

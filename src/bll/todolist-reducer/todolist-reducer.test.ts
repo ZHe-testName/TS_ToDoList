@@ -35,7 +35,7 @@ test ('correct todo list should be added', () => {
     expect(endStage[2].filter).toBe('all');
 });
 
-test ('target todo list should correctly change its name', () => {
+test ('target todo list should correctly change its title', () => {
     const toDoListId1 = v1(),
         toDoListId2 = v1();
 

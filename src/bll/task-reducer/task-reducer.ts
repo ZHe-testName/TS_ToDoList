@@ -4,7 +4,7 @@ import { TasksType } from './../../App';
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
     CHANGE_STATUS = 'CHANGE_STATUS',
-    FILTER_TASKS = 'FILTER_TASKS'; 
+    CHANGE_TASK_DESCRIPTION = 'CHANGE_TASK_DESCRIPTION'; 
 
 export type AddTaskActionType = {
     type: 'ADD_TASK',
@@ -21,9 +21,16 @@ export type ChangeTaskStatusActionType = {
     id: string,
 };
 
+export type ChangeTaskDescriptionActionType = {
+    type: 'CHANGE_TASK_DESCRIPTION',
+    id: string,
+    newDescription: string,
+};
+
 type ActionType = AddTaskActionType |
                 RemoveTaskActionType |
-                ChangeTaskStatusActionType;
+                ChangeTaskStatusActionType |
+                ChangeTaskDescriptionActionType;
 
 export const taskReducer = (state: Array<TasksType>, action: ActionType) => {
     switch (action.type){
@@ -53,6 +60,17 @@ export const taskReducer = (state: Array<TasksType>, action: ActionType) => {
 
             return stateCopy;
 
+        case CHANGE_TASK_DESCRIPTION:
+            const copyOfState = [...state];
+
+            const taskTarget = copyOfState.find(task => task.id === action.id);
+            
+            if (taskTarget) {
+                taskTarget.title = action.newDescription;
+            };
+
+            return copyOfState;
+
         default:
             throw new Error('Task reducer do not understand this action type.');
     };
@@ -61,3 +79,4 @@ export const taskReducer = (state: Array<TasksType>, action: ActionType) => {
 export const addTaskAC = (title: string): AddTaskActionType => ({type: ADD_TASK, title: title});
 export const removeTaskAC = (id: string): RemoveTaskActionType => ({type: REMOVE_TASK, id: id});
 export const changeTaskStatusAC = (id: string): ChangeTaskStatusActionType => ({type: CHANGE_STATUS, id: id});
+export const changeTaskDescriptionAC = (id: string, newDescription: string): ChangeTaskDescriptionActionType => ({type: CHANGE_TASK_DESCRIPTION, id: id, newDescription: newDescription});

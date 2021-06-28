@@ -47,3 +47,20 @@ test ('should change task status in corect todo list', () => {
 
     expect(endStage[0].isDone).toBe(true); 
 });
+
+test ('should change task description in correct todo list task', () => {
+    const taskId1 = v1(),
+        taskId2 = v1();
+
+    const newDescription = 'Some new description';
+
+    const startStage: Array<TasksType> = [
+        {id: taskId1, title: 'Learn React', isDone: false},
+        {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
+    ];
+
+    const endStage = taskReducer(startStage, {type: 'CHANGE_TASK_DESCRIPTION', id: taskId2, newDescription: newDescription});
+
+    expect(endStage[0].title).toBe('Learn React');
+    expect(endStage[1].title).toBe(newDescription); 
+});
