@@ -1,4 +1,3 @@
-import { REMOVE_TODOLIST } from './../todolist-reducer/todolist-reducer';
 import { v1 } from 'uuid';
 import { TasksType } from './../../App';
 
@@ -7,10 +6,24 @@ export const ADD_TASK = 'ADD_TASK',
     CHANGE_STATUS = 'CHANGE_STATUS',
     FILTER_TASKS = 'FILTER_TASKS'; 
 
-type ActionType = {
-    type: string,
-    [key: string]: string
+export type AddTaskActionType = {
+    type: 'ADD_TASK',
+    title: string,
 };
+
+export type RemoveTaskActionType = {
+    type: 'REMOVE_TASK',
+    id: string,
+};
+
+export type ChangeTaskStatusActionType = {
+    type: 'CHANGE_STATUS',
+    id: string,
+};
+
+type ActionType = AddTaskActionType |
+                RemoveTaskActionType |
+                ChangeTaskStatusActionType;
 
 export const taskReducer = (state: Array<TasksType>, action: ActionType) => {
     switch (action.type){
@@ -44,3 +57,7 @@ export const taskReducer = (state: Array<TasksType>, action: ActionType) => {
             throw new Error('Task reducer do not understand this action type.');
     };
 };
+
+export const addTaskAC = (title: string): AddTaskActionType => ({type: ADD_TASK, title: title});
+export const removeTaskAC = (id: string): RemoveTaskActionType => ({type: REMOVE_TASK, id: id});
+export const changeTaskStatusAC = (id: string): ChangeTaskStatusActionType => ({type: CHANGE_STATUS, id: id});

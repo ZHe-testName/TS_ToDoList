@@ -1,5 +1,5 @@
 import { v1 } from 'uuid';
-import { ADD_TASK, CHANGE_STATUS, FILTER_TASKS, REMOVE_TASK, taskReducer } from './task-reducer';
+import { ADD_TASK, CHANGE_STATUS, REMOVE_TASK, taskReducer, addTaskAC, removeTaskAC, changeTaskStatusAC } from './task-reducer';
 import { TasksType } from '../../App';
 
 test ('should add new task to target todolist', () => {
@@ -13,7 +13,7 @@ test ('should add new task to target todolist', () => {
         {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
     ];
 
-    const endStage = taskReducer(startStage, {type: ADD_TASK, title: taskTitle});
+    const endStage = taskReducer(startStage, addTaskAC(taskTitle));
 
     expect(endStage.length).toBe(3);
     expect(endStage[2].title).toBe(taskTitle);
@@ -28,7 +28,7 @@ test ('should remove task from target todolist', () => {
         {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
     ];
 
-    const endStage = taskReducer(startStage, {type: REMOVE_TASK, id: taskId1});
+    const endStage = taskReducer(startStage, removeTaskAC(taskId1));
 
     expect(endStage.length).toBe(1);
     expect(endStage[0].id).toBe(taskId2); 
@@ -43,7 +43,7 @@ test ('should change task status in corect todo list', () => {
         {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
     ];
 
-    const endStage = taskReducer(startStage, {type: CHANGE_STATUS, id: taskId1});
+    const endStage = taskReducer(startStage, changeTaskStatusAC(taskId1));
 
     expect(endStage[0].isDone).toBe(true); 
 });
