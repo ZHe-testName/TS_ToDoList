@@ -1,3 +1,4 @@
+import { addTodoListAC } from './../todolist-reducer/todolist-reducer';
 import { TasksObjPropsType } from './../../App';
 import { taskReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskDescriptionAC } from './task-reducer';
 
@@ -61,4 +62,20 @@ test ('should change task description in correct todo list task', () => {
 
     expect(endStage['todolistId2'][1].title).toBe('Some new description');
     expect(endStage['todolistId1'][1].title).toBe('JS');
+});
+
+test ('new empty array should be added, when toDoList is added', () => {
+    const action = addTodoListAC('title no matter');
+
+    const endStage = taskReducer(startState, action);
+
+    const keys = Object.keys(endStage);
+    const newKey  = keys.find(key => key !== 'todolistId1' && key !== 'todolistId2');
+
+    if (!newKey){
+        throw Error('newkey shold be added');
+    };
+
+    expect(keys.length).toBe(3);
+    expect(endStage[newKey]).toEqual([]);
 });
