@@ -23,7 +23,7 @@ export type TasksType = {
     isDone: boolean,
 };
 
-type TasksObjPropsType = {
+export type TasksObjPropsType = {
     [key: string]: Array<TasksType>,
 };
 
@@ -87,6 +87,7 @@ function App() {
             setLists([...toDoListArr]);
         };
     };
+    
 
     function removeList(listId: string) {
         const list = toDoListArr.filter(list => list.id !== listId);

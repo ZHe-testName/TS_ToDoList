@@ -1,66 +1,64 @@
-import { v1 } from 'uuid';
-import { ADD_TASK, CHANGE_STATUS, REMOVE_TASK, taskReducer, addTaskAC, removeTaskAC, changeTaskStatusAC } from './task-reducer';
-import { TasksType } from '../../App';
+import { TasksObjPropsType } from './../../App';
+import { taskReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskDescriptionAC } from './task-reducer';
+
+const startState: TasksObjPropsType = {
+        'todolistId1': [
+            { id: '1', title: 'CSS', isDone: false },
+            { id: '2', title: 'JS', isDone: true },
+            { id: '3', title: 'React', isDone: false }
+        ],
+        'todolistId2': [
+            { id: '1', title: 'bread', isDone: false },
+            { id: '2', title: 'milk', isDone: true },
+            { id: '3', title: 'tea', isDone: false }
+        ],
+    };
 
 test ('should add new task to target todolist', () => {
-    const taskId1 = v1(),
-        taskId2 = v1();
+    const action = addTaskAC('juce', 'todolistId2');
 
-    const taskTitle = 'New title';
-
-    const startStage: Array<TasksType> = [
-        {id: taskId1, title: 'Learn React', isDone: false},
-        {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
-    ];
-
-    const endStage = taskReducer(startStage, addTaskAC(taskTitle));
-
-    expect(endStage.length).toBe(3);
-    expect(endStage[2].title).toBe(taskTitle);
+    const endState = taskReducer(startState, action);
+ 
+    expect(endState["todolistId1"].length).toBe(3);
+    expect(endState["todolistId2"].length).toBe(4);
+    expect(endState["todolistId2"][0].id).toBeDefined();
+    expect(endState["todolistId2"][0].title).toBe('juce');
+    expect(endState["todolistId2"][0].isDone).toBe(false);
 });
 
 test ('should remove task from target todolist', () => {
-    const taskId1 = v1(),
-        taskId2 = v1();
+    const action = removeTaskAC('todolistId2', '2');
 
-    const startStage: Array<TasksType> = [
-        {id: taskId1, title: 'Learn React', isDone: false},
-        {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
-    ];
+    const endStage = taskReducer(startState, action);
 
-    const endStage = taskReducer(startStage, removeTaskAC(taskId1));
-
-    expect(endStage.length).toBe(1);
-    expect(endStage[0].id).toBe(taskId2); 
+    expect(endStage).toEqual({
+            'todolistId1': [
+                { id: '1', title: 'CSS', isDone: false },
+                { id: '2', title: 'JS', isDone: true },
+                { id: '3', title: 'React', isDone: false }
+            ],
+            'todolistId2': [
+                { id: '1', title: 'bread', isDone: false },
+                { id: '3', title: 'tea', isDone: false }
+            ]
+        });
 });
 
-test ('should change task status in corect todo list', () => {
-    const taskId1 = v1(),
-        taskId2 = v1();
+test ('should change status of specified task', () => {
+    const action = changeTaskStatusAC('todolistId2', '2', false);
 
-    const startStage: Array<TasksType> = [
-        {id: taskId1, title: 'Learn React', isDone: false},
-        {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
-    ];
+    const endStage = taskReducer(startState, action);
 
-    const endStage = taskReducer(startStage, changeTaskStatusAC(taskId1));
-
-    expect(endStage[0].isDone).toBe(true); 
-});
+    expect(endStage['todolistId2'][1].isDone).toBe(false);
+    expect(endStage['todolistId1'][1].isDone).toBe(true);
+ 
+})
 
 test ('should change task description in correct todo list task', () => {
-    const taskId1 = v1(),
-        taskId2 = v1();
+    const action = changeTaskDescriptionAC('todolistId2', '2', 'Some new description');
 
-    const newDescription = 'Some new description';
+    const endStage = taskReducer(startState, action);
 
-    const startStage: Array<TasksType> = [
-        {id: taskId1, title: 'Learn React', isDone: false},
-        {id: taskId2, title: 'Buy Suzuki GSXR', isDone: false},
-    ];
-
-    const endStage = taskReducer(startStage, {type: 'CHANGE_TASK_DESCRIPTION', id: taskId2, newDescription: newDescription});
-
-    expect(endStage[0].title).toBe('Learn React');
-    expect(endStage[1].title).toBe(newDescription); 
+    expect(endStage['todolistId2'][1].title).toBe('Some new description');
+    expect(endStage['todolistId1'][1].title).toBe('JS');
 });

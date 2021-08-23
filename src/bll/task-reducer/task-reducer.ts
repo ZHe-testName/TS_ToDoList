@@ -1,5 +1,5 @@
 import { v1 } from 'uuid';
-import { TasksType } from './../../App';
+import { TasksObjPropsType } from './../../App';
 
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
@@ -9,21 +9,26 @@ export const ADD_TASK = 'ADD_TASK',
 export type AddTaskActionType = {
     type: 'ADD_TASK',
     title: string,
+    toDoListId: string,
 };
 
 export type RemoveTaskActionType = {
     type: 'REMOVE_TASK',
-    id: string,
+    toDoListId: string,
+    taskId: string,
 };
 
 export type ChangeTaskStatusActionType = {
     type: 'CHANGE_STATUS',
-    id: string,
+    toDoListId: string,
+    taskId: string,
+    isDone: boolean,
 };
 
 export type ChangeTaskDescriptionActionType = {
     type: 'CHANGE_TASK_DESCRIPTION',
-    id: string,
+    toDoListId: string,
+    taskId: string,
     newDescription: string,
 };
 
@@ -32,7 +37,7 @@ type ActionType = AddTaskActionType |
                 ChangeTaskStatusActionType |
                 ChangeTaskDescriptionActionType;
 
-export const taskReducer = (state: Array<TasksType>, action: ActionType) => {
+export const taskReducer = (state: TasksObjPropsType, action: ActionType):TasksObjPropsType => {
     switch (action.type){
         case ADD_TASK:
             const newTask = {
@@ -41,42 +46,70 @@ export const taskReducer = (state: Array<TasksType>, action: ActionType) => {
                 isDone: false
             };
 
-            return [
-                ...state,
-                newTask,    
-            ];
+            const newList = [...state[action.toDoListId]];
+
+            newList.unshift(newTask);
+
+            return (
+                {
+                    ...state,
+                    [action.toDoListId]: newList,
+                }
+            );
 
         case REMOVE_TASK:
-            return state.filter(task => task.id !== action.id);
+            const targetList = state[action.toDoListId];
 
+            const resultList = targetList.filter(task => task.id !== action.taskId);
+
+            return (
+                {
+                    ...state,
+                    [action.toDoListId]: resultList,
+                }
+            );
+
+            
         case CHANGE_STATUS:
-            const stateCopy = [...state];
+            const listCopy = [...state[action.toDoListId]];
 
-            const targetTask = stateCopy.find(task => task.id === action.id);
+            const targetTask = listCopy.find(task => task.id === action.taskId);
 
             if (targetTask) {
-                targetTask.isDone = !targetTask.isDone;
+                targetTask.isDone = action.isDone;
             };
 
-            return stateCopy;
+            return (
+                {
+                    ...state,
+                    [action.toDoListId]: listCopy,
+                }
+            );
 
         case CHANGE_TASK_DESCRIPTION:
-            const copyOfState = [...state];
+            const copyOfList = [...state[action.toDoListId]];
 
-            const taskTarget = copyOfState.find(task => task.id === action.id);
+            const taskTarget = copyOfList.find(task => task.id === action.taskId);
             
             if (taskTarget) {
                 taskTarget.title = action.newDescription;
             };
 
-            return copyOfState;
+            return (
+                {
+                    ...state,
+                    [action.toDoListId]: copyOfList,
+                }
+            );
 
         default:
             throw new Error('Task reducer do not understand this action type.');
     };
 };
 
-export const addTaskAC = (title: string): AddTaskActionType => ({type: ADD_TASK, title: title});
-export const removeTaskAC = (id: string): RemoveTaskActionType => ({type: REMOVE_TASK, id: id});
-export const changeTaskStatusAC = (id: string): ChangeTaskStatusActionType => ({type: CHANGE_STATUS, id: id});
-export const changeTaskDescriptionAC = (id: string, newDescription: string): ChangeTaskDescriptionActionType => ({type: CHANGE_TASK_DESCRIPTION, id: id, newDescription: newDescription});
+export const addTaskAC = (title: string, toDoListId: string): AddTaskActionType => ({type: ADD_TASK, title, toDoListId});
+export const removeTaskAC = (toDoListId: string, taskId: string): RemoveTaskActionType => ({type: REMOVE_TASK, toDoListId, taskId});
+export const changeTaskStatusAC = (toDoListId: string, taskId: string, isDone: boolean): ChangeTaskStatusActionType => 
+    ({type: CHANGE_STATUS, toDoListId, taskId, isDone});
+export const changeTaskDescriptionAC = (toDoListId: string, taskId: string, newDescription: string): ChangeTaskDescriptionActionType => 
+    ({type: CHANGE_TASK_DESCRIPTION, toDoListId, taskId, newDescription});

@@ -1,16 +1,16 @@
 import { toDoListReducer, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, changeTodoListFilterAC } from './todolist-reducer';
 import { ListsType } from '../../App';
 import { v1 } from 'uuid';
+
+const toDoListId1 = v1(),
+    toDoListId2 = v1();
+
+const startStage: Array<ListsType> = [
+{id: toDoListId1, title: 'What to learn', filter: 'all'},
+{id: toDoListId2, title: 'What to do', filter: 'all'},
+];
         
 test ('todo list should be removed', () => {
-    const toDoListId1 = v1(),
-        toDoListId2 = v1();
-
-    const startStage: Array<ListsType> = [
-        {id: toDoListId1, title: 'What to learn', filter: 'all'},
-        {id: toDoListId2, title: 'What to do', filter: 'all'},
-    ];
-
     const endStage = toDoListReducer(startStage, removeTodoListAC(toDoListId1));
 
     expect(endStage.length).toBe(1);
@@ -18,15 +18,7 @@ test ('todo list should be removed', () => {
 });
 
 test ('correct todo list should be added', () => {
-    const toDoListId1 = v1(),
-        toDoListId2 = v1();
-
     const toDoListTitle = 'New ToDo List';
-
-    const startStage: Array<ListsType> = [
-        {id: toDoListId1, title: 'What to learn', filter: 'all'},
-        {id: toDoListId2, title: 'What to do', filter: 'all'},
-    ];
 
     const endStage = toDoListReducer(startStage, addTodoListAC(toDoListTitle));
 
@@ -36,15 +28,7 @@ test ('correct todo list should be added', () => {
 });
 
 test ('target todo list should correctly change its title', () => {
-    const toDoListId1 = v1(),
-        toDoListId2 = v1();
-
     const newToDoListTitle = 'New ToDo List';
-
-    const startStage: Array<ListsType> = [
-        {id: toDoListId1, title: 'What to learn', filter: 'all'},
-        {id: toDoListId2, title: 'What to do', filter: 'all'},
-    ];
 
     const endStage = toDoListReducer(startStage, changeTodoListTitleAC(toDoListId2, newToDoListTitle));
 
@@ -53,15 +37,7 @@ test ('target todo list should correctly change its title', () => {
 });
 
 test ('correct todo list filter should be changed', () => {
-    const toDoListId1 = v1(),
-        toDoListId2 = v1();
-
     const newToDoListFilter = 'completed' as const;
-
-    const startStage: Array<ListsType> = [
-        {id: toDoListId1, title: 'What to learn', filter: 'all'},
-        {id: toDoListId2, title: 'What to do', filter: 'all'},
-    ];
 
     const endStage = toDoListReducer(startStage, changeTodoListFilterAC(toDoListId2, newToDoListFilter));
 
