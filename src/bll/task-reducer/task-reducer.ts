@@ -128,8 +128,11 @@ export const taskReducer = (state: TasksObjPropsType, action: ActionType):TasksO
 };
 
 export const addTaskAC = (title: string, toDoListId: string): AddTaskActionType => ({type: ADD_TASK, title, toDoListId});
+
 export const removeTaskAC = (toDoListId: string, taskId: string): RemoveTaskActionType => ({type: REMOVE_TASK, toDoListId, taskId});
+
 export const changeTaskStatusAC = (toDoListId: string, taskId: string, isDone: boolean): ChangeTaskStatusActionType => 
     ({type: CHANGE_STATUS, toDoListId, taskId, isDone});
+        
 export const changeTaskDescriptionAC = (toDoListId: string, taskId: string, newDescription: string): ChangeTaskDescriptionActionType => 
     ({type: CHANGE_TASK_DESCRIPTION, toDoListId, taskId, newDescription});

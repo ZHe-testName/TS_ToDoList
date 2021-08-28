@@ -38,7 +38,7 @@ type ActionType = RemoveTodoListActionType |
 export const toDoListReducer = (state: Array<ListsType>, action: ActionType): Array<ListsType> => {
     switch (action.type){
         case REMOVE_TODOLIST:
-            return state.filter(list => list.id !== action.id);
+            return state.filter(list => list.id !== action.id);             
 
         case ADD_TODOLIST: 
             const newToDoList: ListsType = {

@@ -45,7 +45,6 @@ export function ToDoList(props: PropsType) {
         props.addNewListHeader(newValue, id);
     };
 
-
     return (
         <div>
             <Grid
