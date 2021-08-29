@@ -1,6 +1,6 @@
+import { TasksObjPropsType } from './../../AppWithRedux';
 import { AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
-import { v1 } from 'uuid';
-import { TasksObjPropsType } from './../../App';
+import { v1 } from 'uuid';      
 
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
@@ -42,7 +42,9 @@ type ActionType = AddTaskActionType |
                 AddTodoListActionType |
                 RemoveTodoListActionType;
 
-export const taskReducer = (state: TasksObjPropsType, action: ActionType):TasksObjPropsType => {
+const initialState: TasksObjPropsType = {}; 
+
+export const taskReducer = (state: TasksObjPropsType = initialState, action: ActionType):TasksObjPropsType => {
     switch (action.type){
         case ADD_TASK:
             const newTask = {
@@ -123,7 +125,7 @@ export const taskReducer = (state: TasksObjPropsType, action: ActionType):TasksO
             return newState;
 
         default:
-            throw new Error('Task reducer do not understand this action type.');
+            return state;
     };
 };
 
