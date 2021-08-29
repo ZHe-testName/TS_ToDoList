@@ -4,8 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import { ToDoList } from './components/ToDoList';
 import AdditemInput from './components/AddItemInput';
 import './App.css';
-
-import {v1} from 'uuid';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, removeTaskAC } from './bll/task-reducer/task-reducer';
