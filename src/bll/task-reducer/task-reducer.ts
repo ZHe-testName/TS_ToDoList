@@ -78,13 +78,10 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
 
             
         case CHANGE_STATUS:
-            const listCopy = [...state[action.toDoListId]];
-
-            const targetTask = listCopy.find(task => task.id === action.taskId);
-
-            if (targetTask) {
-                targetTask.isDone = action.isDone;
-            };
+            const listCopy = [...state[action.toDoListId]]
+                                                        .map(task => task.id === action.taskId
+                                                                ? {...task, isDone: action.isDone}
+                                                                : task);
 
             return (
                 {
@@ -94,14 +91,11 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
             );
 
         case CHANGE_TASK_DESCRIPTION:
-            const copyOfList = [...state[action.toDoListId]];
-
-            const taskTarget = copyOfList.find(task => task.id === action.taskId);
+            const copyOfList = [...state[action.toDoListId]]
+                                                            .map(task => task.id === action.taskId
+                                                                ? {...task, title: action.newDescription}
+                                                                : task);
             
-            if (taskTarget) {
-                taskTarget.title = action.newDescription;
-            };
-
             return (
                 {
                     ...state,

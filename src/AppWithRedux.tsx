@@ -10,6 +10,7 @@ import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, removeTaskAC } 
 import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
+import { useCallback } from 'react'; 
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -74,54 +75,71 @@ function AppWithRedux() {
     //в нвшем случае мы выбираем части сосотояния из стейта 
     //в типизации указывается в начале тип рут-стейта, а вторым аргументом тип 
     //интересующей нас подветки
-
     const tasksObj = useSelector<AppRootStateType, TasksObjPropsType>(state => state.tasks);
     const toDoListArr = useSelector<AppRootStateType, Array<ListsType>>(state => state.todolists);
 
     //вместо отдельных диспатчей редакс использует один общий
     const dispatch = useDispatch();
 
-    
-    function removeTask(id: string, listId: string) {
+    //после мемоизации дочепних комонент лишние перерисовки досих пор происходят
+    //по тому что при сравнинии пропсов получаеться что у нас в 
+    //компоненту прилетают одинаковые колбеки
+    //но в js все функции это объекты а два хоть сколько похожых объекта не 
+    //равны друг другу
+    //по этому контейнерная обертка реак мемо сравнивая входящие в пропсах колбеки 
+    //постоянно получает новые хоть и одинаковые функции которые не равны 
+    //и соответственно вызывает перерисовку
+
+    //чтобы это по фиксить в реасте имеется хук useCallback
+
+    //на вход он принимает собственно колбек первым аргументом и вторым массив зависимостей
+    //в итоге мы получаем закешированую функцию которая при повторном прокидывании
+    //через пропсы не создается заново а берется из кеша
+    //что блокирует лишние перерисовки
+
+    //в мссиве заувисимостей мы передаем то что может менятся в течении хода программы
+    //чтобы при изменениях в зависимостях реакт заново
+    //перекешировал эту функцию
+    const removeTask = useCallback((id: string, listId: string) => {
         const action = removeTaskAC(listId, id);
         dispatch(action);
-    };
+    }, [dispatch]);
 
-    function addTask(taskdesc: string, listId: string){
+    const addTask = useCallback((taskdesc: string, listId: string) => {
         const action = addTaskAC(taskdesc, listId);
         dispatch(action);
-    }
+    }, [dispatch]);
 
-    function changeStatus(id: string, isDone: boolean, listId: string) {
+    const changeStatus = useCallback((id: string, isDone: boolean, listId: string) => {
         const action = changeTaskStatusAC(listId, id, isDone);
         dispatch(action);
-    };
+    }, [dispatch]);
 
-    function setNewTaskTitle(newValue: string, taskId: string, listId: string){
+    const setNewTaskTitle = useCallback((newValue: string, taskId: string, listId: string) => {
         const action = changeTaskDescriptionAC(listId, taskId, newValue);
         dispatch(action);
-    };
+    }, [dispatch]);
 
 
-    function filterTasks(value: FilterValuesType, id: string) {
+    const filterTasks = useCallback((value: FilterValuesType, id: string) => {
         const action = changeTodoListFilterAC(id, value);
         dispatch(action);
-    };
+    }, [dispatch]);
     
-    function removeList(listId: string) {
+    const removeList = useCallback((listId: string) => {
         const action = removeTodoListAC(listId);
         dispatch(action);
-    };
+    }, [dispatch]);
 
-    function addToDoList(title: string) {
+    const addToDoList = useCallback((title: string) => {
         const action =  addTodoListAC(title);
         dispatch(action);
-    };
+    }, [dispatch]);
 
-    function addNewListHeader(newValue: string, listId: string) {
+    const addNewListHeader = useCallback((newValue: string, listId: string) => {
         const action = changeTodoListTitleAC(listId, newValue);
         dispatch(action);
-    };
+    }, [dispatch]);
 
     return (
         <div>
@@ -163,14 +181,6 @@ function AppWithRedux() {
                         style={{marginTop: '15px'}}>                    
                             {toDoListArr.map(list => {
                                 let filtredTasksArr = tasksObj[list.id];
-
-                                if (list.filter === 'active'){
-                                    filtredTasksArr = filtredTasksArr.filter(t => !t.isDone); 
-                                };
-                            
-                                if (list.filter === 'completed'){
-                                    filtredTasksArr = filtredTasksArr.filter(t => t.isDone);
-                                };
 
                                 return(
                                     <Grid

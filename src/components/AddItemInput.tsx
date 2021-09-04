@@ -7,7 +7,27 @@ type PropsType = {
     addItem: (toDoListId: string) => void,
 };
 
-function AddItemInput(props: PropsType) {
+//Сейчас в нашем приложении есть проблема
+//при лбых изменениях в стейте глобальном реакт запрашивает для сравнения и перерисовки
+//jsx у всех компонент
+
+//Если преложение будет большим то при сравнении слишком большого количества данных с виртуал дом
+//реакт будет сильно перегружаться и излишними вычеслениями и загружать прой и расходовать батарею
+
+//Нужна оптимизация
+
+//чтобы при одних и тех же пропсах не дергать компонеты вообще
+//и не грузить лишним ядро реакта и вызывать сравнения и перерисовки только в нужных местах
+
+//Тут на помощ приходит HOC React.memo()
+//HOC - ето такие хай ордер компонентс(компонеты высшего порядка), это функции которые 
+//принимают функциональную компоненту и возврващают ее обернутой в контейнерную.
+//React.memo() = HOC которая проверяет входные пропсы и в случае отсутствия изменений не запрашивает jsx для сравнений
+//и сответственно не грузит вычислениями проц
+
+//она принимает нужнаю компоненту
+
+const AddItemInput = React.memo((props: PropsType) => {
     const {addItem} = props;
 
     let [title, setTitle] = useState('');
@@ -27,7 +47,9 @@ function AddItemInput(props: PropsType) {
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setTitle(e.currentTarget.value);
     
     const onKeyPresHandler = (e: KeyboardEvent<HTMLDivElement>) => {
-        setError(null);
+        if (error !== null){
+            setError(null);
+        };
 
         if (e.key === 'Enter'){
             newTaskHandler();
@@ -55,6 +77,6 @@ function AddItemInput(props: PropsType) {
                                 size='small'></Button>
             </Grid>
     );
-};
+});
 
 export default AddItemInput;
