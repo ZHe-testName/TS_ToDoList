@@ -1,6 +1,38 @@
 import React from 'react';
 import { Provider } from "react-redux";
+import { combineReducers, createStore } from 'redux';
+import { v1 } from 'uuid';
 import { store } from "../bll/state/store";
+import { taskReducer } from '../bll/task-reducer/task-reducer';
+import { toDoListReducer } from '../bll/todolist-reducer/todolist-reducer';
+
+//Для более презентабельного вида создадим стартовый стейт
+//чтобы при демонстрации можно было спазу чтото показать
+const rootReducer = combineReducers({
+    tasks: taskReducer,
+    todolists: toDoListReducer,
+});
+
+const initialGlobalState = {
+    tasks: {['firstListId']: [
+                {id: v1(), title: 'HTML&CSS', isDone: true},
+                {id: v1(), title: 'JS', isDone: false},
+            ],
+            ['secondListId']: [
+                {id: v1(), title: 'Suzuki GSX-R', isDone: true},
+                {id: v1(), title: 'New notebook', isDone: false},
+                {id: v1(), title: 'Something to eat', isDone: true},
+            ]},
+
+    todolists: [
+        {id: 'firstListId', title: 'What to do', filter: 'active'},
+        {id: 'secondListId', title: 'What to buy', filter: 'all'},
+    ],
+};
+
+export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType);
+
+export type AppRootStateType = ReturnType<typeof rootReducer>;
 
 //Так как наше преложение работает через redux-context API
 //нашей компоненте нужен store
@@ -16,5 +48,5 @@ import { store } from "../bll/state/store";
 //и мы можем протестировать компоненту
 
 export const ReaduxStoreProviderDecorator = (storyFn: any) => {
-    return <Provider store={store}>{storyFn()}</Provider> ;
+    return <Provider store={storyBookStore}>{storyFn()}</Provider> ;
 };

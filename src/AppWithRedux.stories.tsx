@@ -3,12 +3,12 @@ import AppWithRedux from './AppWithRedux';
 import { ReaduxStoreProviderDecorator } from './stories/ReaduxStoreProviderDecorator';
 
 
-//поле decorator предоставляет storybook-у декоратор
+//поле decorators предоставляет storybook-у декоратор
 //и он автоматически поймет что вызов компоненты обернуть декоратор
 export default {
     title: 'AppWithRedux Component',
     component: AppWithRedux,
-    decorator: ReaduxStoreProviderDecorator,
+    decorators: [ReaduxStoreProviderDecorator],
 };
 
 export const AppWithReduxBasicExample = () => {
