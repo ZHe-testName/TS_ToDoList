@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import { todoListsAPI } from '../api/todolists-api';
 
@@ -40,7 +39,7 @@ export const DeleteTodolist = () => {
    const [state, setState] = useState<any>(null);
 
    useEffect(() => {
-      todoListsAPI.deleteToDoLIst('21c03f8b-69f7-43a0-a348-9746b5ab8335')
+      todoListsAPI.deleteToDoLIst('91855799-6dc8-4ac6-8702-f51daff36db9')
                .then(resultCode => setState(resultCode))
    }, []);
 
