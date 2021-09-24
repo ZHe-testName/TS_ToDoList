@@ -24,6 +24,7 @@ export const GetTodolists = () => {
 }
 export const CreateTodolist = () => {
    const [state, setState] = useState<any>(null);
+   const [listTitle, setListTitle] = useState<string>('');
 
    useEffect(() => {
       //Вторым параметром post запрос принеимает объект payload
@@ -32,7 +33,21 @@ export const CreateTodolist = () => {
                .then(resultCode => setState(resultCode))
    }, []);
 
-   return <div> {JSON.stringify(state)}</div>;
+   return (
+      <>
+         <div> {JSON.stringify(state)}</div>
+
+         <div>
+            <input 
+               type="text" 
+               placeholder='Incert list title'
+               onChange={e => setListTitle(e.currentTarget.value)}/>
+
+            <button
+               onClick={() => {}}>Create</button>
+         </div>
+      </>
+   );
 }
 export const DeleteTodolist = () => {
    //8e9f204c-e7c2-476d-8e49-e6c97290da67
