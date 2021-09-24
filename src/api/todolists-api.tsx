@@ -86,7 +86,7 @@ export const todoListsAPI = {
     },
 
     updateTask(listId: string, taskId: string, newTask: TaskChangeType) {
-        return toDoListInstance.put<ResponceToDoListType<{}>>(`/${listId}/tasks/${taskId}`, newTask)
+        return toDoListInstance.put<ResponceToDoListType>(`/${listId}/tasks/${taskId}`, newTask)
                             .then(res => res.config.data);
     },
 };
