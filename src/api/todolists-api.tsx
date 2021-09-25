@@ -26,7 +26,7 @@ type TaskChangeType = {
     startDate: null | string,
     status: number,
     title: string,
-};
+} | null;
 
 export type TaskResponceType = {
     error: null | string,
