@@ -1,4 +1,4 @@
-import { toDoListReducer, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, changeTodoListFilterAC } from './todolist-reducer';
+import { toDoListReducer, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, changeTodoListFilterAC, setTodoListsAC } from './todolist-reducer';
 import { ListsType } from '../../App';
 import { v1 } from 'uuid';
 
@@ -43,4 +43,10 @@ test ('correct todo list filter should be changed', () => {
 
     expect(endStage[0].filter).toBe('all');
     expect(endStage[1].filter).toBe(newToDoListFilter);
+});
+
+test ('all todo lists must be seted into state', () => {
+    const endStage = toDoListReducer([], setTodoListsAC(startStage));
+
+    expect(endStage.length).toBe(2);
 });

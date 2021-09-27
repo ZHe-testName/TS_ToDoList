@@ -1,5 +1,5 @@
 import { TasksObjPropsType } from './../../AppWithRedux';
-import { AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
+import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType, SET_TODOLISTS } from './../todolist-reducer/todolist-reducer';
 import { v1 } from 'uuid';      
 
 export const ADD_TASK = 'ADD_TASK',
@@ -7,7 +7,8 @@ export const ADD_TASK = 'ADD_TASK',
     CHANGE_STATUS = 'CHANGE_STATUS',
     CHANGE_TASK_DESCRIPTION = 'CHANGE_TASK_DESCRIPTION',
     ADD_TODOLIST = 'ADD_TODOLIST',
-    REMOVE_TODOLIST = 'REMOVE_TODOLIST'; 
+    REMOVE_TODOLIST = 'REMOVE_TODOLIST',
+    SET_TASKS = 'SET_TASKS'; 
 
 export type AddTaskActionType = {
     type: 'ADD_TASK',
@@ -40,7 +41,8 @@ type ActionType = AddTaskActionType |
                 ChangeTaskStatusActionType |
                 ChangeTaskDescriptionActionType |
                 AddTodoListActionType |
-                RemoveTodoListActionType;
+                RemoveTodoListActionType |
+                SetTodoListsActionType;
 
 const initialState: TasksObjPropsType = {}; 
 
@@ -117,6 +119,15 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
             delete newState[action.id];
 
             return newState;
+
+        case SET_TODOLISTS:
+            const copyState = {...state};
+
+            action.lists.forEach(list => {
+                copyState[list.id] = [];
+            });
+
+            return copyState;
 
         default:
             return state;

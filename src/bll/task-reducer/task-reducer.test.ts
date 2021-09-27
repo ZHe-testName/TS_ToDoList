@@ -1,4 +1,4 @@
-import { addTodoListAC } from './../todolist-reducer/todolist-reducer';
+import { addTodoListAC, setTodoListsAC } from './../todolist-reducer/todolist-reducer';
 import { TasksObjPropsType } from './../../App';
 import { taskReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskDescriptionAC } from './task-reducer';
 
@@ -79,3 +79,20 @@ test ('new empty array should be added, when toDoList is added', () => {
     expect(keys.length).toBe(3);
     expect(endStage[newKey]).toEqual([]);
 });
+
+// test ('empty array must be setted when the set todo lists', () => {
+//     const action = setTodoListsAC(startState['todolistId2']);
+
+//     const endStage = taskReducer(startState, action);
+
+//     const keys = Object.keys(endStage);
+//     const newKey  = keys.find(key => key !== 'todolistId1' && key !== 'todolistId2');
+
+//     if (!newKey){
+//         throw Error('newkey shold be added');
+//     };
+
+//     expect(keys.length).toBe(3);
+//     expect(endStage[newKey]).toEqual([]);
+// });
+

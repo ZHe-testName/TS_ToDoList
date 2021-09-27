@@ -4,7 +4,8 @@ import { v1 } from 'uuid';
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
     CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE',
-    CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER';
+    CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER',
+    SET_TODOLISTS = 'SET_TODOLISTS';
 
 export type RemoveTodoListActionType = {
     type: 'REMOVE_TODOLIST',
@@ -29,10 +30,16 @@ export type ChangeTodoListFilterActionType = {
     filter: FilterValuesType
 };
 
+export type SetTodoListsActionType = {
+    type: 'SET_TODOLISTS',
+    lists: Array<ListsType>,
+};
+
 type ActionType = RemoveTodoListActionType |
                 AddTodoListActionType |
                 ChangeTodoListTitleActionType |
-                ChangeTodoListFilterActionType;
+                ChangeTodoListFilterActionType |
+                SetTodoListsActionType;
 
 const initialState: Array<ListsType> = []; 
 
@@ -73,6 +80,11 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
 
             return newState;
             
+        
+        case SET_TODOLISTS:
+
+            return action.lists;
+            
         default:
             return state;
     };
@@ -92,4 +104,8 @@ export const changeTodoListTitleAC = (todoListId: string, title: string): Change
 
 export const changeTodoListFilterAC = (todoListId: string, filter: FilterValuesType): ChangeTodoListFilterActionType => {
     return {type: CHANGE_TODOLIST_FILTER, id: todoListId, filter};
+};
+
+export const setTodoListsAC = (lists: Array<ListsType>): SetTodoListsActionType => {
+    return {type: SET_TODOLISTS, lists: lists};
 };
