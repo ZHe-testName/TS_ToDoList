@@ -73,26 +73,29 @@ test ('new empty array should be added, when toDoList is added', () => {
     const newKey  = keys.find(key => key !== 'todolistId1' && key !== 'todolistId2');
 
     if (!newKey){
-        throw Error('newkey shold be added');
+        throw Error('new key shold be added');
     };
 
     expect(keys.length).toBe(3);
     expect(endStage[newKey]).toEqual([]);
 });
 
-// test ('empty array must be setted when the set todo lists', () => {
-//     const action = setTodoListsAC(startState['todolistId2']);
+test ('empty array must be setted when the set todo lists', () => {
+    const startState = [
+        { id: '1', title: 'bread', filter: 'all' },
+        { id: '2', title: 'milk',  filter: 'all' },
+        { id: '3', title: 'tea',  filter: 'all' },
+    ];
+    
+    const action = setTodoListsAC(startState);
 
-//     const endStage = taskReducer(startState, action);
+    const endStage = taskReducer({}, action);
 
-//     const keys = Object.keys(endStage);
-//     const newKey  = keys.find(key => key !== 'todolistId1' && key !== 'todolistId2');
+    const keys = Object.keys(endStage);
 
-//     if (!newKey){
-//         throw Error('newkey shold be added');
-//     };
-
-//     expect(keys.length).toBe(3);
-//     expect(endStage[newKey]).toEqual([]);
-// });
+    expect(keys.length).toBe(3);
+    expect(endStage['1']).toStrictEqual([]);
+    expect(endStage['2']).toStrictEqual([]);
+    expect(endStage['3']).toStrictEqual([]);
+});
 

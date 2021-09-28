@@ -10,8 +10,8 @@ import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, removeTaskAC } 
 import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
-import { useCallback } from 'react'; 
-import axios from 'axios';
+import { useCallback, useEffect } from 'react'; 
+import { todoListsAPI } from './api/todolists-api';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -81,6 +81,11 @@ function AppWithRedux() {
 
     //вместо отдельных диспатчей редакс использует один общий
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        todoListsAPI.getToDoLists()
+                .then(res => console.log(res));
+    }, []);
 
     //после мемоизации дочепних комонент лишние перерисовки досих пор происходят
     //по тому что при сравнинии пропсов получаеться что у нас в 
