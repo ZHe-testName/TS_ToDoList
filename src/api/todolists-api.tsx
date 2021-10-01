@@ -1,10 +1,12 @@
 import axios from "axios";
+import { FilterValuesType } from "../App";
 
 export type ToDoListType = {
     addedDate: string,
     id: string,
     order: number,
     title: string,
+    filter: FilterValuesType,
 };
 
 type TaskType = {
@@ -17,6 +19,7 @@ type TaskType = {
     startDate: null | string,
     status: number,
     title: string,
+    todoListId: string,
 };
 
 type TaskChangeType = {
@@ -56,7 +59,7 @@ export const todoListsAPI = {
     },
 
     createToDoList(title: string) {
-        return toDoListInstance.post<ResponceToDoListType<{item: ToDoListType}>>('', {title: title})
+        return toDoListInstance.post<ResponceToDoListType<{item: ToDoListType}>>('', {title})
                             .then(res => res.data.resultCode);
     },    
 

@@ -1,13 +1,13 @@
 import { toDoListReducer, removeTodoListAC, addTodoListAC, changeTodoListTitleAC, changeTodoListFilterAC, setTodoListsAC } from './todolist-reducer';
-import { ListsType } from '../../App';
+import { ListsType } from '../../AppWithRedux';
 import { v1 } from 'uuid';
 
 const toDoListId1 = v1(),
     toDoListId2 = v1();
 
 const startStage: Array<ListsType> = [
-{id: toDoListId1, title: 'What to learn', filter: 'all'},
-{id: toDoListId2, title: 'What to do', filter: 'all'},
+{id: toDoListId1, title: 'What to learn', addedDate: null, order: 0, filter: 'all'},
+{id: toDoListId2, title: 'What to do', addedDate: null, order: 0, filter: 'all'},
 ];
         
 test ('todo list should be removed', () => {

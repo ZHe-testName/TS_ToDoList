@@ -1,5 +1,5 @@
-import { TasksObjPropsType } from './../../AppWithRedux';
-import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType, SET_TODOLISTS } from './../todolist-reducer/todolist-reducer';
+import { TasksObjPropsType, TasksType } from './../../AppWithRedux';
+import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType } from './../todolist-reducer/todolist-reducer';
 import { v1 } from 'uuid';      
 
 export const ADD_TASK = 'ADD_TASK',
@@ -8,6 +8,7 @@ export const ADD_TASK = 'ADD_TASK',
     CHANGE_TASK_DESCRIPTION = 'CHANGE_TASK_DESCRIPTION',
     ADD_TODOLIST = 'ADD_TODOLIST',
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
+    SET_TODOLISTS = 'SET_TODOLISTS',
     SET_TASKS = 'SET_TASKS'; 
 
 export type AddTaskActionType = {
@@ -36,13 +37,15 @@ export type ChangeTaskDescriptionActionType = {
     newDescription: string,
 };
 
-type ActionType = AddTaskActionType |
-                RemoveTaskActionType |
-                ChangeTaskStatusActionType |
-                ChangeTaskDescriptionActionType |
-                AddTodoListActionType |
-                RemoveTodoListActionType |
-                SetTodoListsActionType;
+type ActionType = 
+                ReturnType<typeof addTaskAC>
+                | ReturnType<typeof removeTaskAC>
+                | ReturnType<typeof changeTaskStatusAC>
+                | ReturnType<typeof changeTaskDescriptionAC>
+                | ReturnType<typeof setTasksAC>
+                | AddTodoListActionType 
+                | RemoveTodoListActionType 
+                | SetTodoListsActionType;
 
 const initialState: TasksObjPropsType = {}; 
 
@@ -129,17 +132,30 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
 
             return copyState;
 
+        case SET_TASKS: 
+            return {...state, [action.toDoListId]: action.tasks};
+
         default:
             return state;
     };
 };
 
-export const addTaskAC = (title: string, toDoListId: string): AddTaskActionType => ({type: ADD_TASK, title, toDoListId});
+export const addTaskAC = (title: string, toDoListId: string) => {
+    return {type: ADD_TASK, title, toDoListId} as const;
+};
 
-export const removeTaskAC = (toDoListId: string, taskId: string): RemoveTaskActionType => ({type: REMOVE_TASK, toDoListId, taskId});
+export const removeTaskAC = (toDoListId: string, taskId: string) => {
+    return {type: REMOVE_TASK, toDoListId, taskId} as const;
+};
 
-export const changeTaskStatusAC = (toDoListId: string, taskId: string, isDone: boolean): ChangeTaskStatusActionType => 
-    ({type: CHANGE_STATUS, toDoListId, taskId, isDone});
+export const changeTaskStatusAC = (toDoListId: string, taskId: string, isDone: boolean) => {
+    return {type: CHANGE_STATUS, toDoListId, taskId, isDone} as const;
+};
+   
+export const setTasksAC = (toDoListId: string, tasks: Array<TasksType>) => {
+    return {type: SET_TASKS, toDoListId, tasks} as const;
+};
         
-export const changeTaskDescriptionAC = (toDoListId: string, taskId: string, newDescription: string): ChangeTaskDescriptionActionType => 
-    ({type: CHANGE_TASK_DESCRIPTION, toDoListId, taskId, newDescription});
+export const changeTaskDescriptionAC = (toDoListId: string, taskId: string, newDescription: string) => {
+    return {type: CHANGE_TASK_DESCRIPTION, toDoListId, taskId, newDescription} as const;
+};

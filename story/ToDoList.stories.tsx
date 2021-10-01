@@ -1,6 +1,6 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
-import { ToDoList } from './ToDoList';
+import { ToDoList } from '../src/components/ToDoList';
 
 export default {
     title: 'ToDoList Component',

@@ -21,5 +21,7 @@
   },
   "include": [
     "src"
-  ]
+// , "story/AddItemInput.stories.tsx"    // "src/components/ToDoList.stories.tsx"
+// , "story/stories", "story/Task.stories.tsx", "story/AppWithRedux.stories.tsx", "story/AddItemInput.stories.tsx"  
+],
 }

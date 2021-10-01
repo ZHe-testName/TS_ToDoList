@@ -7,7 +7,7 @@ import './App.css';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, removeTaskAC } from './bll/task-reducer/task-reducer';
-import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC } from './bll/todolist-reducer/todolist-reducer';
+import { addTodoListAC, addToDoListThunkAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, setTodoListsAC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
@@ -18,7 +18,9 @@ export type FilterValuesType = 'all' | 'active' | 'completed';
 export type ListsType = {
     id: string,
     title: string,
-    filter: string,
+    addedDate: string | null,
+    order: number,
+    filter: FilterValuesType,
 };
 
 export type TasksType = {
@@ -83,14 +85,13 @@ function AppWithRedux() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        todoListsAPI.getToDoLists()
-                .then(res => console.log(res));
+        addToDoListThunkAC('ThunkToDoListTitle');
     }, []);
 
     //после мемоизации дочепних комонент лишние перерисовки досих пор происходят
     //по тому что при сравнинии пропсов получаеться что у нас в 
     //компоненту прилетают одинаковые колбеки
-    //но в js все функции это объекты а два хоть сколько похожых объекта не 
+    //но в js все функции это объекты а два хоть сколько похожих объекта не 
     //равны друг другу
     //по этому контейнерная обертка реак мемо сравнивая входящие в пропсах колбеки 
     //постоянно получает новые хоть и одинаковые функции которые не равны 
@@ -185,7 +186,7 @@ function AppWithRedux() {
                         xs={12}
                         spacing={8}
                         style={{marginTop: '15px'}}>                    
-                            {toDoListArr.map(list => {
+                            {toDoListArr.map((list: ListsType) => {
                                 let filtredTasksArr = tasksObj[list.id];
 
                                 return(
