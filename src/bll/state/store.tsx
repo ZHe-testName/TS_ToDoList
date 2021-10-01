@@ -1,4 +1,5 @@
-import { combineReducers, createStore } from "redux";
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { taskReducer } from "../task-reducer/task-reducer";
 import { toDoListReducer } from "../todolist-reducer/todolist-reducer";
 
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
 });
 
 //создаем новый стор на основе редюсеров
-export const store = createStore(rootReducer);
+//добавляем промежуточный слой для thunk
+export const store = createStore(rootReducer, applyMiddleware(thunk));
 
 //cздаем на  автоматически тип всего объекта состояня
 export type AppRootStateType = ReturnType<typeof rootReducer>;

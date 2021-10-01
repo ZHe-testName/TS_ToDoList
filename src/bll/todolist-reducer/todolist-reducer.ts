@@ -127,16 +127,17 @@ export const setTodoListsAC = (lists: Array<ListsType>) => {
 
 //thunks
 export const addToDoListThunkAC = (title: string) => {
+    console.log(title);
     return (dispatch: Dispatch<ActionType>) => {
-        console.log('ki');
+        
         todoListsAPI.createToDoList(title)
                 .then((resultCode: number) => {
                     console.log(resultCode);
                     // if (!resultCode){
-                    //     todoListsAPI.getToDoLists()
-                    //                         .then(res => dispatch(setTodoListsAC(res)));
+                        todoListsAPI.getToDoLists()
+                                            .then(res => dispatch(setTodoListsAC(res)));
     
                     // };           
-                })
-    }
+                });
+    };
 };

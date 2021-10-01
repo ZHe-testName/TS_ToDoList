@@ -7,7 +7,7 @@ import './App.css';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, removeTaskAC } from './bll/task-reducer/task-reducer';
-import { addTodoListAC, addToDoListThunkAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, setTodoListsAC } from './bll/todolist-reducer/todolist-reducer';
+import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, setTodoListsAC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
@@ -33,7 +33,11 @@ export type TasksObjPropsType = {
     [key: string]: Array<TasksType>,
 };
 
-function AppWithRedux() {
+type AppType = {
+    addToDoListThunkAC: (title: string) => void,
+}
+
+function AppWithRedux(props: AppType) {
     //метод useState используется для перерисовки компонента
     //он принимает стартовое/новое значения стейта и возвращает массив в котром хранится переменная с 
     //состоянием и функция которая будет запускать перерисовку и перерисовывает компонент
@@ -85,7 +89,15 @@ function AppWithRedux() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        addToDoListThunkAC('ThunkToDoListTitle');
+        // todoListsAPI.createToDoList('New Title From App')
+        //         .then((resultCode: number) => {
+        //             console.log(resultCode);
+        //             if (!resultCode){
+        //                  todoListsAPI.getToDoLists()
+        //                                     .then(res => dispatch(setTodoListsAC(res)));
+
+        //             };           
+        // });
     }, []);
 
     //после мемоизации дочепних комонент лишние перерисовки досих пор происходят
