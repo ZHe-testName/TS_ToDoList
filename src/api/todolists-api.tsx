@@ -1,5 +1,6 @@
 import axios from "axios";
 import { FilterValuesType } from "../App";
+import { ServerTasksType } from "../bll/task-reducer/task-reducer";
 
 export type ToDoListType = {
     addedDate: string,
@@ -9,18 +10,18 @@ export type ToDoListType = {
     filter: FilterValuesType,
 };
 
-type TaskType = {
-    addedDate: string,
-    deadline: null | string,
-    description: null | string,
-    id: string,
-    order: number,
-    priority: number,
-    startDate: null | string,
-    status: number,
-    title: string,
-    todoListId: string,
-};
+// type TaskType = {
+//     addedDate: string,
+//     deadline: null | string,
+//     description: null | string,
+//     id: string,
+//     order: number,
+//     priority: number,
+//     startDate: null | string,
+//     status: number,
+//     title: string,
+//     todoListId: string,
+// };
 
 type TaskChangeType = {
     addedDate: string,
@@ -33,7 +34,7 @@ type TaskChangeType = {
 
 export type TaskResponceType = {
     error: null | string,
-    items: Array<TaskType>,
+    items: Array<ServerTasksType>,
     totalCount: number,
 };
 
@@ -74,8 +75,8 @@ export const todoListsAPI = {
     },
 
     getTasks(listId: string) {
-        return toDoListInstance.get<Array<ToDoListType>>(`/${listId}/tasks`)
-                    .then(res => res.data);
+        return toDoListInstance.get<TaskResponceType>(`/${listId}/tasks`)
+                    .then(res => res.data.items);
     },
 
     createTask(listId: string, title: string) {

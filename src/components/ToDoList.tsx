@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -9,6 +9,8 @@ import { Grid, List } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { useCallback } from 'react';
 import { Task } from './Task';
+import { useDispatch } from 'react-redux';
+import { fetchTasksTC } from '../bll/task-reducer/task-reducer';
 
 type TaskType = {
     id: string,
@@ -45,6 +47,12 @@ export const ToDoList = React.memo((props: PropsType) => {
 
     let filtersdTasks: Array<TaskType> = tasks;
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(id));
+    }, []);
+
     const removeListHandler = () => {
         removeList(id);
     };
@@ -57,9 +65,9 @@ export const ToDoList = React.memo((props: PropsType) => {
         addNewListHeader(newValue, id);
     }, [addNewListHeader, id]);
 
-    const onAllClickHandler =useCallback(() => (setFilter('all', id)), [setFilter, id]);
-    const onActiveClickHandler =useCallback(() => (setFilter('active', id)), [setFilter, id]);
-    const onCompleteClickHandler =useCallback(() => (setFilter('completed', id)), [setFilter, id]);
+    const onAllClickHandler = useCallback(() => (setFilter('all', id)), [setFilter, id]);
+    const onActiveClickHandler = useCallback(() => (setFilter('active', id)), [setFilter, id]);
+    const onCompleteClickHandler = useCallback(() => (setFilter('completed', id)), [setFilter, id]);
 
     if (filter === 'active'){
         filtersdTasks = tasks.filter(t => !t.isDone); 

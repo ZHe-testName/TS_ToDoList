@@ -1,6 +1,8 @@
+import { todoListsAPI } from './../../api/todolists-api';
 import { TasksObjPropsType, TasksType } from './../../AppWithRedux';
-import { AddTodoListActionType, RemoveTodoListActionType, SetTodoListsActionType } from './../todolist-reducer/todolist-reducer';
+import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
 import { v1 } from 'uuid';      
+import { Dispatch } from 'redux';
 
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
@@ -11,31 +13,26 @@ export const ADD_TASK = 'ADD_TASK',
     SET_TODOLISTS = 'SET_TODOLISTS',
     SET_TASKS = 'SET_TASKS'; 
 
-export type AddTaskActionType = {
-    type: 'ADD_TASK',
+export type ServerTasksType = {
+    description: string | null,
     title: string,
-    toDoListId: string,
+    status: number,
+    priority: number,
+    startDate: string | null,
+    deadline: string | null,
+    id: string,
+    todoListId: string,
+    order: number,
+    addedDate: string,
 };
 
-export type RemoveTaskActionType = {
-    type: 'REMOVE_TASK',
-    toDoListId: string,
-    taskId: string,
-};
+export type AddTaskActionType = ReturnType<typeof addTaskAC>;
 
-export type ChangeTaskStatusActionType = {
-    type: 'CHANGE_STATUS',
-    toDoListId: string,
-    taskId: string,
-    isDone: boolean,
-};
+export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>;
 
-export type ChangeTaskDescriptionActionType = {
-    type: 'CHANGE_TASK_DESCRIPTION',
-    toDoListId: string,
-    taskId: string,
-    newDescription: string,
-};
+export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>;
+
+export type ChangeTaskDescriptionActionType = ReturnType<typeof changeTaskDescriptionAC>;
 
 type ActionType = 
                 ReturnType<typeof addTaskAC>
@@ -43,9 +40,9 @@ type ActionType =
                 | ReturnType<typeof changeTaskStatusAC>
                 | ReturnType<typeof changeTaskDescriptionAC>
                 | ReturnType<typeof setTasksAC>
-                | AddTodoListActionType 
-                | RemoveTodoListActionType 
-                | SetTodoListsActionType;
+                | RemoveTodoListActionType
+                | SetTodoListsActionType
+                | AddTodoListActionType;
 
 const initialState: TasksObjPropsType = {}; 
 
@@ -108,20 +105,20 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
                 }
             );
 
-        // case ADD_TODOLIST:
-        //         return (
-        //             {
-        //                 ...state,
-        //                 [action.id]: [],
-        //             }
-        //         );
+        case ADD_TODOLIST:
+                return (
+                    {
+                        ...state,
+                        [action.id]: [],
+                    }
+                );
 
-        // case REMOVE_TODOLIST:
-        //     const newState = {...state};
+        case REMOVE_TODOLIST:
+            const newState = {...state};
 
-        //     delete newState[action.id];
+            delete newState[action.id];
 
-        //     return newState;
+            return newState;
 
         case SET_TODOLISTS:
             const copyState = {...state};
@@ -133,7 +130,11 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
             return copyState;
 
         case SET_TASKS: 
-            return {...state, [action.toDoListId]: action.tasks};
+            return {...state, [action.toDoListId]: action.tasks.map(task => ({  
+                                                                                id: task.id, 
+                                                                                isDone: !!task.status,
+                                                                                title: task.title
+                                                                            }))};
 
         default:
             return state;
@@ -152,10 +153,21 @@ export const changeTaskStatusAC = (toDoListId: string, taskId: string, isDone: b
     return {type: CHANGE_STATUS, toDoListId, taskId, isDone} as const;
 };
    
-export const setTasksAC = (toDoListId: string, tasks: Array<TasksType>) => {
+export const setTasksAC = (toDoListId: string, tasks: Array<ServerTasksType>) => {
     return {type: SET_TASKS, toDoListId, tasks} as const;
 };
         
 export const changeTaskDescriptionAC = (toDoListId: string, taskId: string, newDescription: string) => {
     return {type: CHANGE_TASK_DESCRIPTION, toDoListId, taskId, newDescription} as const;
+};
+
+///////////////////////thunk creators
+
+export const fetchTasksTC = (listId: string) => {
+    return (
+        (dispatch: Dispatch) => {
+            todoListsAPI.getTasks(listId)
+                .then(tasks => dispatch(setTasksAC(listId, tasks)));
+        }
+    );
 };

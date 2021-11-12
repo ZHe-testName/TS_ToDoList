@@ -42,6 +42,7 @@ export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
 //     type: 'SET_TODOLISTS',
 //     lists: Array<ListsType>,
 // };
+
 export type AddTodoListActionType = ReturnType<typeof addTodoListAC>;
 export type RemoveTodoListActionType = ReturnType<typeof removeTodoListAC> ;
 export type SetTodoListsActionType = ReturnType<typeof setTodoListsAC>;
@@ -135,19 +136,13 @@ export const fetchToDoListThunkTC = () => {
             todoListsAPI.getToDoLists()
                     .then(data => {
                         dispatch(setTodoListsAC(data));
-
-                        return data[0];
-                    })
-                    .then(list => {
-                        todoListsAPI.getTasks(list.id)
-                            .then(res => console.log(res))
                     });
         }
     );
 };
 
 // export const setToDoListThunkAC = () => {
-//     return (dispatch: Dispatch) => {
+//     return (dispatch: Dispatch) => {                   res => setTasksAC(list.id, res.items)
 //         todoListsAPI.getToDoLists()
 //             .then(data => {
 //                 dispatch(setTodoListsAC(data));

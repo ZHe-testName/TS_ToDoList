@@ -1,6 +1,6 @@
 import { addTodoListAC, setTodoListsAC } from './../todolist-reducer/todolist-reducer';
 import { TasksObjPropsType } from './../../App';
-import { taskReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskDescriptionAC } from './task-reducer';
+import { taskReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskDescriptionAC, setTasksAC } from './task-reducer';
 
 const startState: TasksObjPropsType = {
         'todolistId1': [
@@ -81,6 +81,40 @@ test ('new empty array should be added, when toDoList is added', () => {
 });
 
 test ('tasks should be seted into todolist', () => {
+    const startState = [
+        {
+            description: null,
+            title: 'to buy',
+            completed: false,
+            status: 0,
+            priority: 2,
+            startDate: '01-21',
+            deadline: '01-21',
+            id: '1',
+            todoListId: 'todo1',
+            order: 2,
+            addedDate: 'moon',
+        },
+        {
+            description: null,
+            title: 'to Give',
+            completed: false,
+            status: 0,
+            priority: 3,
+            startDate: '01-21',
+            deadline: '01-21',
+            id: '2',
+            todoListId: 'todo2',
+            order: 1,
+            addedDate: 'moon',
+        },
+    ];
 
+    const action = setTasksAC('lisiId12', startState);
+
+    const endState = taskReducer({}, action);
+
+    expect(endState['lisiId12'].length).toBe(2);
+    expect(endState['lisiId12'][1].id).toBe('2');
 });
 
