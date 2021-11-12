@@ -108,20 +108,20 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
                 }
             );
 
-        case ADD_TODOLIST:
-                return (
-                    {
-                        ...state,
-                        [action.id]: [],
-                    }
-                );
+        // case ADD_TODOLIST:
+        //         return (
+        //             {
+        //                 ...state,
+        //                 [action.id]: [],
+        //             }
+        //         );
 
-        case REMOVE_TODOLIST:
-            const newState = {...state};
+        // case REMOVE_TODOLIST:
+        //     const newState = {...state};
 
-            delete newState[action.id];
+        //     delete newState[action.id];
 
-            return newState;
+        //     return newState;
 
         case SET_TODOLISTS:
             const copyState = {...state};

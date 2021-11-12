@@ -80,22 +80,7 @@ test ('new empty array should be added, when toDoList is added', () => {
     expect(endStage[newKey]).toEqual([]);
 });
 
-// test ('empty array must be setted when the set todo lists', () => {
-//     const startState = [
-//         { id: '1', title: 'bread', filter: 'all' },
-//         { id: '2', title: 'milk',  filter: 'all' },
-//         { id: '3', title: 'tea',  filter: 'all' },
-//     ];
-    
-//     const action = setTodoListsAC(startState);
+test ('tasks should be seted into todolist', () => {
 
-//     const endStage = taskReducer({}, action);
-
-//     const keys = Object.keys(endStage);
-
-//     expect(keys.length).toBe(3);
-//     expect(endStage['1']).toStrictEqual([]);
-//     expect(endStage['2']).toStrictEqual([]);
-//     expect(endStage['3']).toStrictEqual([]);
-// });
+});
 

@@ -125,12 +125,25 @@ export const setTodoListsAC = (lists: Array<ServerListType>) => {
     return {type: SET_TODOLISTS, lists} as const;
 };
 
-//thunks
-export const fetchToDoListThunk = (dispatch: Dispatch) => {
-    todoListsAPI.getToDoLists()
-            .then(data => {
-                dispatch(setTodoListsAC(data));
-            });
+//thunks cretors
+//в данном случае создание санкриейтора избыточно
+//санкриейторы используются для создания замыканий
+//на случай если а санку нужно будет передать какието данные
+export const fetchToDoListThunkTC = () => {
+    return (
+        (dispatch: Dispatch) => {
+            todoListsAPI.getToDoLists()
+                    .then(data => {
+                        dispatch(setTodoListsAC(data));
+
+                        return data[0];
+                    })
+                    .then(list => {
+                        todoListsAPI.getTasks(list.id)
+                            .then(res => console.log(res))
+                    });
+        }
+    );
 };
 
 // export const setToDoListThunkAC = () => {
