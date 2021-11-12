@@ -5,10 +5,9 @@ import * as serviceWorker from './serviceWorker';
 import AppWithRedux from './AppWithRedux';
 import { Provider } from 'react-redux';
 import { store } from './bll/state/store';
-import { addToDoListThunkAC } from './bll/todolist-reducer/todolist-reducer';
 
 ReactDOM.render(<Provider store={store}>
-                    <AppWithRedux addToDoListThunkAC={addToDoListThunkAC}/>
+                    <AppWithRedux />
                 </Provider>,  document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

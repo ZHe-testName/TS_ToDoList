@@ -2,9 +2,9 @@ import React from 'react';
 import { Provider } from "react-redux";
 import { combineReducers, createStore } from 'redux';
 import { v1 } from 'uuid';
-import { store } from "../bll/state/store";
-import { taskReducer } from '../bll/task-reducer/task-reducer';
-import { toDoListReducer } from '../bll/todolist-reducer/todolist-reducer';
+import { store } from "../../bll/state/store";
+import { taskReducer } from '../../bll/task-reducer/task-reducer';
+import { toDoListReducer } from '../../bll/todolist-reducer/todolist-reducer';
 
 //Для более презентабельного вида создадим стартовый стейт
 //чтобы при демонстрации можно было спазу чтото показать
@@ -25,14 +25,14 @@ const initialGlobalState = {
             ]},
 
     todolists: [
-        {id: 'firstListId', title: 'What to do', filter: 'active'},
-        {id: 'secondListId', title: 'What to buy', filter: 'all'},
+        {id: 'firstListId', title: 'What to do', filter: 'active', order: 2, addedDate: '23'},
+        {id: 'secondListId', title: 'What to buy', filter: 'all', order: 3, addedDate: '234'},
     ],
 };
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType);
-
 export type AppRootStateType = ReturnType<typeof rootReducer>;
+
+export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType);
 
 //Так как наше преложение работает через redux-context API
 //нашей компоненте нужен store

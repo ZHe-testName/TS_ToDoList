@@ -1,6 +1,6 @@
 import { todoListsAPI } from './../../api/todolists-api';
-import { Dispatch } from 'react';
-import { FilterValuesType, ListsType } from './../../AppWithRedux';
+import { Dispatch } from 'redux';
+import { FilterValuesType, ListsType, ServerListType } from './../../AppWithRedux';
 import { v1 } from 'uuid';
 
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -97,7 +97,7 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
         
         case SET_TODOLISTS:
 
-            return action.lists.map((list: ListsType) => ({...list, filter: 'all'}));
+            return action.lists.map((list: ServerListType) => ({...list, filter: 'all'}));
             
         default:
             return state;
@@ -121,23 +121,33 @@ export const changeTodoListFilterAC = (todoListId: string, filter: FilterValuesT
     return {type: CHANGE_TODOLIST_FILTER, id: todoListId, filter} as const;
 };
 
-export const setTodoListsAC = (lists: Array<ListsType>) => {
-    return {type: SET_TODOLISTS, lists: lists} as const;
+export const setTodoListsAC = (lists: Array<ServerListType>) => {
+    return {type: SET_TODOLISTS, lists} as const;
 };
 
 //thunks
-export const addToDoListThunkAC = (title: string) => {
-    console.log(title);
-    return (dispatch: Dispatch<ActionType>) => {
-        
-        todoListsAPI.createToDoList(title)
-                .then((resultCode: number) => {
-                    console.log(resultCode);
-                    // if (!resultCode){
-                        todoListsAPI.getToDoLists()
-                                            .then(res => dispatch(setTodoListsAC(res)));
-    
-                    // };           
-                });
-    };
+export const fetchToDoListThunk = (dispatch: Dispatch) => {
+    todoListsAPI.getToDoLists()
+            .then(data => {
+                dispatch(setTodoListsAC(data));
+            });
 };
+
+// export const setToDoListThunkAC = () => {
+//     return (dispatch: Dispatch) => {
+//         todoListsAPI.getToDoLists()
+//             .then(data => {
+//                 dispatch(setTodoListsAC(data));
+//             });
+        
+        // todoListsAPI.createToDoList(title)
+        //         .then((resultCode: number) => {
+        //             console.log(resultCode);
+        //             // if (!resultCode){
+        //                 todoListsAPI.getToDoLists()
+        //                                     .then(res => dispatch(setTodoListsAC(res)));
+    
+        //             // };           
+        //         });
+//     };
+// };

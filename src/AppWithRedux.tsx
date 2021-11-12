@@ -7,13 +7,19 @@ import './App.css';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
 import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, removeTaskAC } from './bll/task-reducer/task-reducer';
-import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, setTodoListsAC } from './bll/todolist-reducer/todolist-reducer';
+import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, fetchToDoListThunk, removeTodoListAC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
-import { todoListsAPI } from './api/todolists-api';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
+
+export type ServerListType = {
+    id: string,
+    title: string,
+    addedDate: string | null,
+    order: number,
+};
 
 export type ListsType = {
     id: string,
@@ -34,10 +40,10 @@ export type TasksObjPropsType = {
 };
 
 type AppType = {
-    addToDoListThunkAC: (title: string) => void,
+    setToDoListThunkAC: () => void,
 }
 
-function AppWithRedux(props: AppType) {
+function AppWithRedux() {
     //метод useState используется для перерисовки компонента
     //он принимает стартовое/новое значения стейта и возвращает массив в котром хранится переменная с 
     //состоянием и функция которая будет запускать перерисовку и перерисовывает компонент
@@ -89,15 +95,7 @@ function AppWithRedux(props: AppType) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // todoListsAPI.createToDoList('New Title From App')
-        //         .then((resultCode: number) => {
-        //             console.log(resultCode);
-        //             if (!resultCode){
-        //                  todoListsAPI.getToDoLists()
-        //                                     .then(res => dispatch(setTodoListsAC(res)));
-
-        //             };           
-        // });
+        dispatch(fetchToDoListThunk);
     }, []);
 
     //после мемоизации дочепних комонент лишние перерисовки досих пор происходят

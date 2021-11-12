@@ -1,5 +1,5 @@
 import { ListsType, TasksObjPropsType } from './../AppWithRedux';
-import { toDoListReducer, addTodoListAC, removeTodoListAC } from './todolist-reducer/todolist-reducer';
+import { toDoListReducer, addTodoListAC, removeTodoListAC, setTodoListsAC } from './todolist-reducer/todolist-reducer';
 import { taskReducer } from './task-reducer/task-reducer';
 
 test('ids should be equals', () => {
@@ -42,6 +42,21 @@ test('ids should be equals', () => {
  
     expect(keys.length).toBe(1);
     expect(endState["todolistId2"]).not.toBeDefined();
+ });
+
+ test('empty arrays should br seted when we set todolists', () => {
+     const action = setTodoListsAC([
+        {id: "toDoListId1", title: 'What to learn', addedDate: null, order: 0},
+        {id: "toDoListId2", title: 'What to do', addedDate: null, order: 0},
+     ]);
+
+     const endState = taskReducer({}, action);
+
+     const keys = Object.keys(endState);
+
+     expect(keys.length).toBe(2);
+     expect(endState['toDoListId1']).toStrictEqual([]);
+     expect(endState['toDoListId2']).toStrictEqual([]);
  });
  
  
