@@ -1,7 +1,6 @@
 import { tasksAPI, todoListsAPI } from './../../api/todolists-api';
 import { TasksObjPropsType, TasksType } from './../../AppWithRedux';
 import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
-import { v1 } from 'uuid';      
 import { Dispatch } from 'redux';
 
 export const ADD_TASK = 'ADD_TASK',
@@ -50,19 +49,18 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
     switch (action.type){
         case ADD_TASK:
             const newTask = {
-                id: v1(), 
-                title: action.title, 
-                isDone: false
+                ...action.task,
+                isDone: !!action.task.status,
             };
 
-            const newList = [...state[action.toDoListId]];
+            const newList = [...state[action.task.todoListId]];
 
-            newList.unshift(newTask);
+            newList.push(newTask);
 
             return (
                 {
                     ...state,
-                    [action.toDoListId]: newList,
+                    [action.task.todoListId]: newList,
                 }
             );
 
@@ -109,7 +107,7 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
                 return (
                     {
                         ...state,
-                        [action.id]: [],
+                        [action.list.id]: [],
                     }
                 );
 
@@ -141,8 +139,8 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
     };
 };
 
-export const addTaskAC = (title: string, toDoListId: string) => {
-    return {type: ADD_TASK, title, toDoListId} as const;
+export const addTaskAC = (task: ServerTasksType) => {
+    return {type: ADD_TASK, task} as const;
 };
 
 export const removeTaskAC = (toDoListId: string, taskId: string) => {
@@ -178,7 +176,7 @@ export const createTaskTC = (listId: string, title: string) => {
             tasksAPI.createTask(listId, title)
                 .then(data => {
                     if (!data.resultCode){
-                        dispatch(addTaskAC(data.data.item.title, listId));
+                        dispatch(addTaskAC(data.data.item));
                     }
                 })
                 .catch(err => console.log(err));

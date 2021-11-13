@@ -62,13 +62,7 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
             return state.filter(list => list.id !== action.id);             
 
         case ADD_TODOLIST: 
-            const newToDoList: ListsType = {
-                id: action.id,
-                title: action.title,
-                filter: 'all',
-                addedDate: null,
-                order: 0,
-            };
+            const newToDoList: ListsType = {...action.list, filter: 'all'};
 
             return [
                 ...state,
@@ -106,8 +100,8 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
 };
 
 // action creators
-export const addTodoListAC = (title: string) => {
-    return {type: ADD_TODOLIST, title, id: v1()} as const;
+export const addTodoListAC = (list: ServerListType) => {
+    return {type: ADD_TODOLIST, list} as const;
 };
 
 export const removeTodoListAC = (todoListId: string) => {
@@ -146,7 +140,20 @@ export const addToDoListTC = (title: string) => {
         (dispatch: Dispatch) => {
             todoListsAPI.createToDoList(title)
                 .then(res => {
-                    dispatch(addTodoListAC(res.data.item.title));
+                    dispatch(addTodoListAC(res.data.item));
+                });
+        }
+    );
+};
+
+export const removeToDoListTC = (listId: string) => {
+    return (
+        (dispatch: Dispatch) => {
+            todoListsAPI.deleteToDoLIst(listId)
+                .then(resultCode => {
+                    if (!resultCode){
+                        dispatch(removeTodoListAC(listId));
+                    }
                 });
         }
     );
