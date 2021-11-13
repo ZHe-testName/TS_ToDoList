@@ -1,4 +1,4 @@
-import { todoListsAPI } from './../../api/todolists-api';
+import { tasksAPI, todoListsAPI } from './../../api/todolists-api';
 import { TasksObjPropsType, TasksType } from './../../AppWithRedux';
 import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
 import { v1 } from 'uuid';      
@@ -166,8 +166,35 @@ export const changeTaskDescriptionAC = (toDoListId: string, taskId: string, newD
 export const fetchTasksTC = (listId: string) => {
     return (
         (dispatch: Dispatch) => {
-            todoListsAPI.getTasks(listId)
+            tasksAPI.getTasks(listId)
                 .then(tasks => dispatch(setTasksAC(listId, tasks)));
+        }
+    );
+};
+
+export const createTaskTC = (listId: string, title: string) => {
+    return (
+        (dispatch: Dispatch) => {
+            tasksAPI.createTask(listId, title)
+                .then(data => {
+                    if (!data.resultCode){
+                        dispatch(addTaskAC(data.data.item.title, listId));
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+    );
+};
+
+export const deleteTaskTC = (listId: string, taskId: string) => {
+    return (
+        (dispatch: Dispatch) => {
+            tasksAPI.deleteTask(listId, taskId)
+                .then(resultCode => {
+                    if (!resultCode){
+                        dispatch(removeTaskAC(listId, taskId));
+                    }
+                })
         }
     );
 };

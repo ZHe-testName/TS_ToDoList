@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { useCallback } from 'react';
 import { Task } from './Task';
 import { useDispatch } from 'react-redux';
-import { fetchTasksTC } from '../bll/task-reducer/task-reducer';
+import { createTaskTC, fetchTasksTC } from '../bll/task-reducer/task-reducer';
 
 type TaskType = {
     id: string,
@@ -58,8 +58,8 @@ export const ToDoList = React.memo((props: PropsType) => {
     };
 
     const addTaskHandler = useCallback((title: string) => {
-        addTask(title, id);
-    }, [addTask, id]);
+        dispatch(createTaskTC(id, title));
+    }, [id]);
 
     const addNewListHeaderhandler = useCallback((newValue: string) => {
         addNewListHeader(newValue, id);

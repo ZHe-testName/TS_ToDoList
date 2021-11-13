@@ -73,15 +73,17 @@ export const todoListsAPI = {
         return toDoListInstance.put<ResponceToDoListType>(`/${id}`, {title: title})
                             .then(res => res.config.data);
     },
+};
 
+export const tasksAPI = {
     getTasks(listId: string) {
         return toDoListInstance.get<TaskResponceType>(`/${listId}/tasks`)
                     .then(res => res.data.items);
     },
 
     createTask(listId: string, title: string) {
-        return toDoListInstance.post<ResponceToDoListType<{item: ToDoListType}>>(`${listId}/tasks`, {title: title})
-                            .then(res => res.data.resultCode);
+        return toDoListInstance.post<ResponceToDoListType<{item: ServerTasksType}>>(`${listId}/tasks`, {title: title})
+                            .then(res => res.data);
     },    
 
     deleteTask(listId: string, taskId: string) {
