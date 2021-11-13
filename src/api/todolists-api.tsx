@@ -61,7 +61,7 @@ export const todoListsAPI = {
 
     createToDoList(title: string) {
         return toDoListInstance.post<ResponceToDoListType<{item: ToDoListType}>>('', {title})
-                            .then(res => res.data.resultCode);
+                            .then(res => res.data);
     },    
 
     deleteToDoLIst(id: string) {
@@ -70,7 +70,7 @@ export const todoListsAPI = {
     },
 
     updateToDoList(id: string, title: string) {
-        return toDoListInstance.put<ResponceToDoListType>(`/${id}`, {title: title})
+        return toDoListInstance.put<ResponceToDoListType>(`/${id}`, {title})
                             .then(res => res.config.data);
     },
 };

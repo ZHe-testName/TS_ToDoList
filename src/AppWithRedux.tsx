@@ -6,8 +6,8 @@ import AdditemInput from './components/AddItemInput';
 import './App.css';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
-import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, deleteTaskTC, removeTaskAC } from './bll/task-reducer/task-reducer';
-import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, fetchToDoListThunkTC, removeTodoListAC } from './bll/todolist-reducer/todolist-reducer';
+import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, createTaskTC, deleteTaskTC, removeTaskAC } from './bll/task-reducer/task-reducer';
+import { addTodoListAC, addToDoListTC, changeTodoListFilterAC, changeTodoListTitleAC, fetchToDoListThunkTC, removeTodoListAC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
@@ -119,13 +119,10 @@ function AppWithRedux() {
     //перекешировал эту функцию
     const removeTask = useCallback((id: string, listId: string) => {
         dispatch(deleteTaskTC(listId, id));
-        // const action = removeTaskAC(listId, id);
-        // dispatch(action);
     }, [dispatch]);
 
-    const addTask = useCallback((taskdesc: string, listId: string) => {
-        const action = addTaskAC(taskdesc, listId);
-        dispatch(action);
+    const addTask = useCallback((title: string, listId: string) => {
+        dispatch(createTaskTC(listId, title))
     }, [dispatch]);
 
     const changeStatus = useCallback((id: string, isDone: boolean, listId: string) => {
@@ -150,8 +147,7 @@ function AppWithRedux() {
     }, [dispatch]);
 
     const addToDoList = useCallback((title: string) => {
-        const action =  addTodoListAC(title);
-        dispatch(action);
+        dispatch(addToDoListTC(title));
     }, [dispatch]);
 
     const addNewListHeader = useCallback((newValue: string, listId: string) => {

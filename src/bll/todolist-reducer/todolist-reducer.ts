@@ -141,6 +141,17 @@ export const fetchToDoListThunkTC = () => {
     );
 };
 
+export const addToDoListTC = (title: string) => {
+    return (
+        (dispatch: Dispatch) => {
+            todoListsAPI.createToDoList(title)
+                .then(res => {
+                    dispatch(addTodoListAC(res.data.item.title));
+                });
+        }
+    );
+};
+
 // export const setToDoListThunkAC = () => {
 //     return (dispatch: Dispatch) => {                   res => setTasksAC(list.id, res.items)
 //         todoListsAPI.getToDoLists()

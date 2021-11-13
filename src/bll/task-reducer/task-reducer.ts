@@ -195,6 +195,7 @@ export const deleteTaskTC = (listId: string, taskId: string) => {
                         dispatch(removeTaskAC(listId, taskId));
                     }
                 })
+                .catch(err => console.log(err));
         }
     );
 };

@@ -33,7 +33,8 @@ type PropsType = {
 };
 
 export const ToDoList = React.memo((props: PropsType) => {
-    const { title, 
+    const { 
+            title, 
             tasks, 
             filter, 
             id, 
@@ -42,8 +43,9 @@ export const ToDoList = React.memo((props: PropsType) => {
             setFilter, 
             changeTaskStatus, 
             setNewTaskTitle, 
-            addNewListHeader, 
-            addTask} = props;
+            addNewListHeader,
+            addTask
+                            } = props;
 
     let filtersdTasks: Array<TaskType> = tasks;
 
@@ -58,7 +60,7 @@ export const ToDoList = React.memo((props: PropsType) => {
     };
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(createTaskTC(id, title));
+        addTask(title, id);
     }, [id]);
 
     const addNewListHeaderhandler = useCallback((newValue: string) => {
