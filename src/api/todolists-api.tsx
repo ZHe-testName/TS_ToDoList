@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FilterValuesType } from "../App";
+import { FilterValuesType } from "../AppWithRedux";
 import { ServerTasksType } from "../bll/task-reducer/task-reducer";
 
 export type ToDoListType = {
@@ -71,7 +71,7 @@ export const todoListsAPI = {
 
     updateToDoList(id: string, title: string) {
         return toDoListInstance.put<ResponceToDoListType>(`/${id}`, {title})
-                            .then(res => res.config.data);
+                            .then(res => res.config);
     },
 };
 

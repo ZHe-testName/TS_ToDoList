@@ -1,7 +1,6 @@
 import { todoListsAPI } from './../../api/todolists-api';
 import { Dispatch } from 'redux';
 import { FilterValuesType, ListsType, ServerListType } from './../../AppWithRedux';
-import { v1 } from 'uuid';
 
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
@@ -159,21 +158,13 @@ export const removeToDoListTC = (listId: string) => {
     );
 };
 
-// export const setToDoListThunkAC = () => {
-//     return (dispatch: Dispatch) => {                   res => setTasksAC(list.id, res.items)
-//         todoListsAPI.getToDoLists()
-//             .then(data => {
-//                 dispatch(setTodoListsAC(data));
-//             });
-        
-        // todoListsAPI.createToDoList(title)
-        //         .then((resultCode: number) => {
-        //             console.log(resultCode);
-        //             // if (!resultCode){
-        //                 todoListsAPI.getToDoLists()
-        //                                     .then(res => dispatch(setTodoListsAC(res)));
-    
-        //             // };           
-        //         });
-//     };
-// };
+export const changeTodoListTitleTC = (listId: string, title: string) => {
+    return (
+        (dispatch: Dispatch) => {
+            todoListsAPI.updateToDoList(listId, title)
+                .then((data) => {
+                    dispatch(changeTodoListTitleAC(listId, JSON.parse(data.data).title));
+                });
+        }
+    );
+};

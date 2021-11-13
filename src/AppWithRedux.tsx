@@ -6,8 +6,8 @@ import AdditemInput from './components/AddItemInput';
 import './App.css';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
-import { addTaskAC, changeTaskDescriptionAC, changeTaskStatusAC, createTaskTC, deleteTaskTC, removeTaskAC } from './bll/task-reducer/task-reducer';
-import { addTodoListAC, addToDoListTC, changeTodoListFilterAC, changeTodoListTitleAC, fetchToDoListThunkTC, removeTodoListAC, removeToDoListTC } from './bll/todolist-reducer/todolist-reducer';
+import { changeTaskDescriptionAC, changeTaskDescriptionTC, changeTaskStatusAC, changeTaskStatusTC, createTaskTC, deleteTaskTC, ServerTasksType } from './bll/task-reducer/task-reducer';
+import { addToDoListTC, changeTodoListFilterAC, changeTodoListTitleTC, fetchToDoListThunkTC, removeToDoListTC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
@@ -36,7 +36,7 @@ export type TasksType = {
 };
 
 export type TasksObjPropsType = {
-    [key: string]: Array<TasksType>,
+    [key: string]: Array<ServerTasksType>,
 };
 
 type AppType = {
@@ -125,14 +125,12 @@ function AppWithRedux() {
         dispatch(createTaskTC(listId, title))
     }, [dispatch]);
 
-    const changeStatus = useCallback((id: string, isDone: boolean, listId: string) => {
-        const action = changeTaskStatusAC(listId, id, isDone);
-        dispatch(action);
+    const changeStatus = useCallback((id: string, status: number, listId: string) => {
+        dispatch(changeTaskStatusTC(listId, id, status));
     }, [dispatch]);
 
     const setNewTaskTitle = useCallback((newValue: string, taskId: string, listId: string) => {
-        const action = changeTaskDescriptionAC(listId, taskId, newValue);
-        dispatch(action);
+        dispatch(changeTaskDescriptionTC(listId, taskId, newValue));
     }, [dispatch]);
 
 
@@ -150,8 +148,7 @@ function AppWithRedux() {
     }, [dispatch]);
 
     const addNewListHeader = useCallback((newValue: string, listId: string) => {
-        const action = changeTodoListTitleAC(listId, newValue);
-        dispatch(action);
+        dispatch(changeTodoListTitleTC(listId, newValue));
     }, [dispatch]);
     
     return (

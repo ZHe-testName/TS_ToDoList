@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { FilterValuesType } from '../App';
+import { FilterValuesType } from '../AppWithRedux';
 import AdditemInput from './AddItemInput';
 import EditableSpan from './EditableSpan';
 import { Grid, List } from '@material-ui/core';
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { useCallback } from 'react';
 import { Task } from './Task';
 import { useDispatch } from 'react-redux';
-import { createTaskTC, fetchTasksTC } from '../bll/task-reducer/task-reducer';
+import { fetchTasksTC, ServerTasksType } from '../bll/task-reducer/task-reducer';
 
 type TaskType = {
     id: string,
@@ -20,11 +20,11 @@ type TaskType = {
 
 type PropsType = {
     title: string,
-    tasks: Array<TaskType>,
+    tasks: Array<ServerTasksType>,
     filter: string,
     id: string,
     removeTask: (id: string, listId: string) => void,
-    changeTaskStatus: (id: string, isDone: boolean, listId: string) => void,
+    changeTaskStatus: (id: string, status: number, listId: string) => void,
     setNewTaskTitle: (newValue: string, taskId: string, listId: string) => void,
     setFilter: (value: FilterValuesType, id: string) => void,
     addTask: (taskDesc: string, listId: string) => void,
@@ -47,7 +47,7 @@ export const ToDoList = React.memo((props: PropsType) => {
             addTask
                             } = props;
 
-    let filtersdTasks: Array<TaskType> = tasks;
+    let filtersdTasks: Array<ServerTasksType> = tasks;
 
     const dispatch = useDispatch();
 
@@ -61,7 +61,7 @@ export const ToDoList = React.memo((props: PropsType) => {
 
     const addTaskHandler = useCallback((title: string) => {
         addTask(title, id);
-    }, [id]);
+    }, [addTask, id]);
 
     const addNewListHeaderhandler = useCallback((newValue: string) => {
         addNewListHeader(newValue, id);
@@ -72,11 +72,11 @@ export const ToDoList = React.memo((props: PropsType) => {
     const onCompleteClickHandler = useCallback(() => (setFilter('completed', id)), [setFilter, id]);
 
     if (filter === 'active'){
-        filtersdTasks = tasks.filter(t => !t.isDone); 
+        filtersdTasks = tasks.filter(t => !t.status); 
     };
 
     if (filter === 'completed'){
-        filtersdTasks = tasks.filter(t => t.isDone);
+        filtersdTasks = tasks.filter(t => !!t.status);
     };
 
     return (

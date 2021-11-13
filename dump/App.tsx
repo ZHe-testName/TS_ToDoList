@@ -8,6 +8,7 @@ import './App.css';
 import {v1} from 'uuid';
 import MenuIcon from '@material-ui/icons/Menu';
 import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
+import { ServerTasksType } from './bll/task-reducer/task-reducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -24,7 +25,7 @@ export type TasksType = {
 };
 
 export type TasksObjPropsType = {
-    [key: string]: Array<TasksType>,
+    [key: string]: Array<ServerTasksType>,
 };
 
 function App() {
@@ -217,4 +218,4 @@ function App() {
     );
 };
 
-export default App;
+// export default //App

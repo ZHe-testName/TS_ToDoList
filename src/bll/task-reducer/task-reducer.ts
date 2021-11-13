@@ -1,7 +1,8 @@
-import { tasksAPI, todoListsAPI } from './../../api/todolists-api';
-import { TasksObjPropsType, TasksType } from './../../AppWithRedux';
+import { tasksAPI } from './../../api/todolists-api';
+import { TasksObjPropsType } from './../../AppWithRedux';
 import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
 import { Dispatch } from 'redux';
+import { AppRootStateType } from '../state/store';
 
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
@@ -80,7 +81,7 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
         case CHANGE_STATUS:
             const listCopy = [...state[action.toDoListId]]
                                                         .map(task => task.id === action.taskId
-                                                                ? {...task, isDone: action.isDone}
+                                                                ? {...task, status: action.status}
                                                                 : task);
 
             return (
@@ -128,11 +129,7 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
             return copyState;
 
         case SET_TASKS: 
-            return {...state, [action.toDoListId]: action.tasks.map(task => ({  
-                                                                                id: task.id, 
-                                                                                isDone: !!task.status,
-                                                                                title: task.title
-                                                                            }))};
+            return {...state, [action.toDoListId]: action.tasks}
 
         default:
             return state;
@@ -147,8 +144,8 @@ export const removeTaskAC = (toDoListId: string, taskId: string) => {
     return {type: REMOVE_TASK, toDoListId, taskId} as const;
 };
 
-export const changeTaskStatusAC = (toDoListId: string, taskId: string, isDone: boolean) => {
-    return {type: CHANGE_STATUS, toDoListId, taskId, isDone} as const;
+export const changeTaskStatusAC = (toDoListId: string, taskId: string, status: number) => {
+    return {type: CHANGE_STATUS, toDoListId, taskId, status} as const;
 };
    
 export const setTasksAC = (toDoListId: string, tasks: Array<ServerTasksType>) => {
@@ -192,6 +189,68 @@ export const deleteTaskTC = (listId: string, taskId: string) => {
                     if (!resultCode){
                         dispatch(removeTaskAC(listId, taskId));
                     }
+                })
+                .catch(err => console.log(err));
+        }
+    );
+};
+
+export const changeTaskDescriptionTC = (listId: string, taskId: string, newTitle: string) => {
+    return (
+        (dispatch: Dispatch, getState: () => AppRootStateType) => {
+            const state = getState();
+
+            const task = state.tasks[listId].find(task => task.id === taskId);
+
+            if (!task){
+                console.warn('no such task or todolist!!!');
+
+                return;
+            }
+
+            const model = {
+                addedDate: task.addedDate,
+                deadline: task.deadline,
+                priority: task.priority,
+                startDate: task.startDate,
+                status: task.status,
+                title: newTitle,
+            };
+
+            tasksAPI.updateTask(listId, taskId, model)
+                .then(data => {
+                    dispatch(changeTaskDescriptionAC(listId, taskId, JSON.parse(data).title))
+                })
+                .catch(err => console.log(err));
+        }
+    );
+};
+
+export const changeTaskStatusTC = (listId: string, taskId: string, status: number) => {
+    return (
+        (dispatch: Dispatch, getState: () => AppRootStateType) => {
+            const state = getState();
+
+            const task = state.tasks[listId].find(task => task.id === taskId);
+
+            if (!task){
+                console.warn('no such task or todolist!!!');
+
+                return;
+            }
+
+            const model = {
+                addedDate: task.addedDate,
+                deadline: task.deadline,
+                priority: task.priority,
+                startDate: task.startDate,
+                status: status,
+                title: task.title,
+            };
+
+            tasksAPI.updateTask(listId, taskId, model)
+                .then(data => {
+                    dispatch(changeTaskStatusAC(listId, taskId, JSON.parse(data).status))
                 })
                 .catch(err => console.log(err));
         }
