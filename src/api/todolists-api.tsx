@@ -23,14 +23,14 @@ export type ToDoListType = {
 //     todoListId: string,
 // };
 
-type TaskChangeType = {
+export type TaskChangeType = {
     addedDate: string,
     deadline: null | string,
     priority: number,
     startDate: null | string,
     status: number,
     title: string,
-} | null;
+};
 
 export type TaskResponceType = {
     error: null | string,
@@ -92,6 +92,7 @@ export const tasksAPI = {
     },
 
     updateTask(listId: string, taskId: string, newTask: TaskChangeType) {
+        console.log(newTask);
         return toDoListInstance.put<ResponceToDoListType>(`/${listId}/tasks/${taskId}`, newTask)
                             .then(res => res.config.data);
     },
