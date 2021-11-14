@@ -59,7 +59,7 @@ export const taskReducer = (state: TasksObjPropsType = initialState, action: Act
 
             const newList = [...state[action.task.todoListId]];
 
-            newList.push(newTask);
+            newList.unshift(newTask);
 
             return (
                 {

@@ -1,30 +1,79 @@
 import { addTodoListAC, setTodoListsAC } from './../todolist-reducer/todolist-reducer';
-import { TasksObjPropsType } from './../../App';
-import { taskReducer, removeTaskAC, addTaskAC, changeTaskStatusAC, changeTaskDescriptionAC, setTasksAC } from './task-reducer';
+import { TasksObjPropsType } from './../../AppWithRedux';
+import { taskReducer, removeTaskAC, addTaskAC, setTasksAC, updateTaskAC } from './task-reducer';
 
 const startState: TasksObjPropsType = {
-        'todolistId1': [
-            { id: '1', title: 'CSS', isDone: false },
-            { id: '2', title: 'JS', isDone: true },
-            { id: '3', title: 'React', isDone: false }
-        ],
-        'todolistId2': [
-            { id: '1', title: 'bread', isDone: false },
-            { id: '2', title: 'milk', isDone: true },
-            { id: '3', title: 'tea', isDone: false }
-        ],
+        'todolistId1': [{
+            description: '',
+            title: 'srat',
+            status: 1,
+            priority: 0,
+            startDate: 'string | null',
+            deadline: 'string | null',
+            id: '1',
+            todoListId: 'tdl1',
+            order: 2,
+            addedDate: '',
+        },
+        {
+            description: '',
+            title: 'syat',
+            status: 1,
+            priority: 0,
+            startDate: 'string | null',
+            deadline: 'string | null',
+            id: '2',
+            todoListId: 'tdl1',
+            order: 2,
+            addedDate: '',
+        }],
+        'todolistId2': [{
+            description: '',
+            title: 'fff',
+            status: 1,
+            priority: 0,
+            startDate: 'string | null',
+            deadline: 'string | null',
+            id: '1',
+            todoListId: 'tdl2',
+            order: 2,
+            addedDate: '',
+        },
+        {
+            description: '',
+            title: 'ppp',
+            status: 1,
+            priority: 0,
+            startDate: 'string | null',
+            deadline: 'string | null',
+            id: '2',
+            todoListId: 'tdl2',
+            order: 2,
+            addedDate: '',
+        }],
     };
 
 test ('should add new task to target todolist', () => {
-    const action = addTaskAC('juce', 'todolistId2');
+    const action = addTaskAC({
+        description: '',
+        title: 'ppp',
+        status: 1,
+        priority: 0,
+        startDate: 'string | null',
+        deadline: 'string | null',
+        id: 'id2',
+        todoListId: 'todolistId2',
+        order: 2,
+        addedDate: '',
+    });
 
     const endState = taskReducer(startState, action);
  
-    expect(endState["todolistId1"].length).toBe(3);
-    expect(endState["todolistId2"].length).toBe(4);
-    expect(endState["todolistId2"][0].id).toBeDefined();
-    expect(endState["todolistId2"][0].title).toBe('juce');
-    expect(endState["todolistId2"][0].isDone).toBe(false);
+    expect(endState["todolistId1"].length).toBe(2);
+    expect(endState["todolistId2"].length).toBe(3);
+    expect(endState["todolistId2"][0].id).toBe('id2');
+    expect(endState["todolistId2"][0].title).toBe('ppp');
+    expect(!!endState["todolistId2"][0].status).toBe(true);
 });
 
 test ('should remove task from target todolist', () => {
@@ -33,39 +82,85 @@ test ('should remove task from target todolist', () => {
     const endStage = taskReducer(startState, action);
 
     expect(endStage).toEqual({
-            'todolistId1': [
-                { id: '1', title: 'CSS', isDone: false },
-                { id: '2', title: 'JS', isDone: true },
-                { id: '3', title: 'React', isDone: false }
-            ],
-            'todolistId2': [
-                { id: '1', title: 'bread', isDone: false },
-                { id: '3', title: 'tea', isDone: false }
-            ]
+        'todolistId1': [{
+            description: '',
+            title: 'srat',
+            status: 1,
+            priority: 0,
+            startDate: 'string | null',
+            deadline: 'string | null',
+            id: '1',
+            todoListId: 'tdl1',
+            order: 2,
+            addedDate: '',
+        },
+        {
+            description: '',
+            title: 'syat',
+            status: 1,
+            priority: 0,
+            startDate: 'string | null',
+            deadline: 'string | null',
+            id: '2',
+            todoListId: 'tdl1',
+            order: 2,
+            addedDate: '',
+        }],
+        'todolistId2': [{
+            description: '',
+            title: 'fff',
+            status: 1,
+            priority: 0,
+            startDate: 'string | null',
+            deadline: 'string | null',
+            id: '1',
+            todoListId: 'tdl2',
+            order: 2,
+            addedDate: '',
+        }]
         });
 });
 
 test ('should change status of specified task', () => {
-    const action = changeTaskStatusAC('todolistId2', '2', false);
+    const action = updateTaskAC('todolistId2', '2', {
+        title: 'srat',
+        status: 0,
+        priority: 0,
+        startDate: 'string | null',
+        deadline: 'string | null',
+        addedDate: '',
+    },);
 
     const endStage = taskReducer(startState, action);
 
-    expect(endStage['todolistId2'][1].isDone).toBe(false);
-    expect(endStage['todolistId1'][1].isDone).toBe(true);
+    expect(!!endStage['todolistId2'][1].status).toBe(false);
+    expect(!!endStage['todolistId1'][1].status).toBe(true);
  
 })
 
 test ('should change task description in correct todo list task', () => {
-    const action = changeTaskDescriptionAC('todolistId2', '2', 'Some new description');
+    const action = updateTaskAC('todolistId2', '2', {
+        title: 'Some new description',
+        status: 1,
+        priority: 0,
+        startDate: 'string | null',
+        deadline: 'string | null',
+        addedDate: '',
+    });
 
     const endStage = taskReducer(startState, action);
 
     expect(endStage['todolistId2'][1].title).toBe('Some new description');
-    expect(endStage['todolistId1'][1].title).toBe('JS');
+    expect(endStage['todolistId1'][1].title).toBe('syat');
 });
 
 test ('new empty array should be added, when toDoList is added', () => {
-    const action = addTodoListAC('title no matter');
+    const action = addTodoListAC({
+        id: 'new todolist',
+        title: 'get',
+        addedDate: '',
+        order: 0,
+    });
 
     const endStage = taskReducer(startState, action);
 

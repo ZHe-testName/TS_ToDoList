@@ -6,7 +6,12 @@ test('ids should be equals', () => {
     const startTasksState: TasksObjPropsType = {};
     const startTodolistsState: Array<ListsType> = [];
  
-    const action = addTodoListAC("new todolist");
+    const action = addTodoListAC({
+        id: 'new todolist',
+        title: 'get',
+        addedDate: '',
+        order: 0,
+    });
  
     const endTasksState = taskReducer(startTasksState, action)
     const endTodolistsState = toDoListReducer(startTodolistsState, action)
@@ -15,22 +20,61 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0];
     const idFromTodolists = endTodolistsState[0].id;
  
-    expect(idFromTasks).toBe(action.id);
-    expect(idFromTodolists).toBe(action.id);
+    expect(idFromTasks).toBe(action.list.id);
+    expect(idFromTodolists).toBe(action.list.id);
  });
 
  test('property with todolistId should be deleted', () => {
     const startState: TasksObjPropsType = {
-        "todolistId1": [
-            { id: "1", title: "CSS", isDone: false },
-            { id: "2", title: "JS", isDone: true },
-            { id: "3", title: "React", isDone: false }
-        ],
-        "todolistId2": [
-            { id: "1", title: "bread", isDone: false },
-            { id: "2", title: "milk", isDone: true },
-            { id: "3", title: "tea", isDone: false }
-        ]
+        "todolistId1": [{      
+                            description: 'zzz',
+                            title: 'get',
+                            status: 0,
+                            priority: 1,
+                            startDate: '',
+                            deadline: '',
+                            id: 'new todo',
+                            todoListId: 'new todolist',
+                            order: 5,
+                            addedDate: '',
+                        },
+                        {      
+                            description: 'zzzppp',
+                            title: 'catch',
+                            status: 0,
+                            priority: 1,
+                            startDate: '',
+                            deadline: '',
+                            id: 'new todo1',
+                            todoListId: 'new todolist',
+                            order: 5,
+                            addedDate: '',
+                        }],
+
+        "todolistId2": [{      
+            description: '222',
+            title: '111',
+            status: 0,
+            priority: 1,
+            startDate: '',
+            deadline: '',
+            id: '123',
+            todoListId: 'new todolist2',
+            order: 5,
+            addedDate: '',
+        },
+        {      
+            description: '333',
+            title: '888',
+            status: 0,
+            priority: 1,
+            startDate: '',
+            deadline: '',
+            id: '098',
+            todoListId: 'new todolist2',
+            order: 5,
+            addedDate: '',
+        }],
     };
  
     const action = removeTodoListAC("todolistId2");
