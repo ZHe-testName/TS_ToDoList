@@ -3,6 +3,7 @@ import { TasksObjPropsType } from './../../AppWithRedux';
 import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from '../state/store';
+import { SetErrorActionType, setErrorAC } from '../app-reducer/app-reducer';
 
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
@@ -160,7 +161,7 @@ export const setTasksAC = (toDoListId: string, tasks: Array<ServerTasksType>) =>
 
 export const fetchTasksTC = (listId: string) => {
     return (
-        (dispatch: Dispatch) => {
+        (dispatch: Dispatch<ActionType>) => {
             tasksAPI.getTasks(listId)
                 .then(tasks => dispatch(setTasksAC(listId, tasks)));
         }
@@ -169,11 +170,15 @@ export const fetchTasksTC = (listId: string) => {
 
 export const createTaskTC = (listId: string, title: string) => {
     return (
-        (dispatch: Dispatch) => {
+        (dispatch: Dispatch<ActionType | SetErrorActionType>) => {
             tasksAPI.createTask(listId, title)
                 .then(data => {
                     if (!data.resultCode){
                         dispatch(addTaskAC(data.data.item));
+                    }
+
+                    if (data.resultCode && data.messages.length){
+                        dispatch(setErrorAC(data.messages[0]));
                     }
                 })
                 .catch(err => console.log(err));
@@ -183,7 +188,7 @@ export const createTaskTC = (listId: string, title: string) => {
 
 export const deleteTaskTC = (listId: string, taskId: string) => {
     return (
-        (dispatch: Dispatch) => {
+        (dispatch: Dispatch<ActionType>) => {
             tasksAPI.deleteTask(listId, taskId)
                 .then(resultCode => {
                     if (!resultCode){
@@ -206,7 +211,7 @@ export type ThunkModelType = {
 
 export const updateTaskTC = (listId: string, taskId: string, model: ThunkModelType) => {
     return (
-        (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        (dispatch: Dispatch<ActionType>, getState: () => AppRootStateType) => {
             const state = getState();
 
             const task = state.tasks[listId].find(task => task.id === taskId);

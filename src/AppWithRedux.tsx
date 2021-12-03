@@ -11,6 +11,8 @@ import { addToDoListTC, changeTodoListFilterAC, changeTodoListTitleTC, fetchToDo
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
+import LinearProgress  from '@material-ui/core/LinearProgress/LinearProgress';
+import ErrorSnackbar from './components/ErrorSnackbar';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -169,6 +171,8 @@ function AppWithRedux() {
                             style={{marginLeft: 'auto'}}
                             color='inherit'>Login</Button>
                     </Toolbar>
+
+                    <LinearProgress />
             </AppBar>
 
             <Container 
@@ -221,6 +225,8 @@ function AppWithRedux() {
                         </Grid>
 
             </Container>
+
+            <ErrorSnackbar />
         </div>
     );
 };
