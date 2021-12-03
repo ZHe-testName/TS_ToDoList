@@ -92,6 +92,7 @@ function AppWithRedux() {
     //интересующей нас подветки
     const tasksObj = useSelector<AppRootStateType, TasksObjPropsType>(state => state.tasks);
     const toDoListArr = useSelector<AppRootStateType, Array<ListsType>>(state => state.todolists);
+    const status = useSelector<AppRootStateType, string | null>(state => state.app.status);
 
     //вместо отдельных диспатчей редакс использует один общий
     const dispatch = useDispatch();
@@ -172,7 +173,9 @@ function AppWithRedux() {
                             color='inherit'>Login</Button>
                     </Toolbar>
 
-                    <LinearProgress />
+                    {
+                        status === 'loading' && <LinearProgress />
+                    }
             </AppBar>
 
             <Container 

@@ -3,7 +3,7 @@ import { TasksObjPropsType } from './../../AppWithRedux';
 import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from '../state/store';
-import { SetErrorActionType, setErrorAC } from '../app-reducer/app-reducer';
+import { SetErrorActionType, setErrorAC, SetStatusActionType, setStatusAC } from '../app-reducer/app-reducer';
 
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
@@ -161,16 +161,21 @@ export const setTasksAC = (toDoListId: string, tasks: Array<ServerTasksType>) =>
 
 export const fetchTasksTC = (listId: string) => {
     return (
-        (dispatch: Dispatch<ActionType>) => {
+        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+            dispatch(setStatusAC('loading'));
+
             tasksAPI.getTasks(listId)
-                .then(tasks => dispatch(setTasksAC(listId, tasks)));
+                .then(tasks => dispatch(setTasksAC(listId, tasks)))
+                .then(() => dispatch(setStatusAC('successed')));
         }
     );
 };
 
 export const createTaskTC = (listId: string, title: string) => {
     return (
-        (dispatch: Dispatch<ActionType | SetErrorActionType>) => {
+        (dispatch: Dispatch<ActionType | SetErrorActionType | SetStatusActionType>) => {
+            dispatch(setStatusAC('loading'));
+
             tasksAPI.createTask(listId, title)
                 .then(data => {
                     if (!data.resultCode){
@@ -180,6 +185,8 @@ export const createTaskTC = (listId: string, title: string) => {
                     if (data.resultCode && data.messages.length){
                         dispatch(setErrorAC(data.messages[0]));
                     }
+
+                    dispatch(setStatusAC('successed'));
                 })
                 .catch(err => console.log(err));
         }

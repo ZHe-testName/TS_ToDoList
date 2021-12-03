@@ -1,6 +1,7 @@
 import { todoListsAPI } from './../../api/todolists-api';
 import { Dispatch } from 'redux';
 import { FilterValuesType, ListsType, ServerListType } from './../../AppWithRedux';
+import { setStatusAC, SetStatusActionType } from '../app-reducer/app-reducer';
 
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
@@ -125,10 +126,14 @@ export const setTodoListsAC = (lists: Array<ServerListType>) => {
 //на случай если а санку нужно будет передать какието данные
 export const fetchToDoListThunkTC = () => {
     return (
-        (dispatch: Dispatch) => {
+        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+            dispatch(setStatusAC('loading'));
+
             todoListsAPI.getToDoLists()
                     .then(data => {
                         dispatch(setTodoListsAC(data));
+
+                        dispatch(setStatusAC('successed'));
                     });
         }
     );
@@ -136,10 +141,14 @@ export const fetchToDoListThunkTC = () => {
 
 export const addToDoListTC = (title: string) => {
     return (
-        (dispatch: Dispatch) => {
+        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+            dispatch(setStatusAC('loading'));
+
             todoListsAPI.createToDoList(title)
                 .then(res => {
                     dispatch(addTodoListAC(res.data.item));
+
+                    dispatch(setStatusAC('successed'));
                 });
         }
     );
