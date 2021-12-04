@@ -156,11 +156,15 @@ export const addToDoListTC = (title: string) => {
 
 export const removeToDoListTC = (listId: string) => {
     return (
-        (dispatch: Dispatch) => {
+        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+            dispatch(setStatusAC('loading'));
+
             todoListsAPI.deleteToDoLIst(listId)
                 .then(resultCode => {
                     if (!resultCode){
                         dispatch(removeTodoListAC(listId));
+
+                        dispatch(setStatusAC('successed'));
                     }
                 });
         }

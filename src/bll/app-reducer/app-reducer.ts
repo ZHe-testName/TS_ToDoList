@@ -7,7 +7,7 @@ export type Status = 'idle' | 'loading' | 'successed' | 'filed';
 
 export type InitialStateType = {
     //проходитт ли сейчас взаимодействие с сервером
-    status: string | null,
+    status: Status | null,
     //если произойдет ошибка то мы запишем ее текст сюда
     errorMessage: string | null,
 };
@@ -43,4 +43,4 @@ export type SetErrorActionType = ReturnType<typeof setErrorAC>;
 export type SetStatusActionType = ReturnType<typeof setStatusAC>;
 
 export type ActonCreatorsType = SetErrorActionType
-                                | SetStatusActionType;
+                                & SetStatusActionType;
