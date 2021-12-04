@@ -13,6 +13,7 @@ import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
 import LinearProgress  from '@material-ui/core/LinearProgress/LinearProgress';
 import ErrorSnackbar from './components/ErrorSnackbar';
+import { Status } from './bll/app-reducer/app-reducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -92,7 +93,7 @@ function AppWithRedux() {
     //интересующей нас подветки
     const tasksObj = useSelector<AppRootStateType, TasksObjPropsType>(state => state.tasks);
     const toDoListArr = useSelector<AppRootStateType, Array<ListsType>>(state => state.todolists);
-    const status = useSelector<AppRootStateType, string | null>(state => state.app.status);
+    const status = useSelector<AppRootStateType, Status>(state => state.app.status);
 
     //вместо отдельных диспатчей редакс использует один общий
     const dispatch = useDispatch();
@@ -157,7 +158,7 @@ function AppWithRedux() {
     return (
         <div>
             <AppBar 
-                position='static'>
+                position='fixed'>
                     <Toolbar>
                         <IconButton 
                                 edge='start' 
@@ -166,7 +167,7 @@ function AppWithRedux() {
                         </IconButton>
 
                         <Typography 
-                                variant='h6'>News</Typography>
+                                variant='h6'>Todo Lists</Typography>
 
                         <Button 
                             style={{marginLeft: 'auto'}}
@@ -179,6 +180,9 @@ function AppWithRedux() {
             </AppBar>
 
             <Container 
+                    style={{
+                        marginTop: '100px',
+                    }}
                     fixed>
                     <Grid 
                         container

@@ -218,7 +218,7 @@ export type ThunkModelType = {
 
 export const updateTaskTC = (listId: string, taskId: string, model: ThunkModelType) => {
     return (
-        (dispatch: Dispatch<ActionType>, getState: () => AppRootStateType) => {
+        (dispatch: Dispatch<ActionType | SetStatusActionType>, getState: () => AppRootStateType) => {
             const state = getState();
 
             const task = state.tasks[listId].find(task => task.id === taskId);
@@ -239,9 +239,13 @@ export const updateTaskTC = (listId: string, taskId: string, model: ThunkModelTy
                 ...model
             };
 
+            dispatch(setStatusAC('loading'));
+
             tasksAPI.updateTask(listId, taskId, lockalModel)
                 .then(data => {
-                    dispatch(updateTaskAC(listId, taskId, JSON.parse(data)))
+                    dispatch(updateTaskAC(listId, taskId, JSON.parse(data)));
+
+                    dispatch(setStatusAC('successed'));
                 })
                 .catch(err => console.log(err));
         }

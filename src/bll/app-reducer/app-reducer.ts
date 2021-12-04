@@ -3,7 +3,7 @@ export enum ActionTypes {
     SET_ERROR = 'SET_ERROR', 
 };
 
-export type Status = 'idle' | 'loading' | 'successed' | 'filed';
+export type Status = 'idle' | 'loading' | 'successed' | 'filed' | null;
 
 export type InitialStateType = {
     //проходитт ли сейчас взаимодействие с сервером

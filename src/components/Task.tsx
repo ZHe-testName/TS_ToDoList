@@ -1,8 +1,10 @@
-import { Checkbox, IconButton, ListItem } from "@material-ui/core";
+import { Checkbox, CircularProgress, IconButton, ListItem } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import React from "react";
+import { useSelector } from "react-redux";
 import { ChangeEvent } from "react-transition-group/node_modules/@types/react";
-import { TasksType } from "../AppWithRedux";
+import { Status } from "../bll/app-reducer/app-reducer";
+import { AppRootStateType } from "../bll/state/store";
 import { ServerTasksType } from "../bll/task-reducer/task-reducer";
 import EditableSpan from "./EditableSpan";
 
@@ -15,6 +17,8 @@ export type TasksPropsType = {
 };
 
 export const Task = React.memo((props: TasksPropsType) => {
+    const status = useSelector<AppRootStateType, Status>(state => state.app.status);
+ 
     const taskStatusChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const newStatus = e.currentTarget.checked;
 
@@ -31,21 +35,21 @@ export const Task = React.memo((props: TasksPropsType) => {
                 key={`${props.task.id}`}
                 className={!!props.task.status ? 'done-task' : 'uncomplete-task'}>
                     <Checkbox  
-                        indeterminate
-                        checked={!!props.task.status} 
-                        onChange={e => taskStatusChangeHandler(e)}/>
+                            indeterminate
+                            checked={!!props.task.status} 
+                            onChange={e => taskStatusChangeHandler(e)}/>
 
-                        <EditableSpan 
-                                    title={props.task.title}
-                                    newValue={onChangeTitleHandler}/>
+                    <EditableSpan 
+                                title={props.task.title}
+                                newValue={onChangeTitleHandler}/>
 
-                        <IconButton
-                                style={{marginLeft: 'auto'}}
-                                onClick={() => props.removeTask(props.task.id, props.toDoListId)}
-                                area-label='delete'>
-                                    <DeleteIcon 
-                                                fontSize='small'/>
-                        </IconButton>
+                    <IconButton
+                            style={{marginLeft: 'auto'}}
+                            onClick={() => props.removeTask(props.task.id, props.toDoListId)}
+                            area-label='delete'>
+                                <DeleteIcon 
+                                            fontSize='small'/>
+                    </IconButton>
             </ListItem>
         );
 });
