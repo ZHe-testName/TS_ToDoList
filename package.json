@@ -13,7 +13,6 @@
     "@mui/material": "^5.2.2",
     "@mui/styles": "^5.2.2",
     "@storybook/preset-typescript": "^3.0.0",
-    "@storybook/react": "^6.4.8",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -23,6 +22,8 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.18",
+    "@types/react-router": "^5.1.17",
+    "@types/react-router-dom": "^5.3.2",
     "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^5.1.9",
     "@types/uuid": "^8.3.0",
@@ -73,7 +74,6 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.8",
     "@storybook/addon-essentials": "^6.3.8",
     "@storybook/addon-links": "^6.3.8",
     "@storybook/addon-storysource": "^6.3.8",

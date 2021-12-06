@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
-import AddItemInput from '../components/AddItemInput';
+import AddItemInput from '../src/components/AddItemInput';
 
 //библиотека storybооk нужна чтобы проводить так называемое snapShot тестирование
 //оно основано на внешнем виде наших компонент 

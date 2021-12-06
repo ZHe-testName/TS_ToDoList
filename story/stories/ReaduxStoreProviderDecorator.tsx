@@ -3,10 +3,10 @@ import { Provider } from "react-redux";
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { v1 } from 'uuid';
-import { appReducer } from '../../bll/app-reducer/app-reducer';
-import { store } from "../../bll/state/store";
-import { taskReducer } from '../../bll/task-reducer/task-reducer';
-import { toDoListReducer } from '../../bll/todolist-reducer/todolist-reducer';
+import { appReducer } from '../../src/bll/app-reducer/app-reducer';
+import { store } from "../../src/bll/state/store";
+import { taskReducer } from '../../src/bll/task-reducer/task-reducer';
+import { toDoListReducer } from '../../src/bll/todolist-reducer/todolist-reducer';
 
 //Для более презентабельного вида создадим стартовый стейт
 //чтобы при демонстрации можно было спазу чтото показать
