@@ -23,5 +23,9 @@ export default {
 const callback = action('Button "add" was pressed inside the form');
 
 export const AddItemFormBaseExample = (props: any) => {
-    return <AddItemInput addItem={callback} />
+    return <AddItemInput addItem={callback}/>
+};
+
+export const AddItemFormDisabledExample = (props: any) => {
+    return <AddItemInput addItem={callback} disabled={true}/>
 };

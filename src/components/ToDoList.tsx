@@ -11,6 +11,7 @@ import { useCallback } from 'react';
 import { Task } from './Task';
 import { useDispatch } from 'react-redux';
 import { fetchTasksTC, ServerTasksType } from '../bll/task-reducer/task-reducer';
+import { Status } from '../bll/app-reducer/app-reducer';
 
 type TaskType = {
     id: string,
@@ -23,6 +24,8 @@ type PropsType = {
     tasks: Array<ServerTasksType>,
     filter: string,
     id: string,
+    demo?: boolean,
+    entityStatus: Status,
     removeTask: (id: string, listId: string) => void,
     changeTaskStatus: (id: string, status: number, listId: string) => void,
     setNewTaskTitle: (newValue: string, taskId: string, listId: string) => void,
@@ -38,6 +41,10 @@ export const ToDoList = React.memo((props: PropsType) => {
             tasks, 
             filter, 
             id, 
+            entityStatus,
+            //это поле создается толео для деморежима
+            //чтобы изолировать сторибук от сервера
+            demo = false,
             removeTask, 
             removeList, 
             setFilter, 
@@ -52,6 +59,10 @@ export const ToDoList = React.memo((props: PropsType) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if(demo){
+            return;
+        }
+
         dispatch(fetchTasksTC(id));
     }, []);
 
@@ -94,13 +105,14 @@ export const ToDoList = React.memo((props: PropsType) => {
                     </Typography>
 
                     <Button  
+                        disabled={entityStatus === 'loading'}
                         color='secondary'
                         size='small'
                         startIcon={<DeleteIcon />}  
                         onClick={removeListHandler}>Delete</Button>
             </Grid>
 
-            <AdditemInput addItem={addTaskHandler}/>
+            <AdditemInput addItem={addTaskHandler} disabled={entityStatus === 'loading'}/>
 
             <List
                 component='nav'

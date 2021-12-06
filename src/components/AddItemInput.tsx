@@ -5,6 +5,7 @@ import PlusOneIcon from '@material-ui/icons/PlusOne';
 
 type PropsType = {
     addItem: (toDoListId: string) => void,
+    disabled?: boolean,
 };
 
 //Сейчас в нашем приложении есть проблема
@@ -28,7 +29,7 @@ type PropsType = {
 //она принимает нужнаю компоненту
 
 const AddItemInput = React.memo((props: PropsType) => {
-    const {addItem} = props;
+    const {addItem, disabled = false} = props;
 
     let [title, setTitle] = useState('');
     let [error, setError] = useState<string | null>(null);
@@ -60,6 +61,7 @@ const AddItemInput = React.memo((props: PropsType) => {
             <Grid
                 container>
                     <TextField 
+                            disabled={disabled}
                             variant='outlined'
                             label='Typing there'
                             style={{marginRight: '20px'}} 
@@ -70,6 +72,7 @@ const AddItemInput = React.memo((props: PropsType) => {
                             onKeyPress={e => onKeyPresHandler(e)}/>
 
                             <Button 
+                                disabled={disabled}
                                 onClick={newTaskHandler}
                                 variant='contained'
                                 startIcon={<PlusOneIcon/>}

@@ -19,23 +19,48 @@ export const EditableSpanBasicExamole = () => {
     return (
             <>
                 <ToDoList 
-                id='1' 
-                title='Test Title'
-                filter='completed'
-                tasks={[{id: '1', isDone: true, title: 'CSS'}]}
-                setFilter={filterTasksCallback}
-                addTask={addTaskCallback}
-                removeList={removeListCallback}
-                addNewListHeader={addNewListHeaderCallback}
-                removeTask={removeTaskCallback}
-                changeTaskStatus={changeTaskStatusCallback}
-                setNewTaskTitle={setNewTaskTitleCallback}/>
+                    id='1' 
+                    title='Test Title'
+                    filter='completed'
+                    entityStatus='idle'
+                    tasks={[{
+                        
+                        description: 'h',
+                        title: 'string',
+                        status: 0,
+                        priority: 1,
+                        startDate: 'tomorow',
+                        deadline: 'yesterday',
+                        id: 'id',
+                        todoListId: 'string1',
+                        order: 2,
+                        addedDate: '34556',
+                    }]}
+                    setFilter={filterTasksCallback}
+                    addTask={addTaskCallback}
+                    removeList={removeListCallback}
+                    addNewListHeader={addNewListHeaderCallback}
+                    removeTask={removeTaskCallback}
+                    changeTaskStatus={changeTaskStatusCallback}
+                    setNewTaskTitle={setNewTaskTitleCallback}/>
 
                 <ToDoList 
                     id='2' 
                     title='Test Title 2'
                     filter='active'
-                    tasks={[{id: '2', isDone: false, title: 'JS'}]}
+                    entityStatus= 'loading'
+                    tasks={[{
+                        description: 'h',
+                        title: 'string',
+                        status: 0,
+                        priority: 1,
+                        startDate: 'tomorow',
+                        deadline: 'yesterday',
+                        id: 'id',
+                        todoListId: 'string1',
+                        order: 2,
+                        addedDate: '34556',
+                    }]}
                     setFilter={filterTasksCallback}
                     addTask={addTaskCallback}
                     removeList={removeListCallback}
@@ -48,8 +73,31 @@ export const EditableSpanBasicExamole = () => {
                     id='3' 
                     title='Test Title 3'
                     filter='all'
-                    tasks={[{id: '1', isDone: true, title: 'CSS'},
-                            {id: '2', isDone: false, title: 'JS'}]}
+                    entityStatus='idle'
+                    tasks={[{
+                        description: 'h',
+                        title: 'string',
+                        status: 0,
+                        priority: 1,
+                        startDate: 'tomorow',
+                        deadline: 'yesterday',
+                        id: 'id',
+                        todoListId: 'string1',
+                        order: 2,
+                        addedDate: '34556',
+                    },
+                    {
+                        description: 'g',
+                        title: 'number',
+                        status: 1,
+                        priority: 2,
+                        startDate: 'tomorow',
+                        deadline: 'yesterday',
+                        id: 'id1',
+                        todoListId: 'string2',
+                        order: 2,
+                        addedDate: '345',
+                    }]}
                     setFilter={filterTasksCallback}
                     addTask={addTaskCallback}
                     removeList={removeListCallback}

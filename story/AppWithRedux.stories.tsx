@@ -1,6 +1,6 @@
 import React from 'react';
 import AppWithRedux from '../AppWithRedux';
-import { addToDoListThunkAC } from '../bll/todolist-reducer/todolist-reducer';
+import { addTodoListAC } from '../bll/todolist-reducer/todolist-reducer';
 import { ReaduxStoreProviderDecorator } from './stories/ReaduxStoreProviderDecorator';
 
 
@@ -13,5 +13,7 @@ export default {
 };
 
 export const AppWithReduxBasicExample = () => {
-    return <AppWithRedux addToDoListThunkAC={addToDoListThunkAC}/>;
+    return <AppWithRedux demo={true}/>;
 };
+
+//addTodoListAC={addTodoListAC}

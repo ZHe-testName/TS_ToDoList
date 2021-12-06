@@ -22,6 +22,7 @@ export type ServerListType = {
     title: string,
     addedDate: string | null,
     order: number,
+    entityStatus?: Status,
 };
 
 export type ListsType = {
@@ -30,6 +31,7 @@ export type ListsType = {
     addedDate: string | null,
     order: number,
     filter: FilterValuesType,
+    entityStatus: Status,
 };
 
 export type TasksType = {
@@ -44,9 +46,16 @@ export type TasksObjPropsType = {
 
 type AppType = {
     setToDoListThunkAC: () => void,
-}
+};
 
-function AppWithRedux() {
+type AppPropsType = {
+    //поле демо нужно чтобы при тестировании
+    //через сторибук не обращатся к серваку а 
+    //юзать наши подготовленные данные
+    demo?: boolean,
+};
+
+function AppWithRedux({demo = false}: AppPropsType) {
     //метод useState используется для перерисовки компонента
     //он принимает стартовое/новое значения стейта и возвращает массив в котром хранится переменная с 
     //состоянием и функция которая будет запускать перерисовку и перерисовывает компонент
@@ -99,6 +108,10 @@ function AppWithRedux() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (demo){
+            return;
+        };
+        
         dispatch(fetchToDoListThunkTC());
     }, []);
 
@@ -215,17 +228,20 @@ function AppWithRedux() {
                                                 style={{padding: '15px'}}
                                                 elevation={2}>
                                                     <ToDoList 
-                                                            id={list.id}  
-                                                            title={list.title} 
-                                                            filter={list.filter}
-                                                            tasks={filtredTasksArr}
-                                                            removeTask={removeTask}
-                                                            setFilter={filterTasks}
-                                                            addTask={addTask}
-                                                            changeTaskStatus={changeStatus}
-                                                            removeList={removeList}
-                                                            setNewTaskTitle={setNewTaskTitle}
-                                                            addNewListHeader={addNewListHeader}/>
+                                                        entityStatus={list.entityStatus}
+                                                        demo={demo}
+                                                        id={list.id}
+                                                        title={list.title}
+                                                        filter={list.filter}
+                                                        tasks={filtredTasksArr}
+                                                        removeTask={removeTask}
+                                                        setFilter={filterTasks}
+                                                        addTask={addTask}
+                                                        changeTaskStatus={changeStatus}
+                                                        removeList={removeList}
+                                                        setNewTaskTitle={setNewTaskTitle}
+                                                        addNewListHeader={addNewListHeader}
+                                                        />
                                             </Paper>
                                 </Grid>);    
                             })}

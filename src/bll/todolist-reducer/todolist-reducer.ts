@@ -62,7 +62,7 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
             return state.filter(list => list.id !== action.id);             
 
         case ADD_TODOLIST: 
-            const newToDoList: ListsType = {...action.list, filter: 'all'};
+            const newToDoList: ListsType = {...action.list, filter: 'all', entityStatus: 'idle',};
 
             return [
                 ...state,
@@ -92,7 +92,7 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
         
         case SET_TODOLISTS:
 
-            return action.lists.map((list: ServerListType) => ({...list, filter: 'all'}));
+            return action.lists.map((list: ServerListType) => ({...list, filter: 'all', entityStatus: 'idle',}));
             
         default:
             return state;

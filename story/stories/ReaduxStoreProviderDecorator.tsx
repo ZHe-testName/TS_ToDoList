@@ -1,7 +1,9 @@
 import React from 'react';
 import { Provider } from "react-redux";
-import { combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import { v1 } from 'uuid';
+import { appReducer } from '../../bll/app-reducer/app-reducer';
 import { store } from "../../bll/state/store";
 import { taskReducer } from '../../bll/task-reducer/task-reducer';
 import { toDoListReducer } from '../../bll/todolist-reducer/todolist-reducer';
@@ -11,6 +13,7 @@ import { toDoListReducer } from '../../bll/todolist-reducer/todolist-reducer';
 const rootReducer = combineReducers({
     tasks: taskReducer,
     todolists: toDoListReducer,
+    app: appReducer,
 });
 
 const initialGlobalState = {
@@ -25,14 +28,18 @@ const initialGlobalState = {
             ]},
 
     todolists: [
-        {id: 'firstListId', title: 'What to do', filter: 'active', order: 2, addedDate: '23'},
-        {id: 'secondListId', title: 'What to buy', filter: 'all', order: 3, addedDate: '234'},
+        {id: 'firstListId', title: 'What to do', filter: 'active', entityStatus: 'idle', order: 2, addedDate: '23'},
+        {id: 'secondListId', title: 'What to buy', filter: 'all', entityStatus: 'loading', order: 3, addedDate: '234'},
     ],
+    app: {
+        error: null,
+        status: 'idle',
+    },
 };
 
 export type AppRootStateType = ReturnType<typeof rootReducer>;
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType);
+export const storyBookStore = createStore(rootReducer, initialGlobalState as unknown as AppRootStateType, applyMiddleware(thunk));
 
 //Так как наше преложение работает через redux-context API
 //нашей компоненте нужен store
