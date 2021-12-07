@@ -17,6 +17,13 @@ import { Status } from './bll/app-reducer/app-reducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
+// type ResponceType = {
+//     data: {},
+//     messages: string[],
+//     fieldsErrors: [],
+//     resultCode: number,
+// };
+
 export type ServerListType = {
     id: string,
     title: string,

@@ -13,11 +13,11 @@ import { useDispatch } from 'react-redux';
 import { fetchTasksTC, ServerTasksType } from '../bll/task-reducer/task-reducer';
 import { Status } from '../bll/app-reducer/app-reducer';
 
-type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean,
-};
+// type TaskType = {
+//     id: string,
+//     title: string,
+//     isDone: boolean,
+// };
 
 type PropsType = {
     title: string,

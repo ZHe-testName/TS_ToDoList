@@ -3,7 +3,7 @@ export enum ActionTypes {
     SET_ERROR = 'SET_ERROR', 
 };
 
-export type Status = 'idle' | 'loading' | 'successed' | 'filed' | null;
+export type Status = 'idle' | 'loading' | 'successed' | 'failed' | null;
 
 export type InitialStateType = {
     //проходитт ли сейчас взаимодействие с сервером
@@ -41,8 +41,8 @@ export const appReducer = (state: InitialStateType = initialState, action: Acton
 export const setErrorAC = (errorMessage: string | null) => ({type: ActionTypes.SET_ERROR, payload: errorMessage} as const);
 export const setStatusAC = (status: Status) => ({type: ActionTypes.SET_STATUS, payload: status} as const);
 
-export type SetErrorActionType = ReturnType<typeof setErrorAC>;
-export type SetStatusActionType = ReturnType<typeof setStatusAC>;
+export type SetAppErrorActionType = ReturnType<typeof setErrorAC>;
+export type SetAppStatusActionType = ReturnType<typeof setStatusAC>;
 
-export type ActonCreatorsType = SetErrorActionType
-                                | SetStatusActionType;
+export type ActonCreatorsType = SetAppErrorActionType
+                                | SetAppStatusActionType;

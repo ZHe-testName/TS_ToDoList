@@ -3,7 +3,8 @@ import { TasksObjPropsType } from './../../AppWithRedux';
 import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from '../state/store';
-import { SetErrorActionType, setErrorAC, SetStatusActionType, setStatusAC } from '../app-reducer/app-reducer';
+import { SetAppErrorActionType, SetAppStatusActionType, setErrorAC, setStatusAC } from '../app-reducer/app-reducer';
+import { handleServerAppError, handleServerNetworkError } from '../../utils/error-util';
 
 export const ADD_TASK = 'ADD_TASK',
     REMOVE_TASK = 'REMOVE_TASK',
@@ -39,7 +40,7 @@ export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>;
 // | ReturnType<typeof changeTaskStatusAC>
 // | ReturnType<typeof changeTaskDescriptionAC>
 
-type ActionType = 
+export type ActionType = 
                 ReturnType<typeof addTaskAC>
                 | ReturnType<typeof removeTaskAC>
                 | ReturnType<typeof updateTaskAC>
@@ -161,7 +162,7 @@ export const setTasksAC = (toDoListId: string, tasks: Array<ServerTasksType>) =>
 
 export const fetchTasksTC = (listId: string) => {
     return (
-        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+        (dispatch: Dispatch<ActionType | SetAppStatusActionType>) => {
             dispatch(setStatusAC('loading'));
 
             tasksAPI.getTasks(listId)
@@ -173,7 +174,7 @@ export const fetchTasksTC = (listId: string) => {
 
 export const createTaskTC = (listId: string, title: string) => {
     return (
-        (dispatch: Dispatch<ActionType | SetErrorActionType | SetStatusActionType>) => {
+        (dispatch: Dispatch<ActionType | SetAppErrorActionType | SetAppStatusActionType>) => {
             dispatch(setStatusAC('loading'));
 
             tasksAPI.createTask(listId, title)
@@ -182,13 +183,11 @@ export const createTaskTC = (listId: string, title: string) => {
                         dispatch(addTaskAC(data.data.item));
                     }
 
-                    if (data.resultCode && data.messages.length){
-                        dispatch(setErrorAC(data.messages[0]));
-                    }
-
-                    dispatch(setStatusAC('successed'));
+                    handleServerAppError(data, dispatch);
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    handleServerNetworkError(err.message, dispatch);
+                });
         }
     );
 };
@@ -218,7 +217,7 @@ export type ThunkModelType = {
 
 export const updateTaskTC = (listId: string, taskId: string, model: ThunkModelType) => {
     return (
-        (dispatch: Dispatch<ActionType | SetStatusActionType>, getState: () => AppRootStateType) => {
+        (dispatch: Dispatch<ActionType | SetAppStatusActionType>, getState: () => AppRootStateType) => {
             const state = getState();
 
             const task = state.tasks[listId].find(task => task.id === taskId);

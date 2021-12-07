@@ -38,10 +38,10 @@ export type TaskResponceType = {
     totalCount: number,
 };
 
-type ResponceToDoListType<D = {}> = {
+export type ResponceToDoListType<D = {}> = {
     data: D,
     fieldsErrors: Array<any>,
-    messages: Array<any>,
+    messages: Array<string>,
     resultCode: number,
 };
 

@@ -2,7 +2,7 @@ import { Status } from './../app-reducer/app-reducer';
 import { todoListsAPI } from './../../api/todolists-api';
 import { Dispatch } from 'redux';
 import { FilterValuesType, ListsType, ServerListType } from './../../AppWithRedux';
-import { setStatusAC, SetStatusActionType } from '../app-reducer/app-reducer';
+import { setStatusAC, SetAppStatusActionType } from '../app-reducer/app-reducer';
 
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
@@ -147,7 +147,7 @@ export const changeTodoListEntityStatusAC = (id: string, status: Status) => {
 //на случай если а санку нужно будет передать какието данные
 export const fetchToDoListThunkTC = () => {
     return (
-        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+        (dispatch: Dispatch<ActionType | SetAppStatusActionType>) => {
             dispatch(setStatusAC('loading'));
 
             todoListsAPI.getToDoLists()
@@ -162,7 +162,7 @@ export const fetchToDoListThunkTC = () => {
 
 export const addToDoListTC = (title: string) => {
     return (
-        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+        (dispatch: Dispatch<ActionType | SetAppStatusActionType>) => {
             dispatch(setStatusAC('loading'));
 
             todoListsAPI.createToDoList(title)
@@ -177,7 +177,7 @@ export const addToDoListTC = (title: string) => {
 
 export const removeToDoListTC = (listId: string) => {
     return (
-        (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
+        (dispatch: Dispatch<ActionType | SetAppStatusActionType>) => {
             dispatch(setStatusAC('loading'));
             dispatch(changeTodoListEntityStatusAC(listId, 'loading'));
 
