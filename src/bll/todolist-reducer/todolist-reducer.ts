@@ -1,3 +1,4 @@
+import { Status } from './../app-reducer/app-reducer';
 import { todoListsAPI } from './../../api/todolists-api';
 import { Dispatch } from 'redux';
 import { FilterValuesType, ListsType, ServerListType } from './../../AppWithRedux';
@@ -7,7 +8,8 @@ export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
     CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE',
     CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER',
-    SET_TODOLISTS = 'SET_TODOLISTS';
+    SET_TODOLISTS = 'SET_TODOLISTS',
+    CHANGE_ENTITY_STATUS = 'CHANGE_ENTITY_STATUS';
 
 //В TS для экшнкриейторов можно создавать типы в ручную
 //а можно с помощю команды ReturnType создавать типы автоматически
@@ -52,24 +54,27 @@ type ActionType =
                 | ReturnType<typeof removeTodoListAC> 
                 | ReturnType<typeof changeTodoListTitleAC>  
                 | ReturnType<typeof changeTodoListFilterAC> 
-                | ReturnType<typeof setTodoListsAC>;
+                | ReturnType<typeof setTodoListsAC>
+                | ReturnType<typeof changeTodoListEntityStatusAC>;;
 
 const initialState: Array<ListsType> = []; 
 
 export const toDoListReducer = (state: Array<ListsType> = initialState , action: ActionType): Array<ListsType> => {
     switch (action.type){
-        case REMOVE_TODOLIST:
-            return state.filter(list => list.id !== action.id);             
+        case REMOVE_TODOLIST: {
+            return state.filter(list => list.id !== action.id);  
+        }           
 
-        case ADD_TODOLIST: 
+        case ADD_TODOLIST: {
             const newToDoList: ListsType = {...action.list, filter: 'all', entityStatus: 'idle',};
 
             return [
                 ...state,
                 newToDoList,
             ];
+        }
 
-        case CHANGE_TODOLIST_TITLE:
+        case CHANGE_TODOLIST_TITLE: {
             const copyOfState = [...state];
             const targetTask = copyOfState.find(task => task.id === action.id);
     
@@ -78,8 +83,20 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
             };
 
             return copyOfState;
+        }
 
-        case CHANGE_TODOLIST_FILTER:
+        case CHANGE_ENTITY_STATUS: {
+            const copyOfState = [...state];
+            const targetTask = copyOfState.find(task => task.id === action.id);
+    
+            if (targetTask){
+                targetTask.entityStatus = action.status;
+            };
+
+            return copyOfState;
+        }
+
+        case CHANGE_TODOLIST_FILTER: {
             const newState = [...state]; 
             const targetList = newState.find(list => list.id === action.id);
             
@@ -88,11 +105,11 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
             };
 
             return newState;
-            
+        }
         
-        case SET_TODOLISTS:
-
+        case SET_TODOLISTS: {
             return action.lists.map((list: ServerListType) => ({...list, filter: 'all', entityStatus: 'idle',}));
+        }
             
         default:
             return state;
@@ -118,6 +135,10 @@ export const changeTodoListFilterAC = (todoListId: string, filter: FilterValuesT
 
 export const setTodoListsAC = (lists: Array<ServerListType>) => {
     return {type: SET_TODOLISTS, lists} as const;
+};
+
+export const changeTodoListEntityStatusAC = (id: string, status: Status) => {
+    return {type: CHANGE_ENTITY_STATUS, id, status} as const;
 };
 
 //thunks cretors
@@ -158,6 +179,7 @@ export const removeToDoListTC = (listId: string) => {
     return (
         (dispatch: Dispatch<ActionType | SetStatusActionType>) => {
             dispatch(setStatusAC('loading'));
+            dispatch(changeTodoListEntityStatusAC(listId, 'loading'));
 
             todoListsAPI.deleteToDoLIst(listId)
                 .then(resultCode => {

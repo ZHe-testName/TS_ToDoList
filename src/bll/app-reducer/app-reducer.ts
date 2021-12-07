@@ -7,40 +7,42 @@ export type Status = 'idle' | 'loading' | 'successed' | 'filed' | null;
 
 export type InitialStateType = {
     //проходитт ли сейчас взаимодействие с сервером
-    status: Status | null,
+    status: Status,
     //если произойдет ошибка то мы запишем ее текст сюда
     errorMessage: string | null,
 };
 
 const initialState: InitialStateType = {
-    status: 'idle',
+    status: 'idle' as const,
     errorMessage: null,
 };
 
 export const appReducer = (state: InitialStateType = initialState, action: ActonCreatorsType): InitialStateType => {
     switch (action.type){
-        case ActionTypes.SET_STATUS:
+        case ActionTypes.SET_STATUS: {
             return {
                 ...state,
-                status: action.payload
+                status: action.payload,
             };
+        }
 
-        case ActionTypes.SET_ERROR:
+        case ActionTypes.SET_ERROR: {
             return {
                 ...state,
                 errorMessage: action.payload,
             };
+        }
 
         default:
             return {...state}
     };
 };
 
-export const setErrorAC = (errorMessage: string | null) => ({type: ActionTypes.SET_ERROR, payload: errorMessage});
-export const setStatusAC = (status: Status) => ({type: ActionTypes.SET_STATUS, payload: status});
+export const setErrorAC = (errorMessage: string | null) => ({type: ActionTypes.SET_ERROR, payload: errorMessage} as const);
+export const setStatusAC = (status: Status) => ({type: ActionTypes.SET_STATUS, payload: status} as const);
 
 export type SetErrorActionType = ReturnType<typeof setErrorAC>;
 export type SetStatusActionType = ReturnType<typeof setStatusAC>;
 
 export type ActonCreatorsType = SetErrorActionType
-                                & SetStatusActionType;
+                                | SetStatusActionType;
