@@ -1,48 +1,69 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@material-ui/core';
 import React from 'react';
+import { useFormik } from 'formik';
 
 const LoginForm = () => {
+    const formik = useFormik({
+        initialValues: {
+          email: '',
+          password: '',
+          rememberMe: false,
+        },
+
+        onSubmit: (values) => {
+          alert(JSON.stringify(values));
+        },
+      });
+
     return (
         <Grid container justify='center'>
             <Grid xs={4}>
-                <FormControl>
-                    <FormLabel>
-                        For using this app pleace login
-                        or use free account
-                        <br />
-                        <br />
-                        
-                        Email: free@samuraijs.com
+                <form onSubmit={formik.handleSubmit}>
+                    <FormControl>
+                        <FormLabel>
+                            For using this app pleace login
+                            or use free account
+                            <br />
+                            <br />
 
-                        <br />
+                            Email: free@samuraijs.com
 
-                        Password: free
-                    </FormLabel>
+                            <br />
 
-                    <FormGroup>
-                        <TextField 
-                            label='Email'
-                            margin='normal'
-                            />
+                            Password: free
+                        </FormLabel>
 
-                        <TextField 
-                            label='Password'
-                            margin='normal'
-                            />
+                        <FormGroup>
+                            <TextField 
+                                label='Email'
+                                margin='normal'
+                                // деструктурируем объект который возвращает данный метод
+                                // из него мы снабжаем наш элемент нужными свойствами
+                                {...formik.getFieldProps('email')}
+                                />
 
-                        <FormControlLabel 
-                            label='Remember Me'
-                            control={<Checkbox name='rememberMe'/>}
-                            />
+                            <TextField 
+                                label='Password'
+                                margin='normal'
+                                type='password'
+                                {...formik.getFieldProps('password')}
+                                />
 
-                        <Button 
-                            type='submit' 
-                            variant='contained' 
-                            color='primary'
-                            >
-                            Login</Button>
-                    </FormGroup>
-                </FormControl>
+                            <FormControlLabel 
+                                label='Remember Me'
+                                control={<Checkbox name='rememberMe'/>}
+                                {...formik.getFieldProps('rememberMe')}
+                                />
+
+                            <Button 
+                                type='submit' 
+                                variant='contained' 
+                                color='primary'
+                                >
+                                Login</Button>
+                        </FormGroup>
+                    </FormControl>
+                </form>
             </Grid>
         </Grid>
     );
