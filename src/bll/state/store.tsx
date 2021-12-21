@@ -1,6 +1,7 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { appReducer } from "../app-reducer/app-reducer";
+import authReducer from "../auth-reducer/auth-reducer";
 import { taskReducer } from "../task-reducer/task-reducer";
 import { toDoListReducer } from "../todolist-reducer/todolist-reducer";
 
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     tasks: taskReducer,
     todolists: toDoListReducer,
     app: appReducer,
+    auth: authReducer,
 });
 
 //создаем новый стор на основе редюсеров

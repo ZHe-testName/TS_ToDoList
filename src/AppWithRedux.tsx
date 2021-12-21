@@ -1,11 +1,7 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-
-import { ToDoList } from './components/ToDoList';
-import AdditemInput from './components/AddItemInput';
 import './App.css';
 import MenuIcon from '@material-ui/icons/Menu';
-import { AppBar, Button, Container, IconButton, Paper, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, Container, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { updateTaskTC, createTaskTC, deleteTaskTC, ServerTasksType } from './bll/task-reducer/task-reducer';
 import { addToDoListTC, changeTodoListFilterAC, changeTodoListTitleTC, fetchToDoListThunkTC, removeToDoListTC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';

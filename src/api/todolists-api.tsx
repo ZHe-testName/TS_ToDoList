@@ -1,5 +1,6 @@
 import axios from "axios";
 import { FilterValuesType } from "../AppWithRedux";
+import { ServerLoginObjectType } from "../bll/auth-reducer/auth-reducer";
 import { ServerTasksType } from "../bll/task-reducer/task-reducer";
 
 export type ToDoListType = {
@@ -43,6 +44,14 @@ export type ResponceToDoListType<D = {}> = {
     fieldsErrors: Array<any>,
     messages: Array<string>,
     resultCode: number,
+};
+
+export type ResponceAuthType = {
+    resultCode: number,
+    messages: [] | string[],
+    data?: {
+        userId?: number,
+    },
 };
 
 const toDoListInstance = axios.create({
@@ -94,5 +103,12 @@ export const tasksAPI = {
     updateTask(listId: string, taskId: string, newTask: TaskChangeType) {
         return toDoListInstance.put<ResponceToDoListType>(`/${listId}/tasks/${taskId}`, newTask)
                             .then(res => res.config.data);
+    },
+};
+
+export const authAPI = {
+    login(formFields: ServerLoginObjectType) {
+        return toDoListInstance.post<ResponceAuthType>('auth/login', formFields)
+                            .then(res => console.log(res));
     },
 };

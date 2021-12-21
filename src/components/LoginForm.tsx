@@ -1,6 +1,7 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@material-ui/core';
 import React from 'react';
 import { useFormik } from 'formik';
+import { sendAuthFormTC } from '../bll/auth-reducer/auth-reducer';
 
 const LoginForm = () => {
     const formik = useFormik({
@@ -11,13 +12,14 @@ const LoginForm = () => {
         },
 
         onSubmit: (values) => {
-          alert(JSON.stringify(values));
+            sendAuthFormTC(values);
+        //   console.log(JSON.stringify(values));
         },
       });
 
     return (
         <Grid container justify='center'>
-            <Grid xs={4}>
+            <Grid item xs={4}>
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
                         <FormLabel>
