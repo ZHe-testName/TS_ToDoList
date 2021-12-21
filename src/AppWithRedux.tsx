@@ -14,6 +14,9 @@ import { useCallback, useEffect } from 'react';
 import LinearProgress  from '@material-ui/core/LinearProgress/LinearProgress';
 import ErrorSnackbar from './components/ErrorSnackbar';
 import { Status } from './bll/app-reducer/app-reducer';
+import {Route} from 'react-router-dom';
+import MainField from './components/MainField';
+import LoginForm from './components/LoginForm';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -61,6 +64,20 @@ type AppPropsType = {
     //юзать наши подготовленные данные
     demo?: boolean,
 };
+
+export type MainFieldPropsType = {
+    tasksObj: TasksObjPropsType,
+    toDoListArr: ListsType[],
+    demo: boolean,
+    removeTask: (id: string, listId: string) => void,
+    addTask: (title: string, listId: string) => void,
+    changeStatus: (id: string, status: number, listId: string) => void,
+    setNewTaskTitle: (newValue: string, taskId: string, listId: string) => void,
+    filterTasks: (value: FilterValuesType, id: string) => void,
+    removeList: (listId: string) => void,
+    addToDoList: (title: string) =>  void,
+    addNewListHeader: (newValue: string, listId: string) => void,
+}
 
 function AppWithRedux({demo = false}: AppPropsType) {
     //метод useState используется для перерисовки компонента
@@ -204,55 +221,23 @@ function AppWithRedux({demo = false}: AppPropsType) {
                         marginTop: '100px',
                     }}
                     fixed>
-                    <Grid 
-                        container
-                        item
-                        xs={12}
-                        style={{marginTop: '15px'}}>
-                            
-                            <AdditemInput addItem={addToDoList}/>
-                        
-                    </Grid>
 
-                    <Grid 
-                        container
-                        item
-                        xs={12}
-                        spacing={8}
-                        style={{marginTop: '15px'}}>                    
-                            {toDoListArr.map((list: ListsType) => {
-                                let filtredTasksArr = tasksObj[list.id];
 
-                                return(
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        md={6}
-                                        lg={4}
-                                        key={list.id}>
-                                            <Paper
-                                                className='list'
-                                                style={{padding: '15px'}}
-                                                elevation={2}>
-                                                    <ToDoList 
-                                                        entityStatus={list.entityStatus}
-                                                        demo={demo}
-                                                        id={list.id}
-                                                        title={list.title}
-                                                        filter={list.filter}
-                                                        tasks={filtredTasksArr}
-                                                        removeTask={removeTask}
-                                                        setFilter={filterTasks}
-                                                        addTask={addTask}
-                                                        changeTaskStatus={changeStatus}
-                                                        removeList={removeList}
-                                                        setNewTaskTitle={setNewTaskTitle}
-                                                        addNewListHeader={addNewListHeader}
-                                                        />
-                                            </Paper>
-                                </Grid>);    
-                            })}
-                        </Grid>
+            <Route exact path='/' render={() => <MainField {...{
+                                                                    toDoListArr,
+                                                                    tasksObj, 
+                                                                    demo,
+                                                                    addToDoList, 
+                                                                    addTask, 
+                                                                    removeTask, 
+                                                                    filterTasks, 
+                                                                    changeStatus, 
+                                                                    removeList,
+                                                                    setNewTaskTitle,
+                                                                    addNewListHeader,
+                                                                }}/>}/>
+
+            <Route path='/login' render={() => <LoginForm />}/>
 
             </Container>
 
