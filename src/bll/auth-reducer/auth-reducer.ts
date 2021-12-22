@@ -1,3 +1,4 @@
+import { handleServerAppError, handleServerNetworkError } from './../../utils/error-util';
 import { setStatusAC } from './../app-reducer/app-reducer';
 import React from 'react';
 import { Dispatch } from 'redux';
@@ -21,7 +22,7 @@ const initialState: AuthStateType = {
 
 export type ActionType = any;
 
-const authReducer = (state: AuthStateType = initialState, action: ActionType) => {
+const authReducer = (state: AuthStateType = initialState, action: ActionType): AuthStateType => {
     switch (action.type){
         default:
             return state;
@@ -32,7 +33,19 @@ export const sendAuthFormTC = (formFields: ServerLoginObjectType) => {
     return (dispatch: Dispatch<ActionType | SetAppErrorActionType | SetAppStatusActionType>) => {
         dispatch(setStatusAC('loading'));
 
-        authAPI.login(formFields);
+        authAPI.login(formFields)
+                .then(res => {
+                    if (!res.resultCode){
+                        console.log('YO');
+
+                        dispatch(setStatusAC('successed'));
+                    };
+
+                    handleServerAppError(res, dispatch);
+                })
+                .catch(err => {
+                    handleServerNetworkError(err.message, dispatch);
+                });
     };
 };
 

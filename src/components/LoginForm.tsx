@@ -2,8 +2,11 @@ import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, 
 import React from 'react';
 import { useFormik } from 'formik';
 import { sendAuthFormTC } from '../bll/auth-reducer/auth-reducer';
+import { useDispatch } from 'react-redux';
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
+
     const formik = useFormik({
         initialValues: {
           email: '',
@@ -12,8 +15,7 @@ const LoginForm = () => {
         },
 
         onSubmit: (values) => {
-            sendAuthFormTC(values);
-        //   console.log(JSON.stringify(values));
+            dispatch(sendAuthFormTC(values));
         },
       });
 
@@ -25,11 +27,13 @@ const LoginForm = () => {
                         <FormLabel>
                             For using this app pleace login
                             or use free account
+
                             <br />
                             <br />
 
                             Email: free@samuraijs.com
 
+                            <br />
                             <br />
 
                             Password: free

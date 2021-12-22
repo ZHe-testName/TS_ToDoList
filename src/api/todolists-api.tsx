@@ -56,7 +56,7 @@ export type ResponceAuthType = {
 
 const toDoListInstance = axios.create({
     withCredentials: true,
-    baseURL: "https://social-network.samuraijs.com/api/1.1/todo-lists",
+    baseURL: "https://social-network.samuraijs.com/api/1.1",
     headers: {
         "API-KEY": "797677fc-71e8-47d3-89ee-972f9e368c32",
     },
@@ -64,51 +64,51 @@ const toDoListInstance = axios.create({
 
 export const todoListsAPI = {
     getToDoLists() {
-        return toDoListInstance.get<Array<ToDoListType>>('')
+        return toDoListInstance.get<Array<ToDoListType>>('/todo-lists')
                             .then(res => res.data);
     },
 
     createToDoList(title: string) {
-        return toDoListInstance.post<ResponceToDoListType<{item: ToDoListType}>>('', {title})
+        return toDoListInstance.post<ResponceToDoListType<{item: ToDoListType}>>('/todo-lists', {title})
                             .then(res => res.data);
     },    
 
     deleteToDoLIst(id: string) {
-        return toDoListInstance.delete<ResponceToDoListType>(`/${id}`)
+        return toDoListInstance.delete<ResponceToDoListType>(`/todo-lists/${id}`)
                             .then(res => res.data.resultCode);
     },
 
     updateToDoList(id: string, title: string) {
-        return toDoListInstance.put<ResponceToDoListType>(`/${id}`, {title})
+        return toDoListInstance.put<ResponceToDoListType>(`/todo-lists/${id}`, {title})
                             .then(res => res.config);
     },
 };
 
 export const tasksAPI = {
     getTasks(listId: string) {
-        return toDoListInstance.get<TaskResponceType>(`/${listId}/tasks`)
+        return toDoListInstance.get<TaskResponceType>(`/todo-lists/${listId}/tasks`)
                     .then(res => res.data.items);
     },
 
     createTask(listId: string, title: string) {
-        return toDoListInstance.post<ResponceToDoListType<{item: ServerTasksType}>>(`${listId}/tasks`, {title: title})
+        return toDoListInstance.post<ResponceToDoListType<{item: ServerTasksType}>>(`/todo-lists/${listId}/tasks`, {title: title})
                             .then(res => res.data);
     },    
 
     deleteTask(listId: string, taskId: string) {
-        return toDoListInstance.delete<ResponceToDoListType>(`/${listId}/tasks/${taskId}`)
+        return toDoListInstance.delete<ResponceToDoListType>(`/todo-lists/${listId}/tasks/${taskId}`)
                             .then(res => res.data.resultCode);
     },
 
     updateTask(listId: string, taskId: string, newTask: TaskChangeType) {
-        return toDoListInstance.put<ResponceToDoListType>(`/${listId}/tasks/${taskId}`, newTask)
+        return toDoListInstance.put<ResponceToDoListType>(`/todo-lists/${listId}/tasks/${taskId}`, newTask)
                             .then(res => res.config.data);
     },
 };
 
 export const authAPI = {
     login(formFields: ServerLoginObjectType) {
-        return toDoListInstance.post<ResponceAuthType>('auth/login', formFields)
-                            .then(res => console.log(res));
+        return toDoListInstance.post<ResponceToDoListType<{userId?: number}>>('/auth/login', formFields)
+                            .then(res => res.data);
     },
 };

@@ -218,22 +218,22 @@ function AppWithRedux({demo = false}: AppPropsType) {
                     }}
                     fixed>
 
+                <Route exact path='/' render={() => <MainField {...{
+                                                                        toDoListArr,
+                                                                        tasksObj, 
+                                                                        demo,
+                                                                        addToDoList, 
+                                                                        addTask, 
+                                                                        removeTask, 
+                                                                        filterTasks, 
+                                                                        changeStatus, 
+                                                                        removeList,
+                                                                        setNewTaskTitle,
+                                                                        addNewListHeader,
+                                                                    }}/>}
+                                                                    />
 
-            <Route exact path='/' render={() => <MainField {...{
-                                                                    toDoListArr,
-                                                                    tasksObj, 
-                                                                    demo,
-                                                                    addToDoList, 
-                                                                    addTask, 
-                                                                    removeTask, 
-                                                                    filterTasks, 
-                                                                    changeStatus, 
-                                                                    removeList,
-                                                                    setNewTaskTitle,
-                                                                    addNewListHeader,
-                                                                }}/>}/>
-
-            <Route path='/login' render={() => <LoginForm />}/>
+                <Route path='/login' render={() => <LoginForm />}/>
 
             </Container>
 
