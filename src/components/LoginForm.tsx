@@ -2,10 +2,13 @@ import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, 
 import React from 'react';
 import { useFormik } from 'formik';
 import { sendAuthFormTC } from '../bll/auth-reducer/auth-reducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppRootStateType } from '../bll/state/store';
+import { Redirect } from 'react-router-dom';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
+    const isMeOnServerAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isMeOnServerAuth);
 
     const formik = useFormik({
         initialValues: {
@@ -18,6 +21,10 @@ const LoginForm = () => {
             dispatch(sendAuthFormTC(values));
         },
       });
+
+    if (isMeOnServerAuth){
+        return <Redirect to={'/'}/>;
+    };
 
     return (
         <Grid container justify='center'>

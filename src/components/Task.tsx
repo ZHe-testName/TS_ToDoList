@@ -1,4 +1,4 @@
-import { Checkbox, CircularProgress, IconButton, ListItem } from "@material-ui/core";
+import { Checkbox, IconButton, ListItem } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import React from "react";
 import { useSelector } from "react-redux";

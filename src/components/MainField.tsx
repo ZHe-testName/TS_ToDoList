@@ -1,8 +1,11 @@
 import { Grid, Paper } from '@material-ui/core';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { ListsType, MainFieldPropsType } from '../AppWithRedux';
+import { AppRootStateType } from '../bll/state/store';
 import AddItemInput from './AddItemInput';
 import { ToDoList } from './ToDoList';
+import { Redirect } from 'react-router-dom';
 
 const MainField = (props: MainFieldPropsType) => {
     const {
@@ -17,6 +20,12 @@ const MainField = (props: MainFieldPropsType) => {
             removeList,
             setNewTaskTitle,
             addNewListHeader,} = props;
+
+    const isMeOnServerAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isMeOnServerAuth);
+
+    if (!isMeOnServerAuth){
+        return <Redirect to={'/login'}/>
+    };
             
     return (
         <>

@@ -13,6 +13,7 @@ import { Status } from './bll/app-reducer/app-reducer';
 import {Route} from 'react-router-dom';
 import MainField from './components/MainField';
 import LoginForm from './components/LoginForm';
+import { isMeOnServerAuthTC } from './bll/auth-reducer/auth-reducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -123,16 +124,22 @@ function AppWithRedux({demo = false}: AppPropsType) {
     const tasksObj = useSelector<AppRootStateType, TasksObjPropsType>(state => state.tasks);
     const toDoListArr = useSelector<AppRootStateType, Array<ListsType>>(state => state.todolists);
     const status = useSelector<AppRootStateType, Status>(state => state.app.status);
+    const isMeOnServerAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isMeOnServerAuth);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth);
 
     //вместо отдельных диспатчей редакс использует один общий
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (demo){
+        if (demo || !isMeOnServerAuth){
             return;
         };
         
         dispatch(fetchToDoListThunkTC());
+    }, [isMeOnServerAuth]);
+
+    useEffect(() => {
+        dispatch(isMeOnServerAuthTC())
     }, []);
 
     //после мемоизации дочепних комонент лишние перерисовки досих пор происходят
@@ -187,7 +194,7 @@ function AppWithRedux({demo = false}: AppPropsType) {
     const addNewListHeader = useCallback((newValue: string, listId: string) => {
         dispatch(changeTodoListTitleTC(listId, newValue));
     }, [dispatch]);
-    
+    console.log(isAuth);
     return (
         <div>
             <AppBar 

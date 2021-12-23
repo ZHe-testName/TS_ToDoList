@@ -3,7 +3,7 @@ import { TasksObjPropsType } from './../../AppWithRedux';
 import { SetTodoListsActionType, AddTodoListActionType, RemoveTodoListActionType } from './../todolist-reducer/todolist-reducer';
 import { Dispatch } from 'redux';
 import { AppRootStateType } from '../state/store';
-import { SetAppErrorActionType, SetAppStatusActionType, setErrorAC, setStatusAC } from '../app-reducer/app-reducer';
+import { SetAppErrorActionType, SetAppStatusActionType, setStatusAC } from '../app-reducer/app-reducer';
 import { handleServerAppError, handleServerNetworkError } from '../../utils/error-util';
 
 export const ADD_TASK = 'ADD_TASK',

@@ -54,6 +54,12 @@ export type ResponceAuthType = {
     },
 };
 
+export type IsMeAuthServerResponceDataType = {
+    email: string,
+    id: number,
+    login: string,
+};
+
 const toDoListInstance = axios.create({
     withCredentials: true,
     baseURL: "https://social-network.samuraijs.com/api/1.1",
@@ -109,6 +115,10 @@ export const tasksAPI = {
 export const authAPI = {
     login(formFields: ServerLoginObjectType) {
         return toDoListInstance.post<ResponceToDoListType<{userId?: number}>>('/auth/login', formFields)
+                            .then(res => res.data);
+    },
+    isMeServerAuth() {
+        return toDoListInstance.get<ResponceToDoListType<IsMeAuthServerResponceDataType>>('/auth/me')
                             .then(res => res.data);
     },
 };
