@@ -1,8 +1,9 @@
-import { Status } from './../app-reducer/app-reducer';
+import { SetAppErrorActionType, Status } from './../app-reducer/app-reducer';
 import { todoListsAPI } from './../../api/todolists-api';
 import { Dispatch } from 'redux';
 import { FilterValuesType, ListsType, ServerListType } from './../../AppWithRedux';
 import { setStatusAC, SetAppStatusActionType } from '../app-reducer/app-reducer';
+import { handleServerNetworkError } from '../../utils/error-util';
 
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
@@ -147,7 +148,7 @@ export const changeTodoListEntityStatusAC = (id: string, status: Status) => {
 //на случай если а санку нужно будет передать какието данные
 export const fetchToDoListThunkTC = () => {
     return (
-        (dispatch: Dispatch<ActionType | SetAppStatusActionType>) => {
+        (dispatch: Dispatch<ActionType | SetAppStatusActionType | SetAppErrorActionType>) => {
             dispatch(setStatusAC('loading'));
 
             todoListsAPI.getToDoLists()
@@ -155,7 +156,10 @@ export const fetchToDoListThunkTC = () => {
                         dispatch(setTodoListsAC(data));
 
                         dispatch(setStatusAC('successed'));
-                    });
+                    })
+                    .catch(err => {
+                        handleServerNetworkError(err.message, dispatch);
+                    });;
         }
     );
 };
