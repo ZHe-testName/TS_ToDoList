@@ -22,7 +22,6 @@ const MainField = (props: MainFieldPropsType) => {
             addNewListHeader,} = props;
 
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth);
-    console.log(isAuth);
 
     if (!isAuth){
         return <Redirect to={'/login'}/>

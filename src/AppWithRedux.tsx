@@ -137,7 +137,7 @@ function AppWithRedux({demo = false}: AppPropsType) {
         };
         
         dispatch(fetchToDoListThunkTC());
-    }, [isInitialized]);
+    }, [isAuth]);
 
     useEffect(() => {
         dispatch(isMeOnServerInitializedTC())
