@@ -6,7 +6,6 @@ import { authAPI } from '../../api/todolists-api';
 
 export type AuthStateType = {
     isAuth: boolean,
-    isMeOnServerAuth: boolean,
 };
 
 export type ServerLoginObjectType = {
@@ -18,14 +17,11 @@ export type ServerLoginObjectType = {
 
 const initialState: AuthStateType = {
     isAuth: false,
-    isMeOnServerAuth: false,
 };
 
-export type ActionType = ReturnType<typeof setIsAuthAC>
-                            | ReturnType<typeof isMeOnServerAuthAC>;
+export type ActionType = ReturnType<typeof setIsAuthAC>;
 
-const SET_IS_AUTH = 'SET_IS_AUTH',
-    IS_ME_ON_SERVER_AUTH = 'IS_ME_ON_SERVER_AUTH';
+const SET_IS_AUTH = 'SET_IS_AUTH';
 
 const authReducer = (state: AuthStateType = initialState, action: ActionType): AuthStateType => {
     switch (action.type){
@@ -33,13 +29,6 @@ const authReducer = (state: AuthStateType = initialState, action: ActionType): A
             return {
                 ...state,
                 isAuth: action.isAuth,
-            };
-        }
-
-        case IS_ME_ON_SERVER_AUTH: {
-            return {
-                ...state,
-                isMeOnServerAuth: action.isMeOnServerAuth
             };
         }
 
@@ -52,14 +41,9 @@ export const setIsAuthAC = (isAuth: boolean) => {
     return {type: SET_IS_AUTH, isAuth} as const;
 };
 
-export const isMeOnServerAuthAC = (isMeOnServerAuth: boolean) => {
-    return {type: IS_ME_ON_SERVER_AUTH, isMeOnServerAuth} as const;
-};
-
 export const sendAuthFormTC = (formFields: ServerLoginObjectType) => {
     return (dispatch: Dispatch<ActionType | SetAppErrorActionType | SetAppStatusActionType>) => {
         dispatch(setStatusAC('loading'));
-        dispatch(setIsAuthAC(false));
 
         authAPI.login(formFields)
                 .then(res => {
@@ -77,22 +61,23 @@ export const sendAuthFormTC = (formFields: ServerLoginObjectType) => {
     };
 };
 
-export const isMeOnServerAuthTC = () => {
-    return (dispatch: Dispatch) => {
+export const logOutTC = () => {
+    return (dispatch: Dispatch<ActionType | SetAppErrorActionType | SetAppStatusActionType>) => {
         dispatch(setStatusAC('loading'));
 
-        authAPI.isMeServerAuth()
+        authAPI.logout()
                 .then(res => {
                     if (!res.resultCode){
-                        dispatch(isMeOnServerAuthAC(true));
+                        dispatch(setIsAuthAC(false));
 
                         dispatch(setStatusAC('successed'));
                     };
 
-                    dispatch(setIsAuthAC(true));
-
                     handleServerAppError(res, dispatch);
                 })
+                .catch(err => {
+                    handleServerNetworkError(err.message, dispatch);
+                });
     };
 };
 

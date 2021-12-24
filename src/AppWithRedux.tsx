@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import MenuIcon from '@material-ui/icons/Menu';
-import { AppBar, Button, Container, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, Container, Grid, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { updateTaskTC, createTaskTC, deleteTaskTC, ServerTasksType } from './bll/task-reducer/task-reducer';
 import { addToDoListTC, changeTodoListFilterAC, changeTodoListTitleTC, fetchToDoListThunkTC, removeToDoListTC } from './bll/todolist-reducer/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,11 +9,11 @@ import { AppRootStateType } from './bll/state/store';
 import { useCallback, useEffect } from 'react'; 
 import LinearProgress  from '@material-ui/core/LinearProgress/LinearProgress';
 import ErrorSnackbar from './components/ErrorSnackbar';
-import { Status } from './bll/app-reducer/app-reducer';
+import { isMeOnServerInitializedTC, Status } from './bll/app-reducer/app-reducer';
 import {Route} from 'react-router-dom';
 import MainField from './components/MainField';
 import LoginForm from './components/LoginForm';
-import { isMeOnServerAuthTC } from './bll/auth-reducer/auth-reducer';
+import { logOutTC } from './bll/auth-reducer/auth-reducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -124,22 +124,23 @@ function AppWithRedux({demo = false}: AppPropsType) {
     const tasksObj = useSelector<AppRootStateType, TasksObjPropsType>(state => state.tasks);
     const toDoListArr = useSelector<AppRootStateType, Array<ListsType>>(state => state.todolists);
     const status = useSelector<AppRootStateType, Status>(state => state.app.status);
-    const isMeOnServerAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isMeOnServerAuth);
+    const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized);
+    // const isMeOnServerAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isMeOnServerAuth);
     const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth);
 
     //вместо отдельных диспатчей редакс использует один общий
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (demo || !isMeOnServerAuth){
+        if (demo || !isAuth){
             return;
         };
         
         dispatch(fetchToDoListThunkTC());
-    }, [isMeOnServerAuth]);
+    }, [isInitialized]);
 
     useEffect(() => {
-        dispatch(isMeOnServerAuthTC())
+        dispatch(isMeOnServerInitializedTC())
     }, []);
 
     //после мемоизации дочепних комонент лишние перерисовки досих пор происходят
@@ -194,7 +195,19 @@ function AppWithRedux({demo = false}: AppPropsType) {
     const addNewListHeader = useCallback((newValue: string, listId: string) => {
         dispatch(changeTodoListTitleTC(listId, newValue));
     }, [dispatch]);
-    console.log(isAuth);
+
+    const logoutHandler = useCallback(() => {
+        dispatch(logOutTC());
+    }, []);
+    
+    if (!isInitialized){
+        return (
+            <Grid container justify='center'>
+                    <CircularProgress style={{marginTop: '320px'}}/>
+            </Grid>
+        );
+    };
+
     return (
         <div>
             <AppBar 
@@ -209,9 +222,16 @@ function AppWithRedux({demo = false}: AppPropsType) {
                         <Typography 
                                 variant='h6'>Todo Lists</Typography>
 
-                        <Button 
-                            style={{marginLeft: 'auto'}}
-                            color='inherit'>Login</Button>
+                        {
+                            isAuth
+                                &&
+                                <Button 
+                                        style={{marginLeft: 'auto'}}
+                                        color='inherit'
+                                        onClick={logoutHandler}
+                                        >
+                                        Log out</Button>
+                        }
                     </Toolbar>
 
                     {

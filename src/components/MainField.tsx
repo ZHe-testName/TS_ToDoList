@@ -21,9 +21,10 @@ const MainField = (props: MainFieldPropsType) => {
             setNewTaskTitle,
             addNewListHeader,} = props;
 
-    const isMeOnServerAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isMeOnServerAuth);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth);
+    console.log(isAuth);
 
-    if (!isMeOnServerAuth){
+    if (!isAuth){
         return <Redirect to={'/login'}/>
     };
             

@@ -117,6 +117,10 @@ export const authAPI = {
         return toDoListInstance.post<ResponceToDoListType<{userId?: number}>>('/auth/login', formFields)
                             .then(res => res.data);
     },
+    logout() {
+        return toDoListInstance.delete<ResponceToDoListType<{userId?: number}>>('/auth/login')
+                            .then(res => res.data);
+    },
     isMeServerAuth() {
         return toDoListInstance.get<ResponceToDoListType<IsMeAuthServerResponceDataType>>('/auth/me')
                             .then(res => res.data);

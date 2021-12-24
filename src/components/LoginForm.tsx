@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
-    const isMeOnServerAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isMeOnServerAuth);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth);
 
     const formik = useFormik({
         initialValues: {
@@ -22,7 +22,7 @@ const LoginForm = () => {
         },
       });
 
-    if (isMeOnServerAuth){
+    if (isAuth){
         return <Redirect to={'/'}/>;
     };
 
