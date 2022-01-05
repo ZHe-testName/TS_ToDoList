@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
 //добавляем промежуточный слой для thunk
 // export const store = createStore(rootReducer, applyMiddleware(thunk));
 
-//для использования rdux toolkit нужно его подключить
+//для использования redux toolkit нужно его подключить
 //он задает нам одинаковый стиль написания проектов
 //он берет на себя все подключения редюсерров
 //настройку типизации и прочее
@@ -40,7 +40,7 @@ export const store = configureStore({
 });
 
 //cздаем на  автоматически тип всего объекта состояня
-export type AppRootStateType = ReturnType<typeof store.getState>;
+export type AppRootStateType = ReturnType<typeof rootReducer>;
 
 //для работы со стором с консоли
 //создадим глобальную переменную с сылкой на стор
