@@ -98,7 +98,7 @@ export const toDoListReducer = (state: Array<ListsType> = initialState , action:
         }
 
         case CHANGE_TODOLIST_FILTER: {
-            const newState = [...state]; 
+            const newState = state.map(item => ({...item})); 
             const targetList = newState.find(list => list.id === action.id);
             
             if (targetList){
