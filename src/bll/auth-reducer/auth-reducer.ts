@@ -3,7 +3,7 @@ import { setStatusAC } from './../app-reducer/app-reducer';
 import { Dispatch } from 'redux';
 // import { SetAppErrorActionType, SetAppStatusActionType } from '../app-reducer/app-reducer';
 import { authAPI } from '../../api/todolists-api';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type AuthStateType = {
     isAuth: boolean,
@@ -46,8 +46,10 @@ const authSlice = createSlice({
 
         //так же immerjs под капотом делает для нас копию стейта
         //и благодаря этому мы можем свободно тут меня твсе как будто никакой имутабельности не существует
-        setIsAuthAC (state, action){
-            state.isAuth = action.payload;
+
+        //нагрузку в екшене важно называть payload а не както иначе
+        setIsAuthAC (state, action: PayloadAction<{value: boolean}>){
+            state.isAuth = action.payload.value;
         }
     },
 
@@ -81,14 +83,14 @@ export const {setIsAuthAC} = authSlice.actions;
 //ТУЛКИТ ПОМОГАЕТ ИЗБАВИТСЯ ОТ ОООЧЕНЬ БОЛЬШОГО КУСКА БОЙЛЕРПЛЕЙТ КОДА
 export const sendAuthFormTC = (formFields: ServerLoginObjectType) => {
     return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'));
+        dispatch(setStatusAC({value: 'loading'}));
 
         authAPI.login(formFields)
                 .then(res => {
                     if (!res.resultCode){
-                        dispatch(setIsAuthAC(true));
+                        dispatch(setIsAuthAC({value: true}));
 
-                        dispatch(setStatusAC('successed'));
+                        dispatch(setStatusAC({value: 'successed'}));
                     };
 
                     handleServerAppError(res, dispatch);
@@ -101,14 +103,14 @@ export const sendAuthFormTC = (formFields: ServerLoginObjectType) => {
 
 export const logOutTC = () => {
     return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'));
+        dispatch(setStatusAC({value: 'loading'}));
 
         authAPI.logout()
                 .then(res => {
                     if (!res.resultCode){
-                        dispatch(setIsAuthAC(false));
+                        dispatch(setIsAuthAC({value: false}));
 
-                        dispatch(setStatusAC('successed'));
+                        dispatch(setStatusAC({value: 'successed'}));
                     };
 
                     handleServerAppError(res, dispatch);
