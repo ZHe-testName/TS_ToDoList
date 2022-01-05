@@ -180,7 +180,7 @@ function AppWithRedux({demo = false}: AppPropsType) {
 
 
     const filterTasks = useCallback((value: FilterValuesType, id: string) => {
-        const action = changeTodoListFilterAC(id, value);
+        const action = changeTodoListFilterAC({todoListId: id, filter: value});
         dispatch(action);
     }, [dispatch]);
     

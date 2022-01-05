@@ -22,7 +22,7 @@ export default function ErrorSnackbar() {
       return;
     }
 
-    dispatch(setErrorAC(null));
+    dispatch(setErrorAC({value: null}));
   };
 
   return (

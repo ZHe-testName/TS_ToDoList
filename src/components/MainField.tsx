@@ -26,7 +26,7 @@ const MainField = (props: MainFieldPropsType) => {
     if (!isAuth){
         return <Redirect to={'/login'}/>
     };
-            
+        
     return (
         <>
             <Grid 
@@ -47,7 +47,7 @@ const MainField = (props: MainFieldPropsType) => {
                         style={{marginTop: '15px'}}>                    
                             {toDoListArr.map((list: ListsType) => {
                                 let filtredTasksArr = tasksObj[list.id];
-
+                                
                                 return(
                                     <Grid
                                         item
