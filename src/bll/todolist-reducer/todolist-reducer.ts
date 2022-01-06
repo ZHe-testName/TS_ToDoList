@@ -70,7 +70,7 @@ const todolistSlice = createSlice({
         },
 
         removeTodoListAC (state, action: PayloadAction<{value: string}>){
-            state.filter(list => list.id !== action.payload.value); 
+            return state.filter(list => list.id !== action.payload.value); 
         },
 
         changeTodoListTitleAC (state, action: PayloadAction<{todoListId: string, title: string}>){
@@ -90,7 +90,8 @@ const todolistSlice = createSlice({
         },
 
         setTodoListsAC (state, action: PayloadAction<{lists: Array<ServerListType>}>){
-            state = action.payload.lists.map((list: ServerListType) => ({...list, filter: 'all', entityStatus: 'idle',}));
+            console.log('set todo list');
+            return action.payload.lists.map((list: ServerListType) => ({...list, filter: 'all', entityStatus: 'idle',}));
         },
 
         changeTodoListEntityStatusAC (state, action: PayloadAction<{id: string, status: Status}>){

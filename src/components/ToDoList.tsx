@@ -55,7 +55,7 @@ export const ToDoList = React.memo((props: PropsType) => {
                             } = props;
 
     let filtersdTasks: Array<ServerTasksType> = tasks;
-
+    
     const dispatch = useDispatch();
 
     useEffect(() => {

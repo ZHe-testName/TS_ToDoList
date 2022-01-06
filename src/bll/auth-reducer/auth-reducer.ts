@@ -49,6 +49,7 @@ const authSlice = createSlice({
 
         //нагрузку в екшене важно называть payload а не както иначе
         setIsAuthAC (state, action: PayloadAction<{value: boolean}>){
+            console.log('set isAuth');
             state.isAuth = action.payload.value;
         }
     },

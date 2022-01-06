@@ -82,6 +82,7 @@ const taskSlice = createSlice({
         },
            
         setTasksAC (state, action: PayloadAction<{toDoListId: string, tasks: Array<ServerTasksType>}>){
+            console.log('set task');
             state[action.payload.toDoListId] = action.payload.tasks;
         },
     },
@@ -101,6 +102,7 @@ const taskSlice = createSlice({
         });
 
         builder.addCase(setTodoListsAC, (state, action) => {
+            console.log('task set todo list');
             action.payload.lists.forEach(list => {
                 state[list.id] = [];
             });
