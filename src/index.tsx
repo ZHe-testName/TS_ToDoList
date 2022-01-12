@@ -7,8 +7,11 @@ import { Provider } from 'react-redux';
 import { store } from './bll/state/store';
 import { HashRouter } from 'react-router-dom';
 
+//basename используется для того чтобы пути к фпйлам сторились относительно
+//определенной переменной окружения и тогда на хосте при перезагрузке страницы
+//не на корневом урле у нас все будет нормально работать
 ReactDOM.render(<Provider store={store}>
-                    <HashRouter>
+                    <HashRouter basename={process.env.PUBLIC_URL}>
                         <AppWithRedux />
                     </HashRouter>
                 </Provider>,  document.getElementById('root'));
